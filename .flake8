@@ -1,0 +1,8 @@
+[flake8]
+
+max-line-length = 90
+inline-quotes = "
+per-file-ignores =
+    bundled\tool\lsp_server.py:E402,I100,I201
+    bundled\tool\lsp_runner.py:E402,I201
+    bundled\tool\code_parser.py:A003

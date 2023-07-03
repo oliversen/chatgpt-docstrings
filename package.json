@@ -1,0 +1,156 @@
+{
+    "name": "chatgpt-docstrings",
+    "displayName": "ChatGPT: Docstrings Generator",
+    "description": "Automatically generate docstrings using ChatGPT.",
+    "version": "0.1.0",
+    "preview": true,
+    "icon": "images/icon.png",
+    "serverInfo": {
+        "name": "ChatGPT: Docstrings Generator",
+        "module": "chatgpt-docstrings"
+    },
+    "publisher": "oliversen",
+    "license": "MIT",
+    "homepage": "https://github.com/oliversen/chatgpt-docstrings",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/oliversen/chatgpt-docstrings.git"
+    },
+    "bugs": {
+        "url": "https://github.com/oliversen/chatgpt-docstrings/issues"
+    },
+    "galleryBanner": {
+        "color": "#171c28",
+        "theme": "dark"
+    },
+    "keywords": [
+        "python",
+        "chatgpt",
+        "docstring",
+        "automatic",
+        "automatically",
+        "generation",
+        "generate",
+        "ai"
+    ],
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "extensionDependencies": [
+        "ms-python.python"
+    ],
+    "activationEvents": [
+        "onLanguage:python",
+        "workspaceContains:*.py"
+    ],
+    "main": "./dist/extension.js",
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool source-map --config ./webpack.config.js",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "format-check": "prettier --check 'src/**/*.ts' 'build/**/*.yml' '.github/**/*.yml'",
+        "test": "node ./out/test/runTest.js",
+        "vsce-package": "vsce package -o chatgpt-docstrings.vsix"
+    },
+    "contributes": {
+        "configuration": {
+            "properties": {
+                "chatgpt-docstrings.interpreter": {
+                    "default": [],
+                    "description": "When set to a path to python executable, extension will use that to launch the server and any subprocess.",
+                    "scope": "resource",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "chatgpt-docstrings.openaiApiKey": {
+                    "type": "string",
+                    "markdownDescription": "The extension needs to be configured with your account's secret key which is available on the [website](https://platform.openai.com/account/api-keys)."
+                },
+                "chatgpt-docstrings.openaiModel": {
+                    "type": "string",
+                    "default": "gpt-3.5-turbo",
+                    "description": "Which OpenAI model to use.",
+                    "enum": [
+                        "gpt-3.5-turbo",
+                        "text-davinci-002"
+                    ]
+                },
+                "chatgpt-docstrings.docstringFormat": {
+                    "type": "string",
+                    "default": "google",
+                    "description": "Which docstring format to use.",
+                    "enum": [
+                        "google",
+                        "numpy",
+                        "sphinx"
+                    ]
+                },
+                "chatgpt-docstrings.chatgptPromptPattern": {
+                    "type": "string",
+                    "default": "Create docstring in {docstring_format} format for python function below:\n{function}",
+                    "description": "The prompt to generate docstring.",
+                    "editPresentation": "multilineText",
+                    "pattern": ".*{function}.*",
+                    "patternErrorMessage": "Must include: \"{function}\""
+                }
+            }
+        },
+        "commands": [
+            {
+                "title": "Generate Docstring",
+                "category": "ChatGPT: Docstrings Generator",
+                "command": "chatgpt-docstrings.generateDocstring"
+            },
+            {
+                "title": "Restart Server",
+                "category": "ChatGPT: Docstrings Generator",
+                "command": "chatgpt-docstrings.restart"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "resourceLangId == python",
+                    "command": "chatgpt-docstrings.generateDocstring",
+                    "group": "ChatGPT: Docstrings Generator"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "key": "ctrl+k ctrl+d",
+                "mac": "cmd+k cmd+d",
+                "command": "chatgpt-docstrings.generateDocstring",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == python"
+            }
+        ]
+    },
+    "dependencies": {
+        "fs-extra": "^11.1.1",
+        "vscode-languageclient": "^8.1.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.1",
+        "@types/vscode": "1.75.0",
+        "@types/glob": "^8.1.0",
+        "@types/node": "14.x",
+        "@typescript-eslint/eslint-plugin": "^5.59.2",
+        "@typescript-eslint/parser": "^5.59.2",
+        "@vscode/test-electron": "^2.3.0",
+        "@vscode/vsce": "^2.19.0",
+        "eslint": "^8.39.0",
+        "glob": "^10.2.2",
+        "prettier": "^2.8.8",
+        "typescript": "^5.0.4",
+        "ts-loader": "^9.4.2",
+        "webpack": "^5.82.0",
+        "webpack-cli": "^5.0.2"
+    }
+}
