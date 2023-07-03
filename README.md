@@ -85,4 +85,4 @@ Fork the [repo](https://github.com/oliversen/chatgpt-docstrings) and submit pull
 
 ## License
 
-This extension is licensed under the [MIT License](LICENSE.md)
+This extension is licensed under the [MIT License](LICENSE)
