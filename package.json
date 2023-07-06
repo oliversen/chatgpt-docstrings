@@ -69,10 +69,6 @@
                     },
                     "type": "array"
                 },
-                "chatgpt-docstrings.openaiApiKey": {
-                    "type": "string",
-                    "markdownDescription": "The extension needs to be configured with your account's secret key which is available on the [website](https://platform.openai.com/account/api-keys)."
-                },
                 "chatgpt-docstrings.openaiModel": {
                     "type": "string",
                     "default": "gpt-3.5-turbo",
@@ -107,6 +103,11 @@
                 "title": "Generate Docstring",
                 "category": "ChatGPT: Docstrings Generator",
                 "command": "chatgpt-docstrings.generateDocstring"
+            },
+            {
+                "title": "Set OpenAI API key",
+                "category": "ChatGPT: Docstrings Generator",
+                "command": "chatgpt-docstrings.setOpenaiApiKey"
             },
             {
                 "title": "Restart Server",

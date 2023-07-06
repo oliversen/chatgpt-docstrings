@@ -17,6 +17,7 @@ import { loadServerDefaults } from './common/setup';
 import { getLSClientTraceLevel } from './common/utilities';
 import { createOutputChannel, onDidChangeConfiguration, registerCommand } from './common/vscodeapi';
 import { generateDocstring } from './common/generate-docstring';
+import { setOpenaiApiKey } from './common/openai-api-key';
 
 let lsClient: LanguageClient | undefined;
 let serverStarting: boolean = false;
@@ -89,8 +90,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         registerCommand(`${serverId}.restart`, async () => {
             await runServer();
         }),
+        registerCommand(`${serverId}.setOpenaiApiKey`, () => {
+            setOpenaiApiKey(context.secrets);
+        }),
         registerCommand(`${serverId}.generateDocstring`, () => {
-            generateDocstring(lsClient, serverStarting);
+            generateDocstring(lsClient, serverStarting, context.secrets);
         }),
     );
 

@@ -9,7 +9,6 @@ export interface ISettings {
     cwd: string;
     workspace: string;
     interpreter: string[];
-    openaiApiKey: string;
     openaiModel: string;
     docstringFormat: string;
     chatgptPromptPattern: string;
@@ -65,7 +64,6 @@ export async function getWorkspaceSettings(
         cwd: workspace.uri.fsPath,
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
-        openaiApiKey: config.get<string>(`openaiApiKey`) ?? '',
         openaiModel: config.get<string>(`openaiModel`) ?? '',
         docstringFormat: config.get<string>(`docstringFormat`) ?? 'google',
         chatgptPromptPattern: config.get<string>(`chatgptPromptPattern`) ?? 'Create docstring in {docstring_format} format for python function below:\n{function}'
@@ -93,7 +91,6 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         cwd: process.cwd(),
         workspace: process.cwd(),
         interpreter: interpreter,
-        openaiApiKey: getGlobalValue<string>(config, 'openaiApiKey', ''),
         openaiModel: getGlobalValue<string>(config, 'openaiModel', ''),
         docstringFormat: getGlobalValue<string>(config, 'docstringFormat', 'google'),
         chatgptPromptPattern: getGlobalValue<string>(config, 'chatgptPromptPattern', 'Create docstring in {docstring_format} format for python function below:\n{function}'),
@@ -104,7 +101,6 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
 export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespace: string): boolean {
     const settings = [
         `${namespace}.interpreter`,
-        `${namespace}.openaiApiKey`,
         `${namespace}.openaiModel`,
         `${namespace}.docstringFormat`,
         `${namespace}.chatgptPromptPattern`,

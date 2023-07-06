@@ -10,8 +10,6 @@ Automatically generate docstrings using ChatGPT.
 
 Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com) or download and install .vsix file from [Releases](https://github.com/oliversen/chatgpt-docstrings/releases).
 
-**After installation, you need to set your OpenAI API key in the extension settings (File > Preferences > Settings > Extensions > ChatGPT: Docstrings Generator > Openai Api Key). You can get the key [here](https://platform.openai.com/account/api-keys).**
-
 ## Requirements
 
 - VSCode 1.75.0 or greater
@@ -43,10 +41,6 @@ Use the following keyboard shortcut:
 - `chatgpt-docstrings.interpreter`: When set to a path to python executable, extension will use that to launch the server and any subprocess.
 
   - *Default value*: []
-
-- `chatgpt-docstrings.openaiApiKey`: The extension needs to be configured with your account's secret key which is available on the [website](https://platform.openai.com/account/api-keys).
-
-  - *Default value*: ""
 
 - `chatgpt-docstrings.openaiModel`: Which OpenAI model to use.
 

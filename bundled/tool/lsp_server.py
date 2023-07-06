@@ -168,23 +168,18 @@ from code_parser import FuncParser, NotFuncException, Position, Range
 
 @LSP_SERVER.command("chatgpt-docstrings.applyGenerate")
 async def apply_generate_docstring(ls: server.LanguageServer,
-                                   args: list[lsp.TextDocumentPositionParams]):
+                                   args: list[lsp.TextDocumentPositionParams, str]):
     uri = args[0]["textDocument"]["uri"]
+    openai_api_key = args[1]
     document = ls.workspace.get_document(uri)
     source = document.source
     cursor = args[0]["position"]
     cursor["line"] += 1
     cursor = Position(*cursor.values())
     settings = _get_settings_by_document(document)
-    openai_api_key = settings["openaiApiKey"]
     openai_model = settings["openaiModel"]
     prompt_pattern = settings["chatgptPromptPattern"]
     docstring_format = settings["docstringFormat"]
-
-    # check exists open api key
-    if not openai_api_key:
-        show_info("You must set the OpenAI API key in the extension settings.")
-        return
 
     # get function source
     try:

@@ -5,9 +5,13 @@ import {
     ExecuteCommandParams,
     ExecuteCommandRequest
 } from 'vscode-languageclient/node';
+import { setOpenaiApiKey } from "./openai-api-key";
 
-export function generateDocstring(lsClient: LanguageClient | undefined,
-    serverStarting: boolean) {
+export async function generateDocstring(
+    lsClient: LanguageClient | undefined,
+    serverStarting: boolean,
+    secrets: vscode.SecretStorage
+) {
     if (!lsClient) {
         if (serverStarting) {
             vscode.window.showInformationMessage('Python Language Server is starting, try again later.');
@@ -16,10 +20,20 @@ export function generateDocstring(lsClient: LanguageClient | undefined,
         }
         return;
     }
+
     const textEditor = vscode.window.activeTextEditor;
     if (!textEditor) {
         return;
     }
+
+    let openaiApiKey = await secrets.get("OpenaiApiKey");
+    if (!openaiApiKey) {
+        openaiApiKey = await setOpenaiApiKey(secrets);
+        if (!openaiApiKey) {
+            return;
+        }
+    }
+
     const pos = textEditor.selection.start;
     const textDocument: TextDocumentPositionParams = {
         textDocument: { uri: textEditor.document.uri.toString() },
@@ -27,7 +41,7 @@ export function generateDocstring(lsClient: LanguageClient | undefined,
     };
     const params: ExecuteCommandParams = {
         command: 'chatgpt-docstrings.applyGenerate',
-        arguments: [textDocument]
+        arguments: [textDocument, openaiApiKey]
     };
     vscode.window.withProgress({
         location: vscode.ProgressLocation.Window,
