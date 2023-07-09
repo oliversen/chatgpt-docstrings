@@ -219,10 +219,9 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     def edit_callback(future):  # noqa: E306
         result = future.result()
         if not result.applied:
-            reason = f" ({result.failure_reason})" \
-                if result.failure_reason \
-                else ""
-            show_error(f"Failed to apply changes in editor{reason}")
+            reason = result.failure_reason or \
+                "maybe you make changes to source code at generation time"
+            show_error(f"Failed to add docstring to source code ({reason})")
     ls.apply_edit(workspace_edit).add_done_callback(edit_callback)
 
 
