@@ -8,7 +8,7 @@ Automatically generate docstrings using ChatGPT.
 
 ## Installation
 
-Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com) or download and install .vsix file from [Releases](https://github.com/oliversen/chatgpt-docstrings/releases).
+Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=oliversen.chatgpt-docstrings) or download and install .vsix file from [Releases](https://github.com/oliversen/chatgpt-docstrings/releases).
 
 ## Requirements
 
