@@ -45,7 +45,7 @@ LSP_SERVER = server.LanguageServer(
     name="chatgpt-docstrings", version="0.1", max_workers=MAX_WORKERS
 )
 TOOL_MODULE = "chatgpt-docstrings"
-TOOL_DISPLAY = "ChatGPT: Docstrings Generator"
+TOOL_DISPLAY = "ChatGPT: Docstring Generator"
 
 
 # **********************************************************

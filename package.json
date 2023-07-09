@@ -1,12 +1,12 @@
 {
     "name": "chatgpt-docstrings",
-    "displayName": "ChatGPT: Docstrings Generator",
+    "displayName": "ChatGPT: Docstring Generator",
     "description": "Automatically generate docstrings using ChatGPT.",
     "version": "0.2.0",
     "preview": true,
     "icon": "images/icon.png",
     "serverInfo": {
-        "name": "ChatGPT: Docstrings Generator",
+        "name": "ChatGPT: Docstring Generator",
         "module": "chatgpt-docstrings"
     },
     "publisher": "oliversen",
@@ -101,17 +101,17 @@
         "commands": [
             {
                 "title": "Generate Docstring",
-                "category": "ChatGPT: Docstrings Generator",
+                "category": "ChatGPT: Docstring Generator",
                 "command": "chatgpt-docstrings.generateDocstring"
             },
             {
                 "title": "Set OpenAI API key",
-                "category": "ChatGPT: Docstrings Generator",
+                "category": "ChatGPT: Docstring Generator",
                 "command": "chatgpt-docstrings.setOpenaiApiKey"
             },
             {
                 "title": "Restart Server",
-                "category": "ChatGPT: Docstrings Generator",
+                "category": "ChatGPT: Docstring Generator",
                 "command": "chatgpt-docstrings.restart"
             }
         ],
@@ -120,7 +120,7 @@
                 {
                     "when": "resourceLangId == python",
                     "command": "chatgpt-docstrings.generateDocstring",
-                    "group": "ChatGPT: Docstrings Generator"
+                    "group": "ChatGPT: Docstring Generator"
                 }
             ]
         },
