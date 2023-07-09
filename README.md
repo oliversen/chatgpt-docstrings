@@ -36,6 +36,16 @@ Use the following keyboard shortcut:
 
 > You can change the default keyboard shortcut by Keyboard Shortcuts editor ***(File > Preferences > Keyboard Shortcuts***).
 
+## OpenAI API key
+
+To use the extension, you will need an OpenAI API key. To obtain one, follow these steps:
+
+1. Go to OpenAI's [website](https://platform.openai.com/account/api-keys). Log in or sign up there.
+2. Click on the Create new secret key button.
+3. Copy the key and paste it into the field that will show up when you run the docstring generation.
+
+> You can change the API key using the `Set OpenAI API key` command in the Command Palette (F1).
+
 ## Settings
 
 - `chatgpt-docstrings.interpreter`: When set to a path to python executable, extension will use that to launch the server and any subprocess.
