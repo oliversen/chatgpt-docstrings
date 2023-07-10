@@ -28,7 +28,7 @@ export async function generateDocstring(
 
     let openaiApiKey = await secrets.get("OpenaiApiKey");
     if (!openaiApiKey) {
-        openaiApiKey = await setOpenaiApiKey(secrets);
+        openaiApiKey = await setOpenaiApiKey(lsClient.outputChannel, secrets);
         if (!openaiApiKey) {
             return;
         }

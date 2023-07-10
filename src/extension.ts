@@ -91,7 +91,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             await runServer();
         }),
         registerCommand(`${serverId}.setOpenaiApiKey`, () => {
-            setOpenaiApiKey(context.secrets);
+            setOpenaiApiKey(outputChannel, context.secrets);
         }),
         registerCommand(`${serverId}.generateDocstring`, () => {
             generateDocstring(lsClient, serverStarting, context.secrets);
