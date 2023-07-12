@@ -234,7 +234,7 @@ def _get_docstring(api_key: str,
             model=model,
             messages=[
                 {"role": "system",
-                 "content": "Return generated python docstrings without function body."},
+                 "content": "When you generate a docstring, return me only a string that I can add to my code."},
                 {"role": "user", "content": prompt},
             ],
             temperature=0,
