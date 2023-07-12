@@ -256,8 +256,8 @@ def _get_docstring(api_key: str,
 
 
 def _format_docstring(docstring: str, indent_level: int) -> str:
-    # remove function source code
-    if docstring.strip().startswith(("def ", "async ")):
+    # remove function source code including markdown tags
+    if docstring.strip().startswith(("def ", "async ", "```")):
         match = re.search(r'""".*?"""', docstring, flags=re.DOTALL)
         docstring = match.group() if match else docstring
     # remove leading and trailing whitespaces, newlines, quotes
