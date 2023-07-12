@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.2 (2023-07-12)
+
+- Fixed formatting docstring when ChatGPT returns it as MD code block
+
 ## 0.2.1 (2023-07-11)
 
 - Improved error notifications
