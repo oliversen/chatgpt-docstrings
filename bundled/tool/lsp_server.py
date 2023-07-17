@@ -232,7 +232,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     if not result.applied:
         reason = result.failure_reason or \
             "maybe you make changes to source code at generation time"
-        show_error(f"Failed to add docstring to source code ({reason})")
+        show_warning(f"Failed to add docstring to source code ({reason})")
 
 
 def _get_docstring(api_key: str,
