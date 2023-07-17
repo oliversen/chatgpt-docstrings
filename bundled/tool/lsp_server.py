@@ -38,10 +38,22 @@ import lsp_jsonrpc as jsonrpc
 import lsprotocol.types as lsp
 from pygls import server, uris, workspace
 
+
+class LanguageServer(server.LanguageServer):
+    def apply_edit_async(
+        self, edit: lsp.WorkspaceEdit, label: Optional[str] = None
+    ) -> lsp.WorkspaceApplyEditResponse:
+        """Sends apply edit request to the client. Should be called with `await`"""
+        return self.lsp.send_request_async(
+            lsp.WORKSPACE_APPLY_EDIT,
+            lsp.ApplyWorkspaceEditParams(edit=edit, label=label)
+        )
+
+
 WORKSPACE_SETTINGS = {}
 GLOBAL_SETTINGS = {}
 MAX_WORKERS = 5
-LSP_SERVER = server.LanguageServer(
+LSP_SERVER = LanguageServer(
     name="chatgpt-docstrings", version="0.1", max_workers=MAX_WORKERS
 )
 TOOL_MODULE = "chatgpt-docstrings"
@@ -216,13 +228,11 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     # apply docstring
     text_edits = _create_text_edits(docstring_pos, docstring)
     workspace_edit = _create_workspace_edit(document, text_edits)
-    def edit_callback(future):  # noqa: E306
-        result = future.result()
-        if not result.applied:
-            reason = result.failure_reason or \
-                "maybe you make changes to source code at generation time"
-            show_error(f"Failed to add docstring to source code ({reason})")
-    ls.apply_edit(workspace_edit).add_done_callback(edit_callback)
+    result = await ls.apply_edit_async(workspace_edit)
+    if not result.applied:
+        reason = result.failure_reason or \
+            "maybe you make changes to source code at generation time"
+        show_error(f"Failed to add docstring to source code ({reason})")
 
 
 def _get_docstring(api_key: str,
