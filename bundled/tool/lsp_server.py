@@ -34,9 +34,10 @@ update_sys_path(
 # Imports needed for the language server goes below this.
 # **********************************************************
 # pylint: disable=wrong-import-position,import-error
-import lsp_jsonrpc as jsonrpc
 import lsprotocol.types as lsp
 from pygls import server, uris, workspace
+
+import lsp_jsonrpc as jsonrpc
 
 
 class LanguageServer(server.LanguageServer):
