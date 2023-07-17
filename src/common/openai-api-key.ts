@@ -1,36 +1,53 @@
 import * as vscode from 'vscode';
-import { traceError } from './log/logging';
+import { traceWarn } from './log/logging';
 
-async function inputOpenaiApiKey() {
-    const prompt = 'Please enter your OpenAI API key. You can get the key [here](https://platform.openai.com/account/api-keys).';
-    const openaiApiKey = await vscode.window.showInputBox(
-        {
+export class OpenaiApiKey {
+    private readonly secretId: string = 'openaiApiKey';
+    private outputChannel: vscode.OutputChannel;
+    private secretStorage: vscode.SecretStorage;
+
+    constructor(outputChannel: vscode.OutputChannel, secretStorage: vscode.SecretStorage) {
+        this.outputChannel = outputChannel;
+        this.secretStorage = secretStorage;
+    }
+
+    public async get() {
+        return (await this.secretStorage.get(this.secretId)) || (await this.set());
+    }
+
+    public async set() {
+        const key = await this._ask();
+        if (key) {
+            await this.secretStorage.store(this.secretId, key).then(undefined, (error) => {
+                traceWarn('Failed to save OpenAI API Key: ', error);
+                vscode.window
+                    .showWarningMessage(
+                        `Failed to save OpenAI API Key! See '${this.outputChannel.name}' output channel for details.`,
+                        { title: 'Open Output', id: 1 },
+                    )
+                    .then((value) => {
+                        if (value !== undefined && value.id === 1) {
+                            this.outputChannel.show();
+                        }
+                    });
+            });
+        }
+        return key;
+    }
+
+    private async _ask() {
+        const prompt =
+            'Please enter your OpenAI API key. You can get the key [here](https://platform.openai.com/account/api-keys).';
+        const key = await vscode.window.showInputBox({
             prompt: prompt,
-            validateInput: text => {
+            validateInput: (text) => {
                 if (!text) {
                     return prompt;
                 } else {
                     return undefined;
                 }
-            }
-        }
-    );
-    return openaiApiKey;
-}
-
-export async function setOpenaiApiKey(outputChannel: vscode.OutputChannel, secrets: vscode.SecretStorage) {
-    const openaiApiKey = await inputOpenaiApiKey();
-    if (openaiApiKey) {
-        await secrets.store("openaiApiKey", openaiApiKey).then(undefined,
-            (error) => {
-                traceError('Error saving OpenAI API Key: ', error);
-                vscode.window.showErrorMessage(`Error saving OpenAI API Key! See '${outputChannel.name}' output channel for details.`, { title: 'Open Output', id: 1 }).then((value) => {
-                    if (value !== undefined && value.id === 1) {
-                        outputChannel.show();
-                    }
-                });
             },
-        );
+        });
+        return key;
     }
-    return openaiApiKey;
 }

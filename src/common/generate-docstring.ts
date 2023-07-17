@@ -5,7 +5,7 @@ import {
     ExecuteCommandParams,
     ExecuteCommandRequest
 } from 'vscode-languageclient/node';
-import { setOpenaiApiKey } from "./openai-api-key";
+import { OpenaiApiKey } from "./openai-api-key";
 
 export async function generateDocstring(
     lsClient: LanguageClient | undefined,
@@ -26,12 +26,9 @@ export async function generateDocstring(
         return;
     }
 
-    let openaiApiKey = await secrets.get("OpenaiApiKey");
+    const openaiApiKey = await new OpenaiApiKey(lsClient.outputChannel, secrets).get();
     if (!openaiApiKey) {
-        openaiApiKey = await setOpenaiApiKey(lsClient.outputChannel, secrets);
-        if (!openaiApiKey) {
-            return;
-        }
+        return;
     }
 
     const pos = textEditor.selection.start;
