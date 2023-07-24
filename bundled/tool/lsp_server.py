@@ -207,13 +207,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     log_to_output(f"Used ChatGPT prompt:\n{prompt}")
 
     # get gocstring
-    try:
-        docstring = _get_docstring(openai_api_key, openai_model, prompt)
-    except openai.OpenAIError as err:
-        details = err.user_message or (err.error.code if err.error else None)
-        details = f" ({details})" if details else ""
-        show_error(f"Failed chatgpt request{details}.")
-        return
+    docstring = _get_docstring(openai_api_key, openai_model, prompt)
     log_to_output(f"Received ChatGPT docstring:\n{docstring}")
 
     # format docstring
