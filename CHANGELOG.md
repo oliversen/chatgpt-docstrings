@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.0 (2023-07-25)
+
+- Added telemetry reporting
+
 ## 0.2.2 (2023-07-12)
 
 - Fixed formatting docstring when ChatGPT returns it as MD code block
