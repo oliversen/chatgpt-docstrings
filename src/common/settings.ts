@@ -66,7 +66,9 @@ export async function getWorkspaceSettings(
         interpreter: resolveVariables(interpreter, workspace),
         openaiModel: config.get<string>(`openaiModel`) ?? '',
         docstringFormat: config.get<string>(`docstringFormat`) ?? 'google',
-        chatgptPromptPattern: config.get<string>(`chatgptPromptPattern`) ?? 'Create docstring in {docstring_format} format for python function below:\n{function}'
+        chatgptPromptPattern:
+            config.get<string>(`chatgptPromptPattern`) ??
+            'Create docstring in {docstring_format} format for python function below:\n{function}',
     };
     return workspaceSetting;
 }
@@ -93,7 +95,11 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         interpreter: interpreter,
         openaiModel: getGlobalValue<string>(config, 'openaiModel', ''),
         docstringFormat: getGlobalValue<string>(config, 'docstringFormat', 'google'),
-        chatgptPromptPattern: getGlobalValue<string>(config, 'chatgptPromptPattern', 'Create docstring in {docstring_format} format for python function below:\n{function}'),
+        chatgptPromptPattern: getGlobalValue<string>(
+            config,
+            'chatgptPromptPattern',
+            'Create docstring in {docstring_format} format for python function below:\n{function}',
+        ),
     };
     return setting;
 }
