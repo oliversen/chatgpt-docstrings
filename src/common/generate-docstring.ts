@@ -47,8 +47,8 @@ export async function generateDocstring(
     }, (_progress, _token) => {
         const p = new Promise<void>(resolve => {
             lsClient.sendRequest(ExecuteCommandRequest.type, params)
-                .catch((_error) => {
-                    vscode.window.showErrorMessage(`Error happened! See '${lsClient.outputChannel.name}' output channel for details.`, { title: 'Open Output', id: 1 }).then((value) => {
+                .catch((error) => {
+                    vscode.window.showErrorMessage(`${error.message} See '${lsClient.outputChannel.name}' output channel for details.`, { title: 'Open Output', id: 1 }).then((value) => {
                         if (value !== undefined && value.id === 1) {
                             lsClient.outputChannel.show();
                         }
