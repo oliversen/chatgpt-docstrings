@@ -79,6 +79,10 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
 
   > The expression `{docstring_format}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringFormat`, `{function}` — with the source code of the function for which the docstring will be generated.
 
+## Telemetry
+
+This extension collects anonymous information related to the usage of the extension, such as well as performance and error data. You can disable telemetry as described [here](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting).
+
 ## Change Log
 
 See Change Log [here](CHANGELOG.md)

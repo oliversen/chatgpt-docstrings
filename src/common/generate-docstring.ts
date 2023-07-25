@@ -6,6 +6,7 @@ import {
     ExecuteCommandRequest
 } from 'vscode-languageclient/node';
 import { OpenaiApiKey } from "./openai-api-key";
+import { telemetryReporter } from "./telemetry";
 
 export async function generateDocstring(
     lsClient: LanguageClient | undefined,
@@ -53,6 +54,7 @@ export async function generateDocstring(
                             lsClient.outputChannel.show();
                         }
                     });
+                    telemetryReporter.sendError('clientRequestGenerateError', error.toJson());
                 })
                 .finally(() => {
                     resolve();

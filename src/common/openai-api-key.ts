@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { traceWarn } from './log/logging';
+import { telemetryReporter } from './telemetry';
 
 export class OpenaiApiKey {
     private readonly secretId: string = 'openaiApiKey';
@@ -20,6 +21,7 @@ export class OpenaiApiKey {
         if (key) {
             await this.secretStorage.store(this.secretId, key).then(undefined, (error) => {
                 traceWarn('Failed to save OpenAI API Key: ', error);
+                telemetryReporter.sendError('saveOpenaiApiKeyError', error.toJson());
                 vscode.window
                     .showWarningMessage(
                         `Failed to save OpenAI API Key! See '${this.outputChannel.name}' output channel for details.`,

@@ -18,6 +18,7 @@ import { getLSClientTraceLevel } from './common/utilities';
 import { createOutputChannel, onDidChangeConfiguration, registerCommand } from './common/vscodeapi';
 import { generateDocstring } from './common/generate-docstring';
 import { OpenaiApiKey } from './common/openai-api-key';
+import { telemetryReporter } from './common/telemetry';
 
 let lsClient: LanguageClient | undefined;
 let serverStarting: boolean = false;
@@ -27,6 +28,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     const serverInfo = loadServerDefaults();
     const serverName = serverInfo.name;
     const serverId = serverInfo.module;
+
+    // Setup telemetry
+    context.subscriptions.push(telemetryReporter);
 
     // Setup logging
     const outputChannel = createOutputChannel(serverName);

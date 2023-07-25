@@ -38,6 +38,7 @@ import lsprotocol.types as lsp
 from pygls import server, uris, workspace
 
 import lsp_jsonrpc as jsonrpc
+from lsp_custom_types import TelemetryParams, TelemetryTypes
 
 
 class LanguageServer(server.LanguageServer):
@@ -49,6 +50,17 @@ class LanguageServer(server.LanguageServer):
             lsp.WORKSPACE_APPLY_EDIT,
             lsp.ApplyWorkspaceEditParams(edit=edit, label=label)
         )
+
+    def _send_telemetry(self, params: TelemetryParams):
+        self.send_notification(lsp.TELEMETRY_EVENT, params)
+
+    def send_telemetry_info(self, name: str, data: dict[str, str]):
+        params = TelemetryParams(TelemetryTypes.Info, name, data)
+        self._send_telemetry(params)
+
+    def send_telemetry_error(self, name: str, data: dict[str, str]):
+        params = TelemetryParams(TelemetryTypes.Error, name, data)
+        self._send_telemetry(params)
 
 
 WORKSPACE_SETTINGS = {}
@@ -228,6 +240,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         reason = result.failure_reason or \
             "maybe you make changes to source code at generation time"
         show_warning(f"Failed to add docstring to source code ({reason})")
+        ls.send_telemetry_error('applyEditWorkspaceFail', {'reason': reason})
 
 
 def _get_docstring(api_key: str,

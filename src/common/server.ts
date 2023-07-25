@@ -16,6 +16,7 @@ import { getDebuggerPath } from './python';
 import { getExtensionSettings, getGlobalSettings, getWorkspaceSettings, ISettings } from './settings';
 import { getLSClientTraceLevel, getProjectRoot } from './utilities';
 import { isVirtualWorkspace } from './vscodeapi';
+import { telemetryReporter } from './telemetry';
 
 export type IInitOptions = { settings: ISettings[]; globalSettings: ISettings };
 
@@ -114,6 +115,7 @@ export async function restartServer(
         return undefined;
     }
 
+    telemetryReporter.configureOnTelemetry(newLSClient);
     const level = getLSClientTraceLevel(outputChannel.logLevel, env.logLevel);
     await newLSClient.setTrace(level);
     return newLSClient;
