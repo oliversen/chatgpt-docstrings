@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { traceWarn } from './log/logging';
 import { telemetryReporter } from './telemetry';
 
+let _cashedKey: string | undefined = undefined;
+
 export class OpenaiApiKey {
     private readonly secretId: string = 'openaiApiKey';
     private outputChannel: vscode.OutputChannel;
@@ -13,12 +15,13 @@ export class OpenaiApiKey {
     }
 
     public async get() {
-        return (await this.secretStorage.get(this.secretId)) || (await this.set());
+        return _cashedKey || (_cashedKey = await this.secretStorage.get(this.secretId)) || (await this.set());
     }
 
     public async set() {
         const key = await this._ask();
         if (key) {
+            _cashedKey = key;
             await this.secretStorage.store(this.secretId, key).then(undefined, (error) => {
                 traceWarn('Failed to save OpenAI API Key: ', error);
                 telemetryReporter.sendError('saveOpenaiApiKeyError', error.toJson());
