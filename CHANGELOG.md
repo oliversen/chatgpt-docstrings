@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.1 (2023-07-26)
+
+- Fixed the need to enter an OpenAI API key for each docstring generation when it is not possible to save the key to the `SecretStorage`
+
 ## 0.3.0 (2023-07-25)
 
 - Added telemetry reporting
