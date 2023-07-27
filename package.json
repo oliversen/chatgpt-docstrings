@@ -39,6 +39,12 @@
     "extensionDependencies": [
         "ms-python.python"
     ],
+    "capabilities": {
+        "virtualWorkspaces": {
+            "supported": false,
+            "description": "Virtual Workspaces are not supported with ChatGPT: Docstring Generator."
+        }
+    },
     "activationEvents": [
         "onLanguage:python",
         "workspaceContains:*.py"
