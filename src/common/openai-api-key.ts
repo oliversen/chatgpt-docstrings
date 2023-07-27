@@ -24,7 +24,8 @@ export class OpenaiApiKey {
             _cashedKey = key;
             await this.secretStorage.store(this.secretId, key).then(undefined, (error) => {
                 traceWarn('Failed to save OpenAI API Key to SecretStorage: ', error);
-                telemetryReporter.sendError('saveOpenaiApiKeyError', error.toJson());
+                const errorJson = { name: error.name, message: error.message, stack: error.stack };
+                telemetryReporter.sendError('saveOpenaiApiKeyError', errorJson);
                 vscode.window
                     .showWarningMessage(
                         `Failed to save OpenAI API Key to SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
