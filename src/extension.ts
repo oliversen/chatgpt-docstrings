@@ -57,11 +57,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     const runServer = async () => {
         const interpreter = getInterpreterFromSetting(serverId);
-        if (interpreter && interpreter.length > 0 && checkVersion(await resolveInterpreter(interpreter))) {
-            traceVerbose(`Using interpreter from ${serverInfo.module}.interpreter: ${interpreter.join(' ')}`);
-            serverStarting = true;
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
-            serverStarting = false;
+        if (interpreter && interpreter.length > 0) {
+            if (checkVersion(await resolveInterpreter(interpreter))) {
+                traceVerbose(`Using interpreter from ${serverInfo.module}.interpreter: ${interpreter.join(' ')}`);
+                serverStarting = true;
+                lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+                serverStarting = false;
+            } else {
+                vscode.window.showWarningMessage(
+                    `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.7 or greater.`,
+                );
+            }
             return;
         }
 
