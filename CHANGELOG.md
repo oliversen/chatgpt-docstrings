@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.3.2 (2023-07-27)
+
+- Fixed starting a python language server with an unsupported interpreter specified in the extension settings
+- Fixed handling of an error when saving an OpenAI API key to the `SecretStorage`
+- Added an error notification for getting an OpenAI API key from the `SecretStorage`
+
 ## 0.3.1 (2023-07-26)
 
 - Fixed the need to enter an OpenAI API key for each docstring generation when it is not possible to save the key to the `SecretStorage`
