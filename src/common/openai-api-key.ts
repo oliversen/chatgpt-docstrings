@@ -15,7 +15,29 @@ export class OpenaiApiKey {
     }
 
     public async get() {
-        return _cashedKey || (_cashedKey = await this.secretStorage.get(this.secretId)) || (await this.set());
+        if (!_cashedKey) {
+            await this.secretStorage.get(this.secretId).then(
+                (key) => {
+                    _cashedKey = key;
+                },
+                (error) => {
+                    traceWarn('Failed to get OpenAI API Key from SecretStorage: ', error);
+                    const errorJson = { name: error.name, message: error.message, stack: error.stack };
+                    telemetryReporter.sendError('getOpenaiApiKeyError', errorJson);
+                    vscode.window
+                        .showWarningMessage(
+                            `Failed to get OpenAI API Key from SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
+                            { title: 'Open Output', id: 1 },
+                        )
+                        .then((value) => {
+                            if (value !== undefined && value.id === 1) {
+                                this.outputChannel.show();
+                            }
+                        });
+                },
+            );
+        }
+        return _cashedKey || (await this.set());
     }
 
     public async set() {
