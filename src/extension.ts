@@ -86,6 +86,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                 `[Option 2] Set an interpreter using "${serverId}.interpreter" setting.\r\n` +
                 'Please use Python 3.8 or greater.',
         );
+        vscode.window.showWarningMessage(
+            `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`,
+        );
     };
 
     context.subscriptions.push(
