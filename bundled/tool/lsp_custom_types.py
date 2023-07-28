@@ -15,6 +15,6 @@ class TelemetryParams:
         validator=attrs.validators.instance_of(TelemetryTypes)
     )
     name: str = attrs.field(validator=attrs.validators.instance_of(str))
-    data: dict[str, str] = attrs.field(
+    data: dict = attrs.field(
         validator=attrs.validators.instance_of(dict)
     )

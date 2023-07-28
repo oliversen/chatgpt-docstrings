@@ -1,6 +1,6 @@
 import re
 from functools import cached_property
-from typing import NamedTuple
+from typing import NamedTuple, Union
 
 import jedi
 
@@ -42,7 +42,7 @@ class FuncParser:
         return "".join(source_lines[self.range.start.line-1:self.range.end.line])
 
     @cached_property
-    def docstring_range(self) -> Range | None:
+    def docstring_range(self) -> Union[Range, None]:
         if doc_node := self._tree_node.get_doc_node():
             return Range(Position(*doc_node.start_pos), Position(*doc_node.end_pos))
         else:
