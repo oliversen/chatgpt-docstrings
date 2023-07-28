@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.3.3 (2023-07-28)
+
+- Updated minimum supported Python version to 3.8
+- Updated Python and Node.js dependencies
+
 ## 0.3.2 (2023-07-27)
 
 - Fixed starting a python language server with an unsupported interpreter specified in the extension settings
