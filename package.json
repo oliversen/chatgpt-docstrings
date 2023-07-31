@@ -119,6 +119,11 @@
                 "title": "Restart Server",
                 "category": "ChatGPT: Docstring Generator",
                 "command": "chatgpt-docstrings.restart"
+            },
+            {
+                "title": "Show Logs",
+                "category": "ChatGPT: Docstring Generator",
+                "command": "chatgpt-docstrings.showLogs"
             }
         ],
         "menus": {

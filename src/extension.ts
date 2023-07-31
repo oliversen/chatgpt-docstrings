@@ -103,6 +103,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         registerCommand(`${serverId}.restart`, async () => {
             await runServer();
         }),
+        registerCommand(`${serverId}.showLogs`, async () => {
+            outputChannel.show();
+        }),
         registerCommand(`${serverId}.setOpenaiApiKey`, () => {
             new OpenaiApiKey(outputChannel, context.secrets).set();
         }),
