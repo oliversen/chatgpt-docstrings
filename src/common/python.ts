@@ -284,8 +284,5 @@ export function checkVersion(resolved: ResolvedEnvironment | undefined): boolean
     if (version?.major === 3 && version?.minor >= 8) {
         return true;
     }
-    traceError(`Python version ${version?.major}.${version?.minor} is not supported.`);
-    traceError(`Selected python path: ${resolved?.executable.uri?.fsPath}`);
-    traceError('Supported versions are 3.8 and above.');
     return false;
 }

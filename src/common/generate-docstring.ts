@@ -8,17 +8,8 @@ import {
 import { OpenaiApiKey } from './openai-api-key';
 import { telemetryReporter } from './telemetry';
 
-export async function generateDocstring(
-    lsClient: LanguageClient | undefined,
-    serverStarting: boolean,
-    secrets: vscode.SecretStorage,
-) {
+export async function generateDocstring(lsClient: LanguageClient | undefined, secrets: vscode.SecretStorage) {
     if (!lsClient) {
-        if (serverStarting) {
-            vscode.window.showInformationMessage('Python Language Server is starting, try again later.');
-        } else {
-            vscode.window.showInformationMessage('Python Language Server not running, try restart it.');
-        }
         return;
     }
 

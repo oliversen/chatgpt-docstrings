@@ -12,13 +12,44 @@ import {
 } from 'vscode-languageclient/node';
 import { DEBUG_SERVER_SCRIPT_PATH, SERVER_SCRIPT_PATH } from './constants';
 import { traceError, traceInfo, traceVerbose } from './log/logging';
-import { getDebuggerPath } from './python';
-import { getExtensionSettings, getGlobalSettings, getWorkspaceSettings, ISettings } from './settings';
+import { getDebuggerPath, checkVersion, resolveInterpreter, getInterpreterDetails } from './python';
+import {
+    getExtensionSettings,
+    getGlobalSettings,
+    getWorkspaceSettings,
+    ISettings,
+    getInterpreterFromSetting,
+} from './settings';
 import { getLSClientTraceLevel, getProjectRoot } from './utilities';
 import { isVirtualWorkspace } from './vscodeapi';
 import { telemetryReporter } from './telemetry';
 
 export type IInitOptions = { settings: ISettings[]; globalSettings: ISettings };
+
+async function checkInterpreter(serverId: string): Promise<boolean> {
+    const interpreter = getInterpreterFromSetting(serverId);
+    if (interpreter && interpreter.length > 0) {
+        if (!checkVersion(await resolveInterpreter(interpreter))) {
+            traceError(
+                `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`,
+            );
+            return false;
+        }
+        traceVerbose(`Using interpreter from ${serverId}.interpreter: ${interpreter[0]}`);
+        return true;
+    }
+
+    const interpreterDetails = await getInterpreterDetails();
+    if (interpreterDetails.path) {
+        traceVerbose(`Using interpreter from Python extension: ${interpreterDetails.path.join(' ')}`);
+        return true;
+    }
+
+    traceError(
+        `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`,
+    );
+    return false;
+}
 
 async function createServer(
     settings: ISettings,
@@ -84,6 +115,9 @@ export async function restartServer(
         await lsClient.stop();
         _disposables.forEach((d) => d.dispose());
         _disposables = [];
+    }
+    if (!(await checkInterpreter(serverId))) {
+        return undefined;
     }
     const projectRoot = await getProjectRoot();
     const workspaceSetting = await getWorkspaceSettings(serverId, projectRoot, true);

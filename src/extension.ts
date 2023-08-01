@@ -3,14 +3,8 @@
 
 import * as vscode from 'vscode';
 import { LanguageClient } from 'vscode-languageclient/node';
-import { registerLogger, traceError, traceLog, traceVerbose } from './common/log/logging';
-import {
-    checkVersion,
-    getInterpreterDetails,
-    initializePython,
-    onDidChangePythonInterpreter,
-    resolveInterpreter,
-} from './common/python';
+import { registerLogger, traceLog, traceVerbose } from './common/log/logging';
+import { initializePython, onDidChangePythonInterpreter } from './common/python';
 import { restartServer } from './common/server';
 import { checkIfConfigurationChanged, getInterpreterFromSetting } from './common/settings';
 import { loadServerDefaults } from './common/setup';
@@ -21,7 +15,6 @@ import { OpenaiApiKey } from './common/openai-api-key';
 import { telemetryReporter } from './common/telemetry';
 
 let lsClient: LanguageClient | undefined;
-let serverStarting: boolean = false;
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     // This is required to get server name and module. This should be
     // the first thing that we do in this extension.
@@ -55,53 +48,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     traceLog(`Module: ${serverInfo.module}`);
     traceVerbose(`Full Server Info: ${JSON.stringify(serverInfo)}`);
 
-    const runServer = async () => {
-        const interpreter = getInterpreterFromSetting(serverId);
-        if (interpreter && interpreter.length > 0) {
-            if (checkVersion(await resolveInterpreter(interpreter))) {
-                traceVerbose(`Using interpreter from ${serverInfo.module}.interpreter: ${interpreter.join(' ')}`);
-                serverStarting = true;
-                lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
-                serverStarting = false;
-            } else {
-                vscode.window.showWarningMessage(
-                    `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`,
-                );
-            }
-            return;
-        }
-
-        const interpreterDetails = await getInterpreterDetails();
-        if (interpreterDetails.path) {
-            traceVerbose(`Using interpreter from Python extension: ${interpreterDetails.path.join(' ')}`);
-            serverStarting = true;
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
-            serverStarting = false;
-            return;
-        }
-
-        traceError(
-            'Python interpreter missing:\r\n' +
-                '[Option 1] Select python interpreter using the ms-python.python.\r\n' +
-                `[Option 2] Set an interpreter using "${serverId}.interpreter" setting.\r\n` +
-                'Please use Python 3.8 or greater.',
-        );
-        vscode.window.showWarningMessage(
-            `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`,
-        );
-    };
-
     context.subscriptions.push(
         onDidChangePythonInterpreter(async () => {
-            await runServer();
+            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
         }),
         onDidChangeConfiguration(async (e: vscode.ConfigurationChangeEvent) => {
             if (checkIfConfigurationChanged(e, serverId)) {
-                await runServer();
+                lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
             }
         }),
         registerCommand(`${serverId}.restart`, async () => {
-            await runServer();
+            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
         }),
         registerCommand(`${serverId}.showLogs`, async () => {
             outputChannel.show();
@@ -110,7 +67,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             new OpenaiApiKey(outputChannel, context.secrets).set();
         }),
         registerCommand(`${serverId}.generateDocstring`, () => {
-            generateDocstring(lsClient, serverStarting, context.secrets);
+            generateDocstring(lsClient, context.secrets);
         }),
     );
 
@@ -121,7 +78,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             await initializePython(context.subscriptions);
             traceLog(`Python extension loaded`);
         } else {
-            await runServer();
+            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
         }
     });
 }
