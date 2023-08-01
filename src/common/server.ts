@@ -29,6 +29,10 @@ export type IInitOptions = { settings: ISettings[]; globalSettings: ISettings };
 async function checkInterpreter(serverId: string): Promise<boolean> {
     const interpreter = getInterpreterFromSetting(serverId);
     if (interpreter && interpreter.length > 0) {
+        if (!(await fsapi.pathExists(interpreter[0]))) {
+            traceError(`The interpreter set in "${serverId}.interpreter" setting was not found.`);
+            return false;
+        }
         if (!checkVersion(await resolveInterpreter(interpreter))) {
             traceError(
                 `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`,
