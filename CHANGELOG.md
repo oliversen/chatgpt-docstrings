@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.0 (2023-08-02)
+
+- Added support for language status reports
+- Added new command `Show Logs`
+
 ## 0.3.3 (2023-07-28)
 
 - Updated minimum supported Python version to 3.8
