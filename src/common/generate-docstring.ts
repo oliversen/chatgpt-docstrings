@@ -7,9 +7,44 @@ import {
 } from 'vscode-languageclient/node';
 import { OpenaiApiKey } from './openai-api-key';
 import { telemetryReporter } from './telemetry';
+import { getStatus } from './status';
+
+function showProblemNotification(): void {
+    const status: vscode.LanguageStatusItem | undefined = getStatus();
+    if (status) {
+        if (status.busy) {
+            vscode.window.showInformationMessage('Server is starting... Try again in a few seconds.');
+            return;
+        }
+        let msg;
+        const msgItems = [
+            { title: 'Show Logs', id: 1 },
+            { title: 'Restart Server', id: 2 },
+        ];
+        switch (status.severity) {
+            case vscode.LanguageStatusSeverity.Information:
+                msg = vscode.window.showInformationMessage('Server not running...', ...msgItems);
+                break;
+            case vscode.LanguageStatusSeverity.Warning:
+                msg = vscode.window.showWarningMessage(status.text, ...msgItems);
+                break;
+            case vscode.LanguageStatusSeverity.Error:
+                msg = vscode.window.showErrorMessage(status.text, ...msgItems);
+                break;
+        }
+        msg.then((value) => {
+            if (value !== undefined && value.id === 1) {
+                vscode.commands.executeCommand('chatgpt-docstrings.showLogs');
+            } else if (value !== undefined && value.id === 2) {
+                vscode.commands.executeCommand('chatgpt-docstrings.restart');
+            }
+        });
+    }
+}
 
 export async function generateDocstring(lsClient: LanguageClient | undefined, secrets: vscode.SecretStorage) {
     if (!lsClient) {
+        showProblemNotification();
         return;
     }
 

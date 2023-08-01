@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import * as fsapi from 'fs-extra';
-import { Disposable, env, LogOutputChannel } from 'vscode';
+import { Disposable, env, LogOutputChannel, LanguageStatusSeverity } from 'vscode';
 import { State } from 'vscode-languageclient';
 import {
     LanguageClient,
@@ -11,7 +11,7 @@ import {
     ServerOptions,
 } from 'vscode-languageclient/node';
 import { DEBUG_SERVER_SCRIPT_PATH, SERVER_SCRIPT_PATH } from './constants';
-import { traceError, traceInfo, traceVerbose } from './log/logging';
+import { traceError, traceWarn, traceInfo, traceVerbose } from './log/logging';
 import { getDebuggerPath, checkVersion, resolveInterpreter, getInterpreterDetails } from './python';
 import {
     getExtensionSettings,
@@ -23,6 +23,7 @@ import {
 import { getLSClientTraceLevel, getProjectRoot } from './utilities';
 import { isVirtualWorkspace } from './vscodeapi';
 import { telemetryReporter } from './telemetry';
+import { updateStatus } from './status';
 
 export type IInitOptions = { settings: ISettings[]; globalSettings: ISettings };
 
@@ -30,13 +31,15 @@ async function checkInterpreter(serverId: string): Promise<boolean> {
     const interpreter = getInterpreterFromSetting(serverId);
     if (interpreter && interpreter.length > 0) {
         if (!(await fsapi.pathExists(interpreter[0]))) {
-            traceError(`The interpreter set in "${serverId}.interpreter" setting was not found.`);
+            const msg = `The interpreter set in "${serverId}.interpreter" setting was not found.`;
+            traceWarn(msg);
+            updateStatus(msg, LanguageStatusSeverity.Warning);
             return false;
         }
         if (!checkVersion(await resolveInterpreter(interpreter))) {
-            traceError(
-                `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`,
-            );
+            const msg = `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`;
+            traceWarn(msg);
+            updateStatus(msg, LanguageStatusSeverity.Warning);
             return false;
         }
         traceVerbose(`Using interpreter from ${serverId}.interpreter: ${interpreter[0]}`);
@@ -49,9 +52,9 @@ async function checkInterpreter(serverId: string): Promise<boolean> {
         return true;
     }
 
-    traceError(
-        `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`,
-    );
+    const msg = `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`;
+    traceWarn(msg);
+    updateStatus(msg, LanguageStatusSeverity.Warning);
     return false;
 }
 
@@ -136,12 +139,15 @@ export async function restartServer(
             switch (e.newState) {
                 case State.Stopped:
                     traceVerbose(`Server State: Stopped`);
+                    updateStatus('Server is stopped.', LanguageStatusSeverity.Warning, false);
                     break;
                 case State.Starting:
                     traceVerbose(`Server State: Starting`);
+                    updateStatus('Server is starting...', LanguageStatusSeverity.Information, true);
                     break;
                 case State.Running:
                     traceVerbose(`Server State: Running`);
+                    updateStatus(undefined, LanguageStatusSeverity.Information, false);
                     break;
             }
         }),
@@ -150,6 +156,7 @@ export async function restartServer(
         await newLSClient.start();
     } catch (ex) {
         traceError(`Server: Start failed: ${ex}`);
+        updateStatus('Server failed to start.', LanguageStatusSeverity.Error);
         return undefined;
     }
 

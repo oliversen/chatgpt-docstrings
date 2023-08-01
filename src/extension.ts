@@ -13,6 +13,7 @@ import { createOutputChannel, onDidChangeConfiguration, registerCommand } from '
 import { generateDocstring } from './common/generate-docstring';
 import { OpenaiApiKey } from './common/openai-api-key';
 import { telemetryReporter } from './common/telemetry';
+import { registerLanguageStatusItem } from './common/status';
 
 let lsClient: LanguageClient | undefined;
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
@@ -69,6 +70,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         registerCommand(`${serverId}.generateDocstring`, () => {
             generateDocstring(lsClient, context.secrets);
         }),
+        registerLanguageStatusItem(serverId, serverName, `${serverId}.showLogs`),
     );
 
     setImmediate(async () => {
