@@ -80,6 +80,7 @@ TOOL_DISPLAY = "ChatGPT: Docstring Generator"
 def initialize(params: lsp.InitializeParams) -> None:
     """LSP handler for initialize request."""
     log_to_output(f"CWD Server: {os.getcwd()}")
+    log_to_output(f"PID Server: {os.getpid()}")
 
     paths = "\r\n   ".join(sys.path)
     log_to_output(f"sys.path used to run Server:\r\n   {paths}")
