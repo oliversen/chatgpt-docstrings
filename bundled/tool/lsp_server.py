@@ -3,6 +3,7 @@
 """Implementation of tool support over LSP."""
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import pathlib
@@ -39,9 +40,22 @@ from pygls import server, uris, workspace
 
 import lsp_jsonrpc as jsonrpc
 from lsp_custom_types import TelemetryParams, TelemetryTypes
+from lsp_progress import Progress, ProgressHundlers
 
 
 class LanguageServer(server.LanguageServer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lsp.progress_handlers = ProgressHundlers()
+        self.lsp.fm.add_builtin_feature(lsp.WINDOW_WORK_DONE_PROGRESS_CANCEL, self.progress_cancel)
+
+    def progress(self, *args, **kwargs):
+        return Progress(self.lsp, *args, **kwargs)
+
+    def progress_cancel(ls: server.LanguageServer,
+                        params: lsp.WorkDoneProgressCancelParams):
+        ls.lsp.progress_handlers.get(params.token).cancel()
+
     def apply_edit_async(
         self, edit: lsp.WorkspaceEdit, label: Optional[str] = None
     ) -> lsp.WorkspaceApplyEditResponse:
@@ -197,6 +211,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
                                    args: list[lsp.TextDocumentPositionParams, str]):
     uri = args[0]["textDocument"]["uri"]
     openai_api_key = args[1]
+    progress_token = args[2]
     document = ls.workspace.get_document(uri)
     source = document.source
     cursor = args[0]["position"]
@@ -220,7 +235,25 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     log_to_output(f"Used ChatGPT prompt:\n{prompt}")
 
     # get gocstring
-    docstring = _get_docstring(openai_api_key, openai_model, prompt)
+    with ls.progress(progress_token) as progress:
+        task = asyncio.create_task(_get_docstring(openai_api_key, openai_model, prompt))
+        timeout = 10
+        while 1:
+            if task.done():
+                break
+            if timeout == 0:
+                task.cancel()
+                show_warning("ChatGPT response timed out.")
+                return
+            if progress.cancelled:
+                task.cancel()
+                return
+            progress.report(f"Waiting for ChatGPT response ({timeout} secs)...")
+            await asyncio.sleep(1)
+            timeout -= 1
+        if task.exception():
+            raise task.exception()
+        docstring = task.result()
     log_to_output(f"Received ChatGPT docstring:\n{docstring}")
 
     # format docstring
@@ -244,12 +277,12 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         ls.send_telemetry_error('applyEditWorkspaceFail', {'reason': reason})
 
 
-def _get_docstring(api_key: str,
+async def _get_docstring(api_key: str,
                    model: Literal["gpt-3.5-turbo", "text-davinci-002"],
                    prompt: str) -> str:
     openai.api_key = api_key
     if model == "gpt-3.5-turbo":
-        response = openai.ChatCompletion.create(
+        response = await openai.ChatCompletion.acreate(
             model=model,
             messages=[
                 {"role": "system",

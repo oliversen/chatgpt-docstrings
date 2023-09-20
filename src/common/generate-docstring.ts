@@ -4,7 +4,11 @@ import {
     TextDocumentPositionParams,
     ExecuteCommandParams,
     ExecuteCommandRequest,
+    ProgressType,
+    WorkDoneProgressReport,
+    WorkDoneProgressCancelNotification,
 } from 'vscode-languageclient/node';
+import * as UUID from 'vscode-languageclient/lib/common/utils/uuid';
 import { OpenaiApiKey } from './openai-api-key';
 import { telemetryReporter } from './telemetry';
 import { getStatus } from './status';
@@ -71,19 +75,34 @@ export async function generateDocstring(
         textDocument: { uri: textEditor.document.uri.toString() },
         position: { line: pos.line, character: pos.character },
     };
-    const params: ExecuteCommandParams = {
-        command: 'chatgpt-docstrings.applyGenerate',
-        arguments: [textDocument, openaiApiKey],
-    };
     vscode.window.withProgress(
         {
             location: settings.showProgressNotification
                 ? vscode.ProgressLocation.Notification
                 : vscode.ProgressLocation.Window,
-            title: 'Generating docstring...',
-            cancellable: false,
+            cancellable: true,
         },
-        (_progress, _token) => {
+        (progress, progressToken) => {
+            progress.report({ message: 'Generating docstring...' });
+
+            let progressTokenID = UUID.generateUuid();
+            progressToken.onCancellationRequested(() => {
+                lsClient.sendNotification(WorkDoneProgressCancelNotification.type, { token: progressTokenID });
+            });
+
+            let progressDisposable = lsClient.onProgress(
+                new ProgressType<WorkDoneProgressReport>(),
+                progressTokenID,
+                async (params) => {
+                    progress.report(params);
+                },
+            );
+
+            const params: ExecuteCommandParams = {
+                command: 'chatgpt-docstrings.applyGenerate',
+                arguments: [textDocument, openaiApiKey, progressTokenID],
+            };
+
             const p = new Promise<void>((resolve) => {
                 lsClient
                     .sendRequest(ExecuteCommandRequest.type, params)
@@ -101,6 +120,7 @@ export async function generateDocstring(
                         telemetryReporter.sendError('clientRequestGenerateError', error.toJson());
                     })
                     .finally(() => {
+                        progressDisposable.dispose();
                         resolve();
                     });
             });
