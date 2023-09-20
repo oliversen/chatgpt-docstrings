@@ -12,6 +12,7 @@ export interface ISettings {
     openaiModel: string;
     docstringFormat: string;
     chatgptPromptPattern: string;
+    showProgressNotification: boolean;
 }
 
 export function getExtensionSettings(namespace: string, includeInterpreter?: boolean): Promise<ISettings[]> {
@@ -69,6 +70,7 @@ export async function getWorkspaceSettings(
         chatgptPromptPattern:
             config.get<string>(`chatgptPromptPattern`) ??
             'Create docstring in {docstring_format} format for python function below:\n{function}',
+        showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
     };
     return workspaceSetting;
 }
@@ -100,6 +102,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
             'chatgptPromptPattern',
             'Create docstring in {docstring_format} format for python function below:\n{function}',
         ),
+        showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),
     };
     return setting;
 }

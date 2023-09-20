@@ -101,6 +101,11 @@
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",
                     "patternErrorMessage": "Must include: \"{function}\""
+                },
+                "chatgpt-docstrings.showProgressNotification": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show progress notification of docstring generation."
                 }
             }
         },

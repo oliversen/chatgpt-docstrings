@@ -68,7 +68,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             new OpenaiApiKey(outputChannel, context.secrets).set();
         }),
         registerCommand(`${serverId}.generateDocstring`, () => {
-            generateDocstring(lsClient, context.secrets);
+            generateDocstring(serverId, lsClient, context.secrets);
         }),
         registerLanguageStatusItem(serverId, serverName, `${serverId}.showLogs`),
     );

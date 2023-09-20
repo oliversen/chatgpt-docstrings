@@ -8,6 +8,8 @@ import {
 import { OpenaiApiKey } from './openai-api-key';
 import { telemetryReporter } from './telemetry';
 import { getStatus } from './status';
+import { getProjectRoot } from './utilities';
+import { getWorkspaceSettings } from './settings';
 
 function showProblemNotification(): void {
     const status: vscode.LanguageStatusItem | undefined = getStatus();
@@ -42,7 +44,11 @@ function showProblemNotification(): void {
     }
 }
 
-export async function generateDocstring(lsClient: LanguageClient | undefined, secrets: vscode.SecretStorage) {
+export async function generateDocstring(
+    serverId: string,
+    lsClient: LanguageClient | undefined,
+    secrets: vscode.SecretStorage,
+) {
     if (!lsClient) {
         showProblemNotification();
         return;
@@ -58,6 +64,8 @@ export async function generateDocstring(lsClient: LanguageClient | undefined, se
         return;
     }
 
+    const projectRoot = await getProjectRoot();
+    const settings = await getWorkspaceSettings(serverId, projectRoot, false);
     const pos = textEditor.selection.start;
     const textDocument: TextDocumentPositionParams = {
         textDocument: { uri: textEditor.document.uri.toString() },
@@ -69,7 +77,9 @@ export async function generateDocstring(lsClient: LanguageClient | undefined, se
     };
     vscode.window.withProgress(
         {
-            location: vscode.ProgressLocation.Window,
+            location: settings.showProgressNotification
+                ? vscode.ProgressLocation.Notification
+                : vscode.ProgressLocation.Window,
             title: 'Generating docstring...',
             cancellable: false,
         },
