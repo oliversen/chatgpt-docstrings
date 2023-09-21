@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.5.0 (2023-09-21)
+
+- Changed `chatgptPromptPattern` option name to `promptPattern`
+- Added `responseTimeout` option
+- Added support for canceling docstring generation
+- Added `showProgressNotification` option
+- Added logging PID language server to output channel
+
 ## 0.4.0 (2023-08-02)
 
 - Added support for language status reports
