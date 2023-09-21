@@ -12,6 +12,7 @@ export interface ISettings {
     openaiModel: string;
     docstringFormat: string;
     chatgptPromptPattern: string;
+    responseTimeout: number;
     showProgressNotification: boolean;
 }
 
@@ -70,6 +71,7 @@ export async function getWorkspaceSettings(
         chatgptPromptPattern:
             config.get<string>(`chatgptPromptPattern`) ??
             'Create docstring in {docstring_format} format for python function below:\n{function}',
+        responseTimeout: config.get<number>(`responseTimeout`) ?? 10,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
     };
     return workspaceSetting;
@@ -102,6 +104,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
             'chatgptPromptPattern',
             'Create docstring in {docstring_format} format for python function below:\n{function}',
         ),
+        responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 10),
         showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),
     };
     return setting;
@@ -113,6 +116,7 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
         `${namespace}.openaiModel`,
         `${namespace}.docstringFormat`,
         `${namespace}.chatgptPromptPattern`,
+        `${namespace}.responseTimeout`,
     ];
     const changed = settings.map((s) => e.affectsConfiguration(s));
     return changed.includes(true);

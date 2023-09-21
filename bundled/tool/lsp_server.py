@@ -221,6 +221,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     openai_model = settings["openaiModel"]
     prompt_pattern = settings["chatgptPromptPattern"]
     docstring_format = settings["docstringFormat"]
+    response_timeout = settings["responseTimeout"]
 
     # get function source
     try:
@@ -237,20 +238,19 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     # get gocstring
     with ls.progress(progress_token) as progress:
         task = asyncio.create_task(_get_docstring(openai_api_key, openai_model, prompt))
-        timeout = 10
         while 1:
             if task.done():
                 break
-            if timeout == 0:
+            if response_timeout == 0:
                 task.cancel()
                 show_warning("ChatGPT response timed out.")
                 return
             if progress.cancelled:
                 task.cancel()
                 return
-            progress.report(f"Waiting for ChatGPT response ({timeout} secs)...")
+            progress.report(f"Waiting for ChatGPT response ({response_timeout} secs)...")
             await asyncio.sleep(1)
-            timeout -= 1
+            response_timeout -= 1
         if task.exception():
             raise task.exception()
         docstring = task.result()

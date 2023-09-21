@@ -102,6 +102,11 @@
                     "pattern": ".*{function}.*",
                     "patternErrorMessage": "Must include: \"{function}\""
                 },
+                "chatgpt-docstrings.responseTimeout": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "ChatGPT response timeout in seconds."
+                },
                 "chatgpt-docstrings.showProgressNotification": {
                     "type": "boolean",
                     "default": true,
