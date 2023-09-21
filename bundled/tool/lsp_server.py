@@ -219,7 +219,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     cursor = Position(*cursor.values())
     settings = _get_settings_by_document(document)
     openai_model = settings["openaiModel"]
-    prompt_pattern = settings["chatgptPromptPattern"]
+    prompt_pattern = settings["promptPattern"]
     docstring_format = settings["docstringFormat"]
     response_timeout = settings["responseTimeout"]
 

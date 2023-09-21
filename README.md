@@ -73,7 +73,7 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
     - "numpy"
     - "sphinx"
 
-- `chatgpt-docstrings.chatgptPromptPattern`: The prompt to generate docstring.
+- `chatgpt-docstrings.promptPattern`: ChatGPT prompt to generate docstring.
 
   - *Default value*: "Create docstring in {docstring_format} format for python function below:\n{function}"
 

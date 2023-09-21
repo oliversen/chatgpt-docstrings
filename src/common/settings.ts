@@ -11,7 +11,7 @@ export interface ISettings {
     interpreter: string[];
     openaiModel: string;
     docstringFormat: string;
-    chatgptPromptPattern: string;
+    promptPattern: string;
     responseTimeout: number;
     showProgressNotification: boolean;
 }
@@ -68,8 +68,8 @@ export async function getWorkspaceSettings(
         interpreter: resolveVariables(interpreter, workspace),
         openaiModel: config.get<string>(`openaiModel`) ?? '',
         docstringFormat: config.get<string>(`docstringFormat`) ?? 'google',
-        chatgptPromptPattern:
-            config.get<string>(`chatgptPromptPattern`) ??
+        promptPattern:
+            config.get<string>(`promptPattern`) ??
             'Create docstring in {docstring_format} format for python function below:\n{function}',
         responseTimeout: config.get<number>(`responseTimeout`) ?? 10,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
@@ -99,9 +99,9 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         interpreter: interpreter,
         openaiModel: getGlobalValue<string>(config, 'openaiModel', ''),
         docstringFormat: getGlobalValue<string>(config, 'docstringFormat', 'google'),
-        chatgptPromptPattern: getGlobalValue<string>(
+        promptPattern: getGlobalValue<string>(
             config,
-            'chatgptPromptPattern',
+            'promptPattern',
             'Create docstring in {docstring_format} format for python function below:\n{function}',
         ),
         responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 10),
@@ -115,7 +115,7 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
         `${namespace}.interpreter`,
         `${namespace}.openaiModel`,
         `${namespace}.docstringFormat`,
-        `${namespace}.chatgptPromptPattern`,
+        `${namespace}.promptPattern`,
         `${namespace}.responseTimeout`,
     ];
     const changed = settings.map((s) => e.affectsConfiguration(s));
