@@ -104,6 +104,7 @@ async function createServer(
         outputChannel: outputChannel,
         traceOutputChannel: outputChannel,
         revealOutputChannelOn: RevealOutputChannelOn.Never,
+        connectionOptions: { maxRestartCount: 0 },
         initializationOptions,
     };
 
