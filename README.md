@@ -81,7 +81,7 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
 
 - `chatgpt-docstrings.responseTimeout`: ChatGPT response timeout in seconds.
 
-  - *Default value*: 10
+  - *Default value*: 15
 
 - `chatgpt-docstrings.showProgressNotification`: Show progress notification of docstring generation.
 
