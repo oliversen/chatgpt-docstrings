@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1 (2023-09-27)
+
+- Increased default ChatGPT response timeout
+
 ## 0.5.0 (2023-09-21)
 
 - Changed `chatgptPromptPattern` option name to `promptPattern`
