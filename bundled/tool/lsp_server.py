@@ -34,7 +34,6 @@ update_sys_path(
 # **********************************************************
 # Imports needed for the language server goes below this.
 # **********************************************************
-# pylint: disable=wrong-import-position,import-error
 import lsprotocol.types as lsp
 from pygls import server, uris, workspace
 
@@ -370,7 +369,7 @@ def _get_line_endings(lines: list[str]) -> str:
         if lines[0][-2:] == "\r\n":
             return "\r\n"
         return "\n"
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         return None
 
 

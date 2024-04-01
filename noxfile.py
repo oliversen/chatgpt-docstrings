@@ -8,7 +8,7 @@ import pathlib
 import urllib.request as url_lib
 from typing import List
 
-import nox  # pylint: disable=import-error
+import nox
 
 
 def _install_bundle(session: nox.Session) -> None:

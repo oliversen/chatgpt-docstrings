@@ -29,7 +29,6 @@ update_sys_path(
 )
 
 
-# pylint: disable=wrong-import-position,import-error
 import lsp_jsonrpc as jsonrpc
 import lsp_utils as utils
 
@@ -58,7 +57,7 @@ while not EXIT_NOW:
                     cwd=msg["cwd"],
                     source=msg["source"] if "source" in msg else None,
                 )
-            except Exception:  # pylint: disable=broad-except
+            except Exception:
                 result = utils.RunResult("", traceback.format_exc(chain=True))
                 is_exception = True
 

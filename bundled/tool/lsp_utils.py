@@ -26,7 +26,6 @@ def as_list(content: Union[Any, List[Any], Tuple[Any]]) -> Union[List[Any], Tupl
     return [content]
 
 
-# pylint: disable-next=consider-using-generator
 _site_paths = tuple(
     [
         os.path.normcase(os.path.normpath(p))
@@ -52,7 +51,6 @@ def is_stdlib_file(file_path) -> bool:
     return os.path.normcase(os.path.normpath(file_path)).startswith(_site_paths)
 
 
-# pylint: disable-next=too-few-public-methods
 class RunResult:
     """Object to hold result from running tool."""
 
