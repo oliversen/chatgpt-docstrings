@@ -46,7 +46,8 @@ class LanguageServer(server.LanguageServer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lsp.progress_handlers = ProgressHundlers()
-        self.lsp.fm.add_builtin_feature(lsp.WINDOW_WORK_DONE_PROGRESS_CANCEL, self.progress_cancel)
+        self.lsp.fm.add_builtin_feature(lsp.WINDOW_WORK_DONE_PROGRESS_CANCEL,
+                                        self.progress_cancel)
 
     def progress(self, *args, **kwargs):
         return Progress(self.lsp, *args, **kwargs)
@@ -273,7 +274,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         reason = result.failure_reason or \
             "maybe you make changes to source code at generation time"
         show_warning(f"Failed to add docstring to source code ({reason})")
-        ls.send_telemetry_error('applyEditWorkspaceFail', {'reason': reason})
+        ls.send_telemetry_error("applyEditWorkspaceFail", {"reason": reason})
 
 
 async def _get_docstring(api_key: str,
@@ -285,7 +286,8 @@ async def _get_docstring(api_key: str,
             model=model,
             messages=[
                 {"role": "system",
-                 "content": "When you generate a docstring, return me only a string that I can add to my code."},
+                 "content": ("When you generate a docstring, "
+                             "return me only a string that I can add to my code.")},
                 {"role": "user", "content": prompt},
             ],
             temperature=0,
