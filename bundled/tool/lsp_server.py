@@ -225,14 +225,14 @@ async def apply_generate_docstring(ls: server.LanguageServer,
 
     # get function source
     try:
-        func = FuncParser(source, cursor)
+        parsed_func = FuncParser(source, cursor)
     except NotFuncException:
         show_info("The cursor must be set inside the function.")
         return
 
     # format prompt
     prompt = prompt_pattern.format(docstring_format=docstring_format,
-                                   function=func.code)
+                                   function=parsed_func.code)
     log_to_output(f"Used ChatGPT prompt:\n{prompt}")
 
     # get gocstring
@@ -257,18 +257,18 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     log_to_output(f"Received ChatGPT docstring:\n{docstring}")
 
     # define docsting position
-    if func.docstring_range:
+    if parsed_func.docstring_range:
         docstring_pos = Range(
-            Position(line=func.docstring_range.start.line, character=0),
-            func.docstring_range.end,
+            Position(line=parsed_func.docstring_range.start.line, character=0),
+            parsed_func.docstring_range.end,
         )
         from_new_line = False
     else:
-        docstring_pos = Range(func.suite, func.suite)
+        docstring_pos = Range(parsed_func.suite, parsed_func.suite)
         from_new_line = True
 
     # format docstring
-    docstring = _format_docstring(docstring, func.indent_level+1, from_new_line)
+    docstring = _format_docstring(docstring, parsed_func.indent_level+1, from_new_line)
     docstring = _match_line_endings(document, docstring)
 
     # apply docstring
