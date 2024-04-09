@@ -37,9 +37,13 @@ class FuncParser:
         return Range(Position(*start), Position(*end))
 
     @cached_property
-    def code(self) -> str:
+    def code_lines(self) -> list:
         source_lines = self._source.splitlines(keepends=True)
-        return "".join(source_lines[self.range.start.line-1:self.range.end.line])
+        return source_lines[self.range.start.line-1:self.range.end.line]
+
+    @cached_property
+    def code(self) -> str:
+        return "".join(self.code_lines)
 
     @cached_property
     def docstring_range(self) -> Union[Range, None]:

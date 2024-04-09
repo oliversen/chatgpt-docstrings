@@ -204,6 +204,7 @@ def _get_settings_by_document(document: workspace.Document | None):
 import openai
 
 from code_parser import FuncParser, NotFuncException, Position, Range
+from code_cleaner import FuncCleaner
 
 
 @LSP_SERVER.command("chatgpt-docstrings.applyGenerate")
@@ -230,9 +231,13 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         show_info("The cursor must be set inside the function.")
         return
 
+    # clean function
+    func_cleaner = FuncCleaner(parsed_func)
+    cleaned_func = func_cleaner.clean(docstring=True, blank_lines=True)
+
     # format prompt
     prompt = prompt_pattern.format(docstring_format=docstring_format,
-                                   function=parsed_func.code)
+                                   function=cleaned_func)
     log_to_output(f"Used ChatGPT prompt:\n{prompt}")
 
     # get gocstring
