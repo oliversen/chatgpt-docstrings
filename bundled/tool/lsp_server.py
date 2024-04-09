@@ -256,15 +256,20 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         docstring = task.result()
     log_to_output(f"Received ChatGPT docstring:\n{docstring}")
 
-    # format docstring
-    docstring = _format_docstring(docstring, func.indent_level+1)
-    docstring = _match_line_endings(document, docstring)
-
     # define docsting position
     if func.docstring_range:
-        docstring_pos = Range(func.suite, func.docstring_range.end)
+        docstring_pos = Range(
+            Position(line=func.docstring_range.start.line, character=0),
+            func.docstring_range.end,
+        )
+        from_new_line = False
     else:
         docstring_pos = Range(func.suite, func.suite)
+        from_new_line = True
+
+    # format docstring
+    docstring = _format_docstring(docstring, func.indent_level+1, from_new_line)
+    docstring = _match_line_endings(document, docstring)
 
     # apply docstring
     text_edits = _create_text_edits(docstring_pos, docstring)
@@ -308,7 +313,7 @@ async def _get_docstring(api_key: str,
     return docstring
 
 
-def _format_docstring(docstring: str, indent_level: int) -> str:
+def _format_docstring(docstring: str, indent_level: int, from_new_line: bool) -> str:
     # remove function source code including markdown tags
     if docstring.strip().startswith(("def ", "async ", "```")):
         match = re.search(r'""".*?"""', docstring, flags=re.DOTALL)
@@ -327,7 +332,7 @@ def _format_docstring(docstring: str, indent_level: int) -> str:
     indents = " "*indent_level*4
     docstring = "".join([f"{indents}{line}" for line in docstring.splitlines(True)])
     # add new line
-    docstring = f"\n{docstring}"
+    docstring = f"\n{docstring}" if from_new_line else docstring
     return docstring
 
 
