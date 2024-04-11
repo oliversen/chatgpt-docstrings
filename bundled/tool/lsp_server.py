@@ -207,6 +207,30 @@ from code_parser import FuncParser, NotFuncException, Position, Range
 from code_cleaner import FuncCleaner
 
 
+@LSP_SERVER.feature(lsp.TEXT_DOCUMENT_COMPLETION,
+                    lsp.CompletionOptions(trigger_characters=['"']))
+def completions(params: lsp.CompletionParams):
+    """Returns completion items."""
+    cursor = Position(params.position.line + 1, params.position.character)
+    uri = params.text_document.uri
+    document = LSP_SERVER.workspace.get_document(uri)
+    source = document.source
+
+    validate = document.lines[cursor.line-1][0:cursor.character]
+    if re.match(r'^(\s{4})+"""$', validate):
+        try:
+            parsed_func = FuncParser(source, cursor)
+        except NotFuncException:
+            return
+        if cursor.line != parsed_func.suite.line + 1:
+            return
+        completion_text = (
+            "" if parsed_func.docstring_range else 'Await docstring generation..."""'
+        )
+        return _create_completion_list(cursor, completion_text)
+    return
+
+
 @LSP_SERVER.command("chatgpt-docstrings.applyGenerate")
 async def apply_generate_docstring(ls: server.LanguageServer,
                                    args: list[lsp.TextDocumentPositionParams, str]):
@@ -339,6 +363,34 @@ def _format_docstring(docstring: str, indent_level: int, from_new_line: bool) ->
     # add new line
     docstring = f"\n{docstring}" if from_new_line else docstring
     return docstring
+
+
+def _create_completion_list(cursor: Position,
+                            completion_text: str) -> lsp.CompletionList:
+    return lsp.CompletionList(
+        is_incomplete=False,
+        items=[
+            lsp.CompletionItem(
+                label="Generate Docstring",
+                kind=lsp.CompletionItemKind.Text,
+                text_edit=lsp.TextEdit(
+                    range=lsp.Range(
+                        start=lsp.Position(
+                            line=cursor.line - 1, character=cursor.character
+                        ),
+                        end=lsp.Position(
+                            line=cursor.line - 1, character=cursor.character
+                        ),
+                    ),
+                    new_text=completion_text,
+                ),
+                command=lsp.Command(
+                    title="Generate Docstring",
+                    command="chatgpt-docstrings.generateDocstring",
+                ),
+            ),
+        ],
+    )
 
 
 def _create_text_edits(docstring_pos: Range, docstring: str) -> list[lsp.TextEdit]:
