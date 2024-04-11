@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6.0 (2024-04-11)
+
+- Added docstring completion provider triggered by `"""`
+- Added removal of existing function docstring and blank lines from ChatGPT request
+- Fixed wrong insertion position of generated docstring if another exists
+
 ## 0.5.1 (2023-09-27)
 
 - Increased default ChatGPT response timeout
