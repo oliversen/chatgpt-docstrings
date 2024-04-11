@@ -25,11 +25,11 @@ Set the cursor position inside the function for which you want to generate a doc
 
 ### Command
 
-Open the Command Palette (F1) and type “Generate Docstring”.
+Open the Command Palette (F1) and type `Generate Docstring`.
 
 ### Context Menu
 
-Right click in the Text Editor area and choose “Generate Docstring”.
+Right click in the Text Editor area and choose `Generate Docstring`.
 
 ### Keyboard Shortcut
 
