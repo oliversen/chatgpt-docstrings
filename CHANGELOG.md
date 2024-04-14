@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.6.1 (2024-04-14)
+
+- Updated documentation
+- Changed key bindings
+
 ## 0.6.0 (2024-04-11)
 
 - Added docstring completion provider triggered by `"""`
