@@ -147,8 +147,8 @@
         },
         "keybindings": [
             {
-                "key": "ctrl+k ctrl+d",
-                "mac": "cmd+k cmd+d",
+                "key": "ctrl+alt+d",
+                "mac": "cmd+opt+d",
                 "command": "chatgpt-docstrings.generateDocstring",
                 "when": "editorTextFocus && !editorReadonly && editorLangId == python"
             }

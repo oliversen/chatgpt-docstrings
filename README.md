@@ -34,8 +34,8 @@ Right click in the Text Editor area and choose `Generate Docstring`.
 
 Use the following keyboard shortcut:
 
-- Windows/Linux: `Ctrl+K Ctrl+D`
-- Mac: `Cmd+K Cmd+D`
+- Windows/Linux: `Ctrl+Alt+D`
+- Mac: `Cmd+Opt+D`
 
 > You can change the default keyboard shortcut by Keyboard Shortcuts editor ***(File > Preferences > Keyboard Shortcuts***).
 
