@@ -141,7 +141,7 @@
                 {
                     "when": "resourceLangId == python",
                     "command": "chatgpt-docstrings.generateDocstring",
-                    "group": "ChatGPT: Docstring Generator"
+                    "group": "1_modification"
                 }
             ]
         },
