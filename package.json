@@ -116,7 +116,7 @@
         },
         "commands": [
             {
-                "title": "Generate Docstring",
+                "title": "Generate Docstring (ChatGPT)",
                 "category": "ChatGPT: Docstring Generator",
                 "command": "chatgpt-docstrings.generateDocstring"
             },

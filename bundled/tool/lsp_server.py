@@ -371,7 +371,7 @@ def _create_completion_list(cursor: Position,
         is_incomplete=False,
         items=[
             lsp.CompletionItem(
-                label="Generate Docstring",
+                label="Generate Docstring (ChatGPT)",
                 kind=lsp.CompletionItemKind.Text,
                 text_edit=lsp.TextEdit(
                     range=lsp.Range(
@@ -385,7 +385,7 @@ def _create_completion_list(cursor: Position,
                     new_text=completion_text,
                 ),
                 command=lsp.Command(
-                    title="Generate Docstring",
+                    title="Generate Docstring (ChatGPT)",
                     command="chatgpt-docstrings.generateDocstring",
                 ),
             ),
