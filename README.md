@@ -20,15 +20,24 @@ Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com
 - Python 3.8 or greater
 
 ## Usage
-Type `"""` and then select `Generate Docstring (ChatGPT)` from the completion items. Or set the cursor position inside the function for which you want to generate a docstring and generate it using one of the following methods:
 
-### Command
+### Code Completion
 
-Open the Command Palette (F1) and type `Generate Docstring`.
+Type `"""` and then select `Generate Docstring (ChatGPT)` from the completion items.
+
+![Code Completion](/images/code_completion.png)
 
 ### Context Menu
 
 Right click in the Text Editor area and choose `Generate Docstring (ChatGPT)`.
+
+![Context Menu](/images/context_menu.png)
+
+### Command Palette
+
+Open the Command Palette (F1) and type `docstring`.
+
+![Command Palette](/images/command_palette.png)
 
 ### Keyboard Shortcut
 
@@ -36,6 +45,8 @@ Use the following keyboard shortcut:
 
 - Windows/Linux: `Ctrl+Alt+D`
 - Mac: `Cmd+Opt+D`
+
+![Keyboard Shortcut](/images/keyboard_shortcut.png)
 
 > You can change the default keyboard shortcut by Keyboard Shortcuts editor ***(File > Preferences > Keyboard Shortcuts***).
 
