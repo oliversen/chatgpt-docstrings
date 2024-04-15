@@ -246,6 +246,7 @@ async def apply_generate_docstring(ls: server.LanguageServer,
     openai_model = settings["openaiModel"]
     prompt_pattern = settings["promptPattern"]
     docstring_format = settings["docstringFormat"]
+    docs_new_line = settings["onNewLine"]
     response_timeout = settings["responseTimeout"]
 
     # get function source
@@ -291,13 +292,15 @@ async def apply_generate_docstring(ls: server.LanguageServer,
             Position(line=parsed_func.docstring_range.start.line, character=0),
             parsed_func.docstring_range.end,
         )
-        from_new_line = False
+        quotes_new_line = False
     else:
         docstring_pos = Range(parsed_func.suite, parsed_func.suite)
-        from_new_line = True
+        quotes_new_line = True
 
     # format docstring
-    docstring = _format_docstring(docstring, parsed_func.indent_level+1, from_new_line)
+    docstring = _format_docstring(
+        docstring, parsed_func.indent_level + 1, docs_new_line, quotes_new_line
+    )
     docstring = _match_line_endings(document, docstring)
 
     # apply docstring
@@ -327,7 +330,9 @@ async def _get_docstring(api_key: str, model: str, prompt: str) -> str:
     return docstring
 
 
-def _format_docstring(docstring: str, indent_level: int, from_new_line: bool) -> str:
+def _format_docstring(
+    docstring: str, indent_level: int, docs_new_line: bool, quotes_new_line: bool
+) -> str:
     # remove function source code including markdown tags
     if docstring.strip().startswith(("def ", "async ", "```")):
         match = re.search(r'""".*?"""', docstring, flags=re.DOTALL)
@@ -344,15 +349,15 @@ def _format_docstring(docstring: str, indent_level: int, from_new_line: bool) ->
     if len(docstring_lines) > 1:
         # eol conversion to single format
         docstring = "\n".join(docstring_lines)
-        # add new line for docstring
-        docstring = f"{docstring}\n"
+        # add new lines for docstring
+        docstring = f"\n{docstring}\n" if docs_new_line else f"{docstring}\n"
     # add quotes
     docstring = f'"""{docstring}"""'
     # add indents
     indents = " "*indent_level*4
     docstring = "".join([f"{indents}{line}" for line in docstring.splitlines(True)])
-    # add new line
-    docstring = f"\n{docstring}" if from_new_line else docstring
+    # add new line for opening quotes
+    docstring = f"\n{docstring}" if quotes_new_line else docstring
     return docstring
 
 

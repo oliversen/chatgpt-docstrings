@@ -95,6 +95,11 @@
                         "sphinx"
                     ]
                 },
+                "chatgpt-docstrings.onNewLine": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Start docstring on new line."
+                },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
                     "default": "Create docstring in {docstring_format} format for python function below:\n{function}",
