@@ -9,7 +9,7 @@ import os
 import pathlib
 import re
 import sys
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
 
 # **********************************************************
@@ -311,34 +311,19 @@ async def apply_generate_docstring(ls: server.LanguageServer,
         ls.send_telemetry_error("applyEditWorkspaceFail", {"reason": reason})
 
 
-async def _get_docstring(api_key: str,
-                   model: Literal["gpt-3.5-turbo", "text-davinci-002"],
-                   prompt: str) -> str:
+async def _get_docstring(api_key: str, model: str, prompt: str) -> str:
     openai.api_key = api_key
-    if model == "gpt-3.5-turbo":
-        response = await openai.ChatCompletion.acreate(
-            model=model,
-            messages=[
-                {"role": "system",
-                 "content": ("When you generate a docstring, "
-                             "return me only a string that I can add to my code.")},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0,
-        )
-        docstring = response.choices[0].message.content
-    elif model == "text-davinci-002":
-        response = openai.Completion.create(
-            model=model,
-            prompt=prompt,
-            temperature=0,
-            max_tokens=1000,
-        )
-        docstring = response["choices"][0]["text"]
-    else:
-        raise Exception(
-            'Only models "gpt-3.5-turbo" and "text-davinci-002" are supported!'
-        )
+    response = await openai.ChatCompletion.acreate(
+        model=model,
+        messages=[
+            {"role": "system",
+             "content": ("When you generate a docstring, "
+                         "return me only a string that I can add to my code.")},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0,
+    )
+    docstring = response.choices[0].message.content
     return docstring
 
 

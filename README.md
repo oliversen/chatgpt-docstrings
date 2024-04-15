@@ -71,9 +71,6 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
   - *Default value*: "gpt-3.5-turbo"
   - *Available options*:
     - "gpt-3.5-turbo"
-    - "text-davinci-002"
-
-  > According to personal observations, "gpt-3.5-turbo" makes generation more correct, and "text-davinci-002" is faster.
 
 - `chatgpt-docstrings.docstringFormat`: Which docstring format to use.
 
