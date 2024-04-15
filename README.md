@@ -23,19 +23,19 @@ Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com
 
 ### Code Completion
 
-Type `"""` and then select `Generate Docstring (ChatGPT)` from the completion items.
+Type `"""` and select `Generate Docstring (ChatGPT)` from the completion items.
 
 ![Code Completion](/images/code_completion.png)
 
 ### Context Menu
 
-Right click in the Text Editor area and choose `Generate Docstring (ChatGPT)`.
+Right click in the Text Editor area and select `Generate Docstring (ChatGPT)`.
 
 ![Context Menu](/images/context_menu.png)
 
 ### Command Palette
 
-Open the Command Palette (F1) and type `docstring`.
+Open the Command Palette (F1), type `docstring` and select `Generate Docstring (ChatGPT)`.
 
 ![Command Palette](/images/command_palette.png)
 
