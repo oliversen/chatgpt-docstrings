@@ -338,10 +338,16 @@ def _format_docstring(docstring: str, indent_level: int, from_new_line: bool) ->
     if docstring.startswith("    "):
         lines = docstring.splitlines(True)
         docstring = "".join([re.sub(r"^\s{4}", "", line) for line in lines])
-    # eol conversion to single format
-    docstring = "\n".join(docstring.splitlines())
+    # split docstring on lines
+    docstring_lines = docstring.splitlines()
+    # check docstring for multi-line
+    if len(docstring_lines) > 1:
+        # eol conversion to single format
+        docstring = "\n".join(docstring_lines)
+        # add new line for docstring
+        docstring = f"{docstring}\n"
     # add quotes
-    docstring = f'"""{docstring}\n"""'
+    docstring = f'"""{docstring}"""'
     # add indents
     indents = " "*indent_level*4
     docstring = "".join([f"{indents}{line}" for line in docstring.splitlines(True)])
