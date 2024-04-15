@@ -80,7 +80,9 @@
                     "default": "gpt-3.5-turbo",
                     "description": "Which OpenAI model to use.",
                     "enum": [
-                        "gpt-3.5-turbo"
+                        "gpt-3.5-turbo",
+                        "gpt-4-turbo",
+                        "gpt-4"
                     ]
                 },
                 "chatgpt-docstrings.docstringFormat": {

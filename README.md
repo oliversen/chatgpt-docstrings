@@ -71,6 +71,8 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
   - *Default value*: "gpt-3.5-turbo"
   - *Available options*:
     - "gpt-3.5-turbo"
+    - "gpt-4-turbo"
+    - "gpt-4"
 
 - `chatgpt-docstrings.docstringFormat`: Which docstring format to use.
 
