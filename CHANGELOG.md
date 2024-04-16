@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.7.0 (2024-04-16)
+
+- Added `onNewLine` option
+- Removed new line for closing quotes of one-line docstring
+- Added `gpt-4` and `gpt-4-turbo` OpenAI models
+- Dropped `text-davinci-002` OpenAI model
+- Updated documentation
+
 ## 0.6.1 (2024-04-14)
 
 - Updated documentation
