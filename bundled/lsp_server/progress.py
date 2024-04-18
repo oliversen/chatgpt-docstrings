@@ -1,10 +1,9 @@
-from typing import Union
+from __future__ import annotations
 
-from lsprotocol.types import (
-    PROGRESS,
-    ProgressParams,
-    WorkDoneProgressReport,
-)
+from types import TracebackType
+from typing import Optional, Type
+
+from lsprotocol.types import PROGRESS, ProgressParams, WorkDoneProgressReport
 from pygls.protocol import LanguageServerProtocol
 
 
@@ -18,18 +17,23 @@ class Progress:
     def cancelled(self) -> bool:
         return self._cancelled
 
-    def cancel(self):
+    def cancel(self) -> None:
         self._cancelled = True
 
-    def report(self, message: str):
+    def report(self, message: str) -> None:
         value = WorkDoneProgressReport(message=message)
         self._lsp.notify(PROGRESS, ProgressParams(token=self._token, value=value))
 
-    def __enter__(self):
+    def __enter__(self) -> Progress:
         self._lsp.progress_handlers.add(self)
         return self
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        exc_traceback: Optional[TracebackType],
+    ) -> Optional[bool]:
         self._lsp.progress_handlers.remove(self)
 
     def __eq__(self, __value: object) -> bool:
@@ -41,16 +45,13 @@ class ProgressHundlers:
         self._hundlers = []
 
     def _has(self, hundler: Progress) -> bool:
-        for h in self._hundlers:
-            if h == hundler:
-                return True
-        return False
+        return any(h == hundler for h in self._hundlers)
 
     def add(self, hundler: Progress) -> None:
         if not self._has(hundler):
             self._hundlers.append(hundler)
 
-    def get(self, progress_token: str) -> Union[Progress, None]:
+    def get(self, progress_token: str) -> Progress | None:
         for hundler in self._hundlers:
             if hundler._token == progress_token:
                 return hundler

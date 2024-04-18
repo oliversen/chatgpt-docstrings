@@ -1,18 +1,9 @@
+from __future__ import annotations
+
 import re
-from functools import cached_property
-from typing import NamedTuple, Union
 
 import jedi
-
-
-class Position(NamedTuple):
-    line: int
-    character: int
-
-
-class Range(NamedTuple):
-    start: Position
-    end: Position
+import lsprotocol.types as lsp
 
 
 class NotFuncException(Exception):
@@ -20,43 +11,48 @@ class NotFuncException(Exception):
 
 
 class FuncParser:
-    def __init__(self, source: str, cursor: Position) -> None:
+    def __init__(self, source: str, cursor: lsp.Position) -> None:
         self._source = source
         self._cursor = cursor
         self._script = jedi.Interpreter(self._source, namespaces=[])
-        self._context = self._script.get_context(*self._cursor)
+        self._context = self._script.get_context(
+            self._cursor.line + 1, self._cursor.character
+        )
         self._tree_node = self._context._name._value.tree_node
         self.is_func = self._context.type == "function"
         if not self.is_func:
             raise NotFuncException
 
-    @cached_property
-    def range(self) -> Range:
+    @property
+    def range(self) -> lsp.Range:  # noqa
         start = self._context.get_definition_start_position()
         end = self._context.get_definition_end_position()
-        return Range(Position(*start), Position(*end))
+        return lsp.Range(lsp.Position(*start), lsp.Position(*end))
 
-    @cached_property
+    @property
     def code_lines(self) -> list:
         source_lines = self._source.splitlines(keepends=True)
-        return source_lines[self.range.start.line-1:self.range.end.line]
+        return source_lines[self.range.start.line - 1 : self.range.end.line]
 
-    @cached_property
+    @property
     def code(self) -> str:
         return "".join(self.code_lines)
 
-    @cached_property
-    def docstring_range(self) -> Union[Range, None]:
+    @property
+    def docstring_range(self) -> lsp.Range | None:
         if doc_node := self._tree_node.get_doc_node():
-            return Range(Position(*doc_node.start_pos), Position(*doc_node.end_pos))
+            return lsp.Range(
+                lsp.Position(*doc_node.start_pos),
+                lsp.Position(*doc_node.end_pos),
+            )
         else:
             return None
 
-    @cached_property
-    def suite(self) -> Position:
-        return Position(*self._tree_node.get_suite().start_pos)
+    @property
+    def suite(self) -> lsp.Position:
+        return lsp.Position(*self._tree_node.get_suite().start_pos)
 
-    @cached_property
+    @property
     def indent_level(self) -> int:
         indent_level = 0
         pattern = r"^\s+"

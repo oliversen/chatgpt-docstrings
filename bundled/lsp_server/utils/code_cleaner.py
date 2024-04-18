@@ -1,4 +1,4 @@
-from code_parser import FuncParser
+from .code_parser import FuncParser
 
 
 class FuncCleaner:
@@ -7,7 +7,10 @@ class FuncCleaner:
         self._code_lines = parsed_func.code_lines.copy()
 
     def clean(
-        self, docstring: bool = False, comments: bool = False, blank_lines: bool = False
+        self,
+        docstring: bool = False,
+        comments: bool = False,
+        blank_lines: bool = False,
     ) -> str:
         if docstring:
             self._remove_docstring()
@@ -25,7 +28,7 @@ class FuncCleaner:
                 docstring_range.start.line - func_range.start.line,
                 docstring_range.end.line - func_range.start.line,
             )
-            del self._code_lines[del_lines[0]:del_lines[1]+1]
+            del self._code_lines[del_lines[0] : del_lines[1] + 1]
 
     def _remove_comments(self) -> None:
         raise NotImplementedError

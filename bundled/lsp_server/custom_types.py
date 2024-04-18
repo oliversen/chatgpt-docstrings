@@ -11,10 +11,8 @@ class TelemetryTypes(str, enum.Enum):
 
 @attrs.define
 class TelemetryParams:
-    type: TelemetryTypes = attrs.field(
+    type: TelemetryTypes = attrs.field(  # noqa
         validator=attrs.validators.instance_of(TelemetryTypes)
     )
     name: str = attrs.field(validator=attrs.validators.instance_of(str))
-    data: dict = attrs.field(
-        validator=attrs.validators.instance_of(dict)
-    )
+    data: dict = attrs.field(validator=attrs.validators.instance_of(dict))
