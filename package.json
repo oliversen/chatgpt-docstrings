@@ -43,6 +43,10 @@
         "virtualWorkspaces": {
             "supported": false,
             "description": "Virtual Workspaces are not supported with ChatGPT: Docstring Generator."
+        },
+        "untrustedWorkspaces": {
+            "supported": false,
+            "description": "The extension requires workspace trust because it loads code from the workspace."
         }
     },
     "activationEvents": [
