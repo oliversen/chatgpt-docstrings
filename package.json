@@ -71,13 +71,13 @@
         "configuration": {
             "properties": {
                 "chatgpt-docstrings.interpreter": {
+                    "type": "array",
                     "default": [],
                     "description": "When set to a path to python executable, extension will use that to launch the server and any subprocess.",
-                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
-                    "type": "array"
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.openaiModel": {
                     "type": "string",
@@ -87,7 +87,8 @@
                         "gpt-3.5-turbo",
                         "gpt-4-turbo",
                         "gpt-4"
-                    ]
+                    ],
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.docstringFormat": {
                     "type": "string",
@@ -97,12 +98,14 @@
                         "google",
                         "numpy",
                         "sphinx"
-                    ]
+                    ],
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.onNewLine": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Start docstring on new line."
+                    "description": "Start docstring on new line.",
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
@@ -110,17 +113,20 @@
                     "description": "ChatGPT prompt to generate docstring.",
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",
-                    "patternErrorMessage": "Must include: \"{function}\""
+                    "patternErrorMessage": "Must include: \"{function}\"",
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.responseTimeout": {
                     "type": "integer",
                     "default": 15,
-                    "description": "ChatGPT response timeout in seconds."
+                    "description": "ChatGPT response timeout in seconds.",
+                    "scope": "resource"
                 },
                 "chatgpt-docstrings.showProgressNotification": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Show progress notification of docstring generation."
+                    "description": "Show progress notification of docstring generation.",
+                    "scope": "resource"
                 }
             }
         },
