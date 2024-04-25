@@ -1,12 +1,9 @@
-out
-dist
-node_modules
-.vscode-test/
 *.vsix
+.vscode/bookmarks.json
+dist/
+node_modules/
 .venv/
-.vs/
 .nox/
 bundled/libs/
-**/__pycache__
-**/.pytest_cache
-**/.vs
+**/__pycache__/
+**/.pytest_cache/
