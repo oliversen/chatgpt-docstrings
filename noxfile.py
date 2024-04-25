@@ -32,7 +32,7 @@ def _update_pip_packages(session: nox.Session) -> None:
     )
 
 
-def _get_package_data(package):
+def _get_package_data(package: str) -> None:
     json_uri = f"https://registry.npmjs.org/{package}"
     with url_lib.urlopen(json_uri) as response:
         return json.loads(response.read())
