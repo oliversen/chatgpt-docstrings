@@ -1,0 +1,28 @@
+[tool.isort]
+src_paths = "bundled\\lsp_server"
+profile = "black"
+
+[tool.flake8]
+exclude = [
+    ".venv",
+    ".nox",
+    "__pycache__",
+    "src",
+    "bundled\\libs"
+]
+max-line-length = 90
+inline-quotes = "\""
+import-order-style = "pep8"
+application-import-names = ["utils", "commands", "completions", "custom_types", "initialize", "jsonrpc", "log", "notification", "progress", "runner", "server", "settings", "shutdown"]
+ignore = [
+    # line break before binary operator (needed for compatibility with black)
+    "W503",
+    # whitespace before ':' (needed for compatibility with black)
+    "E203",
+    # missing type annotation for self in method
+    "ANN101",
+    # missing type annotation for cls in classmethod
+    "ANN102",
+    # using .strip() with multi-character strings is misleading the reader
+    "B005",
+]
