@@ -115,36 +115,12 @@ def tests(session: nox.Session) -> None:
     session.run("pytest", "src/test/python_tests")
 
 
-@nox.session
+@nox.session(python=False)
 def lint(session: nox.Session) -> None:
-    """Runs linter and formatter checks on python files."""
-    session.install("-r", "./requirements.txt")
-    session.install("-r", "src/test/python_tests/requirements.txt")
-
-    session.install("pylint")
-    session.run("pylint", "-d", "W0511", "./bundled/tool")
-    session.run(
-        "pylint",
-        "-d",
-        "W0511",
-        "--ignore=./src/test/python_tests/test_data",
-        "./src/test/python_tests",
-    )
-    session.run("pylint", "-d", "W0511", "noxfile.py")
-
-    # check formatting using black
-    session.install("black")
-    session.run("black", "--check", "./bundled/tool")
-    session.run("black", "--check", "./src/test/python_tests")
-    session.run("black", "--check", "noxfile.py")
-
-    # check import sorting using isort
-    session.install("isort")
-    session.run("isort", "--check", "./bundled/tool")
-    session.run("isort", "--check", "./src/test/python_tests")
-    session.run("isort", "--check", "noxfile.py")
-
-    # check typescript code
+    """Runs linter and formatter checks."""
+    session.run("pip", "install", "-r", "./requirements-dev.txt", silent=True)
+    session.run("flake8")
+    session.run("black", "--check", ".")
     session.run("npm", "run", "lint", external=True)
 
 
