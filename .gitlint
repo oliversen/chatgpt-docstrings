@@ -1,0 +1,9 @@
+[general]
+contrib = contrib-title-conventional-commits
+ignore = body-is-missing
+
+[contrib-title-conventional-commits]
+types = fix,feat,chore,docs,style,refactor,perf,test,revert,ci,build
+
+[title-max-length]
+line-length = 120
