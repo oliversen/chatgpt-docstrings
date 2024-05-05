@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.7.1 (2024-05-05)
+
+- Added removal of function indents from ChatGPT request
+- Added instruction that untrusted workspaces are not supported with extension
+- Changed scope of extension settings to all levels
+- Performed code maintenance
+
 ## 0.7.0 (2024-04-16)
 
 - Added `onNewLine` option
