@@ -8,10 +8,13 @@ class FuncCleaner:
 
     def clean(
         self,
+        indents: bool = False,
         docstring: bool = False,
         comments: bool = False,
         blank_lines: bool = False,
     ) -> str:
+        if indents:
+            self._remove_indents()
         if docstring:
             self._remove_docstring()
         if comments:
@@ -19,6 +22,11 @@ class FuncCleaner:
         if blank_lines:
             self._remove_blank_lines()
         return "".join(self._code_lines)
+
+    def _remove_indents(self) -> None:
+        indent_level = self._parsed_func.indent_level
+        if indent_level > 0:
+            self._code_lines = [i[4 * indent_level :] for i in self._code_lines]
 
     def _remove_docstring(self) -> None:
         func_range = self._parsed_func.range

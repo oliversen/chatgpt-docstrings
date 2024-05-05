@@ -43,7 +43,7 @@ async def apply_generate_docstring(
 
     # clean function
     func_cleaner = FuncCleaner(parsed_func)
-    cleaned_func = func_cleaner.clean(docstring=True, blank_lines=True)
+    cleaned_func = func_cleaner.clean(indents=True, docstring=True, blank_lines=True)
 
     # format prompt
     prompt = prompt_pattern.format(
