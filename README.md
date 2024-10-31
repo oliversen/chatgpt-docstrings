@@ -10,6 +10,23 @@
 
 ![Demo](/images/demo.gif)
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Usage](#usage)
+  - [Code Completion](#code-completion)
+  - [Context Menu](#context-menu)
+  - [Command Palette](#command-palette)
+  - [Keyboard Shortcut](#keyboard-shortcut)
+- [OpenAI API key](#openai-api-key)
+- [Settings](#settings)
+- [Telemetry](#telemetry)
+- [Change Log](#change-log)
+- [Feedback](#feedback)
+- [Contribution](#contribution)
+- [License](#license)
+
 ## Installation
 
 Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=oliversen.chatgpt-docstrings) or download and install .vsix file from [Releases](https://github.com/oliversen/chatgpt-docstrings/releases).
