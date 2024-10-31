@@ -32,14 +32,20 @@
 - [Contribution](#contribution)
 - [License](#license)
 
+---
+
 ## Installation
 
 Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=oliversen.chatgpt-docstrings) or download and install .vsix file from [Releases](https://github.com/oliversen/chatgpt-docstrings/releases).
+
+---
 
 ## Requirements
 
 - VSCode 1.75.0 or greater
 - Python 3.8 or greater
+
+---
 
 ## Usage
 
@@ -72,6 +78,8 @@ Use the following keyboard shortcut:
 
 > You can change the default keyboard shortcut by Keyboard Shortcuts editor ***(File > Preferences > Keyboard Shortcuts***).
 
+---
+
 ## OpenAI API key
 
 To use the extension, you will need an OpenAI API key. To obtain one, follow these steps:
@@ -81,6 +89,8 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
 3. Copy the key and paste it into the field that will show up when you run the docstring generation.
 
 > You can change the API key using the `Set OpenAI API key` command in the Command Palette (F1).
+
+---
 
 ## Settings
 
@@ -130,21 +140,31 @@ To use the extension, you will need an OpenAI API key. To obtain one, follow the
     - true
     - false
 
+---
+
 ## Telemetry
 
 This extension collects anonymous information related to the usage of the extension, such as well as performance and error data. You can disable telemetry as described [here](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting).
+
+---
 
 ## Change Log
 
 See Change Log [here](CHANGELOG.md)
 
+---
+
 ## Feedback
 
 Submit the [issues](https://github.com/oliversen/chatgpt-docstrings/issues) if you find any bug or have any suggestion.
 
+---
+
 ## Contribution
 
 Fork the [repo](https://github.com/oliversen/chatgpt-docstrings) and submit pull requests.
+
+---
 
 ## License
 
