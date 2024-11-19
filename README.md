@@ -111,13 +111,15 @@ You can change the API key using the `Set OpenAI API key` command in the Command
 
   - *Default value*: []
 
-- `chatgpt-docstrings.openaiModel`: Which OpenAI model to use.
+- `chatgpt-docstrings.openaiModel`: Which OpenAI model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.
 
-  - *Default value*: "gpt-3.5-turbo"
+  - *Default value*: "gpt-4o-mini"
   - *Available options*:
-    - "gpt-3.5-turbo"
+    - "gpt-4o-mini"
+    - "gpt-4o"
     - "gpt-4-turbo"
     - "gpt-4"
+    - "gpt-3.5-turbo"
 
 - `chatgpt-docstrings.docstringFormat`: Which docstring format to use.
 

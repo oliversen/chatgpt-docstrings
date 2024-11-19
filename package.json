@@ -81,12 +81,14 @@
                 },
                 "chatgpt-docstrings.openaiModel": {
                     "type": "string",
-                    "default": "gpt-3.5-turbo",
-                    "description": "Which OpenAI model to use.",
+                    "default": "gpt-4o-mini",
+                    "description": "Which OpenAI model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.",
                     "enum": [
-                        "gpt-3.5-turbo",
+                        "gpt-4o-mini",
+                        "gpt-4o",
                         "gpt-4-turbo",
-                        "gpt-4"
+                        "gpt-4",
+                        "gpt-3.5-turbo"
                     ],
                     "scope": "resource"
                 },

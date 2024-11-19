@@ -67,7 +67,7 @@ export async function getWorkspaceSettings(
         cwd: workspace.uri.fsPath,
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
-        openaiModel: config.get<string>(`openaiModel`) ?? '',
+        openaiModel: config.get<string>(`openaiModel`) ?? 'gpt-4o-mini',
         docstringFormat: config.get<string>(`docstringFormat`) ?? 'google',
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
         promptPattern:
@@ -99,7 +99,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         cwd: process.cwd(),
         workspace: process.cwd(),
         interpreter: interpreter,
-        openaiModel: getGlobalValue<string>(config, 'openaiModel', ''),
+        openaiModel: getGlobalValue<string>(config, 'openaiModel', 'gpt-4o-mini'),
         docstringFormat: getGlobalValue<string>(config, 'docstringFormat', 'google'),
         onNewLine: getGlobalValue<boolean>(config, `onNewLine`, false),
         promptPattern: getGlobalValue<string>(
