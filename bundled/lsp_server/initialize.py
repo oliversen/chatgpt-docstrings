@@ -15,7 +15,7 @@ def initialize(params: lsp.InitializeParams) -> None:
     log_to_output(f"CWD Server: {os.getcwd()}")
     log_to_output(f"PID Server: {os.getpid()}")
 
-    paths = "{os.linesep}   ".join(sys.path)
+    paths = f"{os.linesep}   ".join(sys.path)
     log_to_output(f"sys.path used to run Server:{os.linesep}   {paths}")
 
     GLOBAL_SETTINGS.initialize(params.initialization_options.get("globalSettings", {}))
