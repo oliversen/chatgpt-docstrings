@@ -8,7 +8,7 @@
 </p>
 <p align="center"><b>Automatically generate Python docstrings using ChatGPT.</b></p>
 
-![Demo](/images/demo.gif)
+![Demo](/images/readme/demo.gif)
 
 > Notice!
 >
@@ -56,19 +56,19 @@ Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com
 
 Type `"""` and select `Generate Docstring (ChatGPT)` from the completion items.
 
-![Code Completion](/images/code_completion.png)
+![Code Completion](/images/readme/code_completion.png)
 
 ### Context Menu
 
 Right click in the Text Editor area and select `Generate Docstring (ChatGPT)`.
 
-![Context Menu](/images/context_menu.png)
+![Context Menu](/images/readme/context_menu.png)
 
 ### Command Palette
 
 Open the Command Palette (F1), type `docstring` and select `Generate Docstring (ChatGPT)`.
 
-![Command Palette](/images/command_palette.png)
+![Command Palette](/images/readme/command_palette.png)
 
 ### Keyboard Shortcut
 
@@ -77,7 +77,7 @@ Use the following keyboard shortcut:
 - Windows/Linux: `Ctrl+Alt+D`
 - Mac: `Cmd+Opt+D`
 
-![Keyboard Shortcut](/images/keyboard_shortcut.png)
+![Keyboard Shortcut](/images/readme/keyboard_shortcut.png)
 
 > You can change the default keyboard shortcut by Keyboard Shortcuts editor ***(File > Preferences > Keyboard Shortcuts***).
 
