@@ -10,6 +10,11 @@
 
 ![Demo](/images/demo.gif)
 
+> Notice!
+>
+> - To use the extension **you need [OpenAI API key](#openai-api-key)**. The balance of your OpenAI profile must be positive.
+> - **This is a pre-release** version of the extension. In case of issues, please keep [feedback](#feedback) on github.
+
 ## Table of Contents
 
 - [Installation](#installation)
