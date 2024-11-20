@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.8.0 (2024-11-20)
+
+- Added `gpt-4o` and `gpt-4o-mini` OpenAI models
+- Updated documentation
+- Reduced extension size
+
 ## 0.7.1 (2024-05-05)
 
 - Added removal of function indents from ChatGPT request
