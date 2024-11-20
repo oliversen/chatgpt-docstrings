@@ -25,6 +25,9 @@
   - [Command Palette](#command-palette)
   - [Keyboard Shortcut](#keyboard-shortcut)
 - [OpenAI API key](#openai-api-key)
+  - [Get API key](#get-api-key)
+  - [Set API key](#set-api-key)
+  - [Change API key](#change-api-key)
 - [Settings](#settings)
 - [Telemetry](#telemetry)
 - [Change Log](#change-log)
@@ -82,13 +85,23 @@ Use the following keyboard shortcut:
 
 ## OpenAI API key
 
-To use the extension, you will need an OpenAI API key. To obtain one, follow these steps:
+To use the extension, you will need an OpenAI API key.
+
+### Get API key
+
+To obtain one, follow these steps:
 
 1. Go to OpenAI's [website](https://platform.openai.com/account/api-keys). Log in or sign up there.
 2. Click on the Create new secret key button.
-3. Copy the key and paste it into the field that will show up when you run the docstring generation.
+3. Copy the key.
 
-> You can change the API key using the `Set OpenAI API key` command in the Command Palette (F1).
+### Set API key
+
+When you first generate a docstring, a pop-up window will appear requesting you to enter your API key.
+
+### Change API key
+
+You can change the API key using the `Set OpenAI API key` command in the Command Palette (F1).
 
 ---
 
