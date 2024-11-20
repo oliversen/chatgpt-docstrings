@@ -1,7 +1,7 @@
 {
     "name": "chatgpt-docstrings",
     "displayName": "ChatGPT: Docstring Generator",
-    "description": "Automatically generate docstrings using ChatGPT.",
+    "description": "Automatically generate Python docstrings using ChatGPT.",
     "version": "0.7.1",
     "preview": true,
     "icon": "images/icon.png",
