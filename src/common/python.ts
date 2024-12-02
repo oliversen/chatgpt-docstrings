@@ -281,7 +281,7 @@ export async function runPythonExtensionCommand(command: string, ...rest: any[])
 
 export function checkVersion(resolved: ResolvedEnvironment | undefined): boolean {
     const version = resolved?.version;
-    if (version?.major === 3 && version?.minor >= 8) {
+    if (version?.major === 3 && version?.minor >= 9) {
         return true;
     }
     return false;

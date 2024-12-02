@@ -46,7 +46,7 @@ Install it from [Visual Studio Marketplace](https://marketplace.visualstudio.com
 ## Requirements
 
 - VSCode 1.75.0 or greater
-- Python 3.8 or greater
+- Python 3.9 or greater
 
 ---
 
