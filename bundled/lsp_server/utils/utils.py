@@ -7,6 +7,7 @@ from pygls import workspace
 def create_workspace_edit(
     document: lsp.Document, text_edits: list[lsp.TextEdit]
 ) -> lsp.WorkspaceEdit:
+    """Creates a WorkspaceEdit with the specified text edits for the given document."""
     return lsp.WorkspaceEdit(
         document_changes=[
             lsp.TextDocumentEdit(
