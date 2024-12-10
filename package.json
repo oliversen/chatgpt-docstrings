@@ -77,7 +77,8 @@
                     "items": {
                         "type": "string"
                     },
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 1
                 },
                 "chatgpt-docstrings.openaiModel": {
                     "type": "string",
@@ -90,7 +91,8 @@
                         "gpt-4",
                         "gpt-3.5-turbo"
                     ],
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 2
                 },
                 "chatgpt-docstrings.docstringStyle": {
                     "type": "string",
@@ -101,13 +103,15 @@
                         "numpy",
                         "sphinx"
                     ],
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 3
                 },
                 "chatgpt-docstrings.onNewLine": {
                     "type": "boolean",
                     "default": false,
                     "description": "Start docstring on new line.",
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 4
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
@@ -116,19 +120,22 @@
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",
                     "patternErrorMessage": "Must include: \"{function}\"",
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 5
                 },
                 "chatgpt-docstrings.responseTimeout": {
                     "type": "integer",
                     "default": 15,
                     "description": "ChatGPT response timeout in seconds.",
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 6
                 },
                 "chatgpt-docstrings.showProgressNotification": {
                     "type": "boolean",
                     "default": true,
                     "description": "Show progress notification of docstring generation.",
-                    "scope": "resource"
+                    "scope": "resource",
+                    "order": 7
                 }
             }
         },
