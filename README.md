@@ -121,7 +121,7 @@ You can change the API key using the `Set OpenAI API key` command in the Command
     - "gpt-4"
     - "gpt-3.5-turbo"
 
-- `chatgpt-docstrings.docstringFormat`: Which docstring format to use.
+- `chatgpt-docstrings.docstringStyle`: Which docstring style to use.
 
   - *Default value*: "google"
   - *Available options*:
@@ -140,9 +140,9 @@ You can change the API key using the `Set OpenAI API key` command in the Command
 
 - `chatgpt-docstrings.promptPattern`: ChatGPT prompt to generate docstring.
 
-  - *Default value*: "Create docstring in {docstring_format} format for python function below:\n{function}"
+  - *Default value*: "Create docstring in {docstring_style} style for python function below:\n{function}"
 
-  > The expression `{docstring_format}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringFormat`, `{function}` — with the source code of the function for which the docstring will be generated.
+  > The expression `{docstring_style}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringStyle`, `{function}` — with the source code of the function for which the docstring will be generated.
 
 - `chatgpt-docstrings.responseTimeout`: ChatGPT response timeout in seconds.
 

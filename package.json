@@ -92,10 +92,10 @@
                     ],
                     "scope": "resource"
                 },
-                "chatgpt-docstrings.docstringFormat": {
+                "chatgpt-docstrings.docstringStyle": {
                     "type": "string",
                     "default": "google",
-                    "description": "Which docstring format to use.",
+                    "description": "Which docstring style to use.",
                     "enum": [
                         "google",
                         "numpy",
@@ -111,7 +111,7 @@
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
-                    "default": "Create docstring in {docstring_format} format for python function below:\n{function}",
+                    "default": "Create docstring in {docstring_style} style for python function below:\n{function}",
                     "description": "ChatGPT prompt to generate docstring.",
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",

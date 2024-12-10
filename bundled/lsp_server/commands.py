@@ -30,7 +30,7 @@ async def apply_generate_docstring(
     settings = WORKSPACE_SETTINGS.by_document(document)
     openai_model = settings["openaiModel"]
     prompt_pattern = settings["promptPattern"]
-    docstring_format = settings["docstringFormat"]
+    docstring_style = settings["docstringStyle"]
     docs_new_line = settings["onNewLine"]
     response_timeout = settings["responseTimeout"]
 
@@ -47,7 +47,7 @@ async def apply_generate_docstring(
 
     # format prompt
     prompt = prompt_pattern.format(
-        docstring_format=docstring_format, function=cleaned_func
+        docstring_style=docstring_style, function=cleaned_func
     )
     log_to_output(f"Used ChatGPT prompt:\n{prompt}")
 

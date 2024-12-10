@@ -10,7 +10,7 @@ export interface ISettings {
     workspace: string;
     interpreter: string[];
     openaiModel: string;
-    docstringFormat: string;
+    docstringStyle: string;
     onNewLine: boolean;
     promptPattern: string;
     responseTimeout: number;
@@ -68,11 +68,11 @@ export async function getWorkspaceSettings(
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
         openaiModel: config.get<string>(`openaiModel`) ?? 'gpt-4o-mini',
-        docstringFormat: config.get<string>(`docstringFormat`) ?? 'google',
+        docstringStyle: config.get<string>(`docstringStyle`) ?? 'google',
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
         promptPattern:
             config.get<string>(`promptPattern`) ??
-            'Create docstring in {docstring_format} format for python function below:\n{function}',
+            'Create docstring in {docstring_style} style for python function below:\n{function}',
         responseTimeout: config.get<number>(`responseTimeout`) ?? 15,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
     };
@@ -100,12 +100,12 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         workspace: process.cwd(),
         interpreter: interpreter,
         openaiModel: getGlobalValue<string>(config, 'openaiModel', 'gpt-4o-mini'),
-        docstringFormat: getGlobalValue<string>(config, 'docstringFormat', 'google'),
+        docstringStyle: getGlobalValue<string>(config, 'docstringStyle', 'google'),
         onNewLine: getGlobalValue<boolean>(config, `onNewLine`, false),
         promptPattern: getGlobalValue<string>(
             config,
             'promptPattern',
-            'Create docstring in {docstring_format} format for python function below:\n{function}',
+            'Create docstring in {docstring_style} style for python function below:\n{function}',
         ),
         responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 15),
         showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),
@@ -117,7 +117,7 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
     const settings = [
         `${namespace}.interpreter`,
         `${namespace}.openaiModel`,
-        `${namespace}.docstringFormat`,
+        `${namespace}.docstringStyle`,
         `${namespace}.onNewLine`,
         `${namespace}.promptPattern`,
         `${namespace}.responseTimeout`,
