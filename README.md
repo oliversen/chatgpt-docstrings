@@ -140,7 +140,7 @@ You can change the API key using the `Set OpenAI API key` command in the Command
 
 - `chatgpt-docstrings.promptPattern`: ChatGPT prompt to generate docstring.
 
-  - *Default value*: "Create docstring in {docstring_style} style for python function below:\n{function}"
+  - *Default value*: "Generate docstring in {docstring_style} style for python function below:\n{function}"
 
   > The expression `{docstring_style}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringStyle`, `{function}` — with the source code of the function for which the docstring will be generated.
 

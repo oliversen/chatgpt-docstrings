@@ -72,7 +72,7 @@ export async function getWorkspaceSettings(
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
         promptPattern:
             config.get<string>(`promptPattern`) ??
-            'Create docstring in {docstring_style} style for python function below:\n{function}',
+            'Generate docstring in {docstring_style} style for python function below:\n{function}',
         responseTimeout: config.get<number>(`responseTimeout`) ?? 15,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
     };
@@ -105,7 +105,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         promptPattern: getGlobalValue<string>(
             config,
             'promptPattern',
-            'Create docstring in {docstring_style} style for python function below:\n{function}',
+            'Generate docstring in {docstring_style} style for python function below:\n{function}',
         ),
         responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 15),
         showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),

@@ -115,7 +115,7 @@
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
-                    "default": "Create docstring in {docstring_style} style for python function below:\n{function}",
+                    "default": "Generate docstring in {docstring_style} style for python function below:\n{function}",
                     "description": "ChatGPT prompt to generate docstring.",
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",
