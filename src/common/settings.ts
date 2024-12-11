@@ -17,10 +17,6 @@ export interface ISettings {
     showProgressNotification: boolean;
 }
 
-export function getExtensionSettings(namespace: string, includeInterpreter?: boolean): Promise<ISettings[]> {
-    return Promise.all(getWorkspaceFolders().map((w) => getWorkspaceSettings(namespace, w, includeInterpreter)));
-}
-
 function resolveVariables(value: string[], workspace?: WorkspaceFolder): string[] {
     const substitutions = new Map<string, string>();
     const home = process.env.HOME || process.env.USERPROFILE;
@@ -43,9 +39,18 @@ function resolveVariables(value: string[], workspace?: WorkspaceFolder): string[
     });
 }
 
+function getGlobalValue<T>(config: WorkspaceConfiguration, key: string, defaultValue: T): T {
+    const inspect = config.inspect<T>(key);
+    return inspect?.globalValue ?? inspect?.defaultValue ?? defaultValue;
+}
+
 export function getInterpreterFromSetting(namespace: string, scope?: ConfigurationScope) {
     const config = getConfiguration(namespace, scope);
     return config.get<string[]>('interpreter');
+}
+
+export function getExtensionSettings(namespace: string, includeInterpreter?: boolean): Promise<ISettings[]> {
+    return Promise.all(getWorkspaceFolders().map((w) => getWorkspaceSettings(namespace, w, includeInterpreter)));
 }
 
 export async function getWorkspaceSettings(
@@ -77,11 +82,6 @@ export async function getWorkspaceSettings(
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
     };
     return workspaceSetting;
-}
-
-function getGlobalValue<T>(config: WorkspaceConfiguration, key: string, defaultValue: T): T {
-    const inspect = config.inspect<T>(key);
-    return inspect?.globalValue ?? inspect?.defaultValue ?? defaultValue;
 }
 
 export async function getGlobalSettings(namespace: string, includeInterpreter?: boolean): Promise<ISettings> {
