@@ -1,6 +1,6 @@
 [general]
 contrib = contrib-title-conventional-commits
-ignore = body-is-missing
+ignore = body-is-missing,body-min-length
 
 [contrib-title-conventional-commits]
 types = fix,feat,chore,docs,style,refactor,perf,test,revert,ci,build
