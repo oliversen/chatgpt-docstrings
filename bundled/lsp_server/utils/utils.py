@@ -1,7 +1,13 @@
 from __future__ import annotations
 
+from functools import partial
+
+import aiohttp
 import lsprotocol.types as lsp
+from aiohttp_socks import ProxyConnector
 from pygls import workspace
+
+from .proxy import Proxy
 
 
 def create_workspace_edit(
@@ -38,3 +44,16 @@ def match_line_endings(document: workspace.Document, text: str) -> str:
     if actual == expected or actual is None or expected is None:
         return text
     return text.replace(actual, expected)
+
+
+def create_aiosession(proxy: Proxy | None) -> aiohttp.ClientSession:
+    """Creates aiohttp.ClientSession based on the proxy settings."""
+    if proxy:
+        proxy_url = proxy.url.replace("https://", "http://")
+        connector = ProxyConnector.from_url(proxy_url)
+        headers = {"Proxy-Authorization": proxy.authorization}
+        session = aiohttp.ClientSession(connector=connector, headers=headers)
+        session.request = partial(session.request, ssl=proxy.strict_ssl)
+    else:
+        session = aiohttp.ClientSession(trust_env=True)
+    return session

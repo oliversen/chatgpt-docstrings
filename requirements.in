@@ -13,3 +13,4 @@ pygls
 packaging
 jedi
 openai
+aiohttp_socks

@@ -136,6 +136,29 @@
                     "description": "Show progress notification of docstring generation.",
                     "scope": "resource",
                     "order": 7
+                },
+                "chatgpt-docstrings.proxy": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "The URL of the proxy server for OpenAI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: `http`, `https`, `socks4` or `socks5`. The username and password are optional. If not set, will be inherited from the `#http.proxy#` setting. \n\n Examples:  \n - `http://proxy.com:80` \n - `http://127.0.0.1:80` \n - `socks5://user:password@127.0.0.1:1080`",
+                    "pattern": "^((https?|socks[4,5]):\/\/)(\\w+:\\w*@)?(([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}|\\d{1,3}(\\.\\d{1,3}){3})(:\\d{1,5})$|^$",
+                    "patternErrorMessage": "Invalid proxy URL format.",
+                    "scope": "application",
+                    "order": 8
+                },
+                "chatgpt-docstrings.proxyAuthorization": {
+                    "type": ["string"],
+                    "default": "",
+                    "markdownDescription": "The value to send as the `Proxy-Authorization` HTTP header.",
+                    "scope": "application",
+                    "order": 9
+                },
+                "chatgpt-docstrings.proxyStrictSSL": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Controls whether the proxy server certificate should be verified against the list of supplied CAs.",
+                    "scope": "application",
+                    "order": 10
                 }
             }
         },

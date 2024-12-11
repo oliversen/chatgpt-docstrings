@@ -1,10 +1,19 @@
+from __future__ import annotations
+
 import re
 
 import openai
 
+from . import create_aiosession
+from .proxy import Proxy
 
-async def get_docstring(api_key: str, model: str, prompt: str) -> str:
+
+async def get_docstring(
+    api_key: str, model: str, prompt: str, proxy: Proxy | None = None
+) -> str:
     """Generates a docstring using the OpenAI API."""
+    session = create_aiosession(proxy)
+    openai.aiosession.set(session)
     openai.api_key = api_key
 
     system_message = (

@@ -15,6 +15,36 @@ export interface ISettings {
     promptPattern: string;
     responseTimeout: number;
     showProgressNotification: boolean;
+    proxy: IProxy;
+}
+
+interface IProxy {
+    url: string;
+    authorization: string;
+    strictSSL: boolean;
+}
+
+function getProxy(namespace: string): IProxy {
+    const defaultProxy = {
+        url: '',
+        authorization: '',
+        strictSSL: false,
+    };
+    const getProxyConfig = (config: WorkspaceConfiguration): IProxy => ({
+        url: config.get<string>(`proxy`) ?? defaultProxy.url,
+        authorization: config.get<string>(`proxyAuthorization`) ?? defaultProxy.authorization,
+        strictSSL: config.get<boolean>(`proxyStrictSSL`) ?? defaultProxy.strictSSL,
+    });
+    const extConfig = getConfiguration(namespace);
+    const httpConfig = getConfiguration('http');
+    const extProxy = getProxyConfig(extConfig);
+    const appProxy = getProxyConfig(httpConfig);
+    const proxySupport = httpConfig.get<string>('proxySupport') ?? '';
+
+    if (!extProxy.url && proxySupport !== 'off' && appProxy.url) {
+        return appProxy;
+    }
+    return extProxy;
 }
 
 function resolveVariables(value: string[], workspace?: WorkspaceFolder): string[] {
@@ -80,6 +110,7 @@ export async function getWorkspaceSettings(
             'Generate docstring in {docstring_style} style for python function below:\n{function}',
         responseTimeout: config.get<number>(`responseTimeout`) ?? 15,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
+        proxy: getProxy(namespace),
     };
     return workspaceSetting;
 }
@@ -109,6 +140,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         ),
         responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 15),
         showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),
+        proxy: getProxy(namespace),
     };
     return setting;
 }
@@ -121,6 +153,13 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
         `${namespace}.onNewLine`,
         `${namespace}.promptPattern`,
         `${namespace}.responseTimeout`,
+        `${namespace}.proxy`,
+        `${namespace}.proxyAuthorization`,
+        `${namespace}.proxyStrictSSL`,
+        `http.proxy`,
+        `http.proxyAuthorization`,
+        `http.proxyStrictSSL`,
+        `http.proxySupport`,
     ];
     const changed = settings.map((s) => e.affectsConfiguration(s));
     return changed.includes(true);

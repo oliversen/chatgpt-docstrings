@@ -13,6 +13,7 @@ from utils import create_workspace_edit, match_line_endings
 from utils.code_cleaner import FuncCleaner
 from utils.code_parser import FuncParser, NotFuncException
 from utils.docstring import format_docstring, get_docstring
+from utils.proxy import Proxy, is_valid_proxy
 
 
 @LSP_SERVER.command("chatgpt-docstrings.applyGenerate")
@@ -33,6 +34,24 @@ async def apply_generate_docstring(
     docstring_style = settings["docstringStyle"]
     docs_new_line = settings["onNewLine"]
     response_timeout = settings["responseTimeout"]
+    proxy = settings["proxy"].copy()
+    proxy["strict_ssl"] = proxy.pop("strictSSL")
+    proxy = Proxy(**proxy) if proxy["url"] else None
+
+    # proxy validation
+    if proxy and not is_valid_proxy(proxy.url):
+        show_warning(
+            (
+                f"The proxy URL ({proxy.url}) is not valid. "
+                "The format of the URL is: "
+                "`<protocol>://[<username>:<password>@]<host>:<port>`. "
+                "Where `protocol` can be: `http`, `https`, `socks4` or `socks5`. "
+                "The username and password are optional. "
+                "Examples: `http://proxy.com:80`, `http://127.0.0.1:80`, "
+                "`socks5://user:password@127.0.0.1:1080`"
+            )
+        )
+        return
 
     # get function source
     try:
@@ -49,11 +68,13 @@ async def apply_generate_docstring(
     prompt = prompt_pattern.format(
         docstring_style=docstring_style, function=cleaned_func
     )
-    log_to_output(f"Used ChatGPT prompt:\n{prompt}")
+    log_to_output(f"Prompt used:\n{prompt}")
 
     # get gocstring
     with ls.progress(progress_token) as progress:
-        task = asyncio.create_task(get_docstring(openai_api_key, openai_model, prompt))
+        task = asyncio.create_task(
+            get_docstring(openai_api_key, openai_model, prompt, proxy)
+        )
         while 1:
             if task.done():
                 break
