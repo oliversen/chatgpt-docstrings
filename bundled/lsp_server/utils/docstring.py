@@ -4,21 +4,24 @@ import openai
 
 
 async def get_docstring(api_key: str, model: str, prompt: str) -> str:
+    """Generates a docstring using the OpenAI API."""
     openai.api_key = api_key
+
+    system_message = (
+        "When you generate a docstring, "
+        "return me only a string that I can add to my code."
+    )
+    messages = [
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": prompt},
+    ]
+
     response = await openai.ChatCompletion.acreate(
         model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "When you generate a docstring, "
-                    "return me only a string that I can add to my code."
-                ),
-            },
-            {"role": "user", "content": prompt},
-        ],
+        messages=messages,
         temperature=0,
     )
+
     docstring = response.choices[0].message.content
     return docstring
 
@@ -26,29 +29,35 @@ async def get_docstring(api_key: str, model: str, prompt: str) -> str:
 def format_docstring(
     docstring: str, indent_level: int, docs_new_line: bool, quotes_new_line: bool
 ) -> str:
-    # remove function source code including markdown tags
+    """Formats a given docstring by cleaning, adjusting indentation, and adding quotes."""
+    # Extract docstring if it starts with specific function or code block syntax
     if docstring.strip().startswith(("def ", "async ", "```")):
         match = re.search(r'""".*?"""', docstring, flags=re.DOTALL)
         docstring = match.group() if match else docstring
-    # remove leading and trailing whitespaces, newlines, quotes
+
+    # Clean up the docstring, removing any leading/trailing triple quotes and newlines
     docstring = docstring.strip().strip('"""').strip("\r\n")
-    # remove indents
+
+    # Remove leading indentation if it exists (i.e., remove the first 4 spaces)
     if docstring.startswith("    "):
         lines = docstring.splitlines(True)
         docstring = "".join([re.sub(r"^\s{4}", "", line) for line in lines])
-    # split docstring on lines
+
+    # Split docstring into lines and adjust based on 'docs_new_line'
     docstring_lines = docstring.splitlines()
-    # check docstring for multi-line
     if len(docstring_lines) > 1:
-        # eol conversion to single format
         docstring = "\n".join(docstring_lines)
-        # add new lines for docstring
         docstring = f"\n{docstring}\n" if docs_new_line else f"{docstring}\n"
-    # add quotes
+
+    # Add triple quotes around the docstring
     docstring = f'"""{docstring}"""'
-    # add indents
+
+    # Apply indentation to each line in the docstring
     indents = " " * indent_level * 4
     docstring = "".join([f"{indents}{line}" for line in docstring.splitlines(True)])
-    # add new line for opening quotes
-    docstring = f"\n{docstring}" if quotes_new_line else docstring
+
+    # Optionally add a newline before the quotes
+    if quotes_new_line:
+        docstring = f"\n{docstring}"
+
     return docstring
