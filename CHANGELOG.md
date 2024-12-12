@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.9.1 (2024-12-13)
+
+- Fixed HTTP proxy athorisation (`Proxy-Authorisation` header was not used)
+- Updated Python dependencies (aiohttp, aiohttp-socks)
+
 ## 0.9.0 (2024-12-12)
 
 - Added proxy support
