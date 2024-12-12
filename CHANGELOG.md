@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.9.0 (2024-12-12)
+
+- Added proxy support
+- Updated Python dependencies (jedi)
+- Dropped support for Python 3.8
+
 ## 0.8.0 (2024-11-20)
 
 - Added `gpt-4o` and `gpt-4o-mini` OpenAI models
