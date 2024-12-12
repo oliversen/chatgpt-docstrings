@@ -50,10 +50,13 @@ def create_aiosession(proxy: Proxy | None) -> aiohttp.ClientSession:
     """Creates aiohttp.ClientSession based on the proxy settings."""
     if proxy:
         proxy_url = proxy.url.replace("https://", "http://")
-        connector = ProxyConnector.from_url(proxy_url)
-        headers = {"Proxy-Authorization": proxy.authorization}
-        session = aiohttp.ClientSession(connector=connector, headers=headers)
-        session.request = partial(session.request, ssl=proxy.strict_ssl)
+        if proxy_url.startswith("http://"):
+            headers = {"Proxy-Authorization": proxy.authorization}
+            session = aiohttp.ClientSession(proxy=proxy_url, headers=headers)
+            session.request = partial(session.request, ssl=proxy.strict_ssl)
+        else:
+            connector = ProxyConnector.from_url(proxy_url, ssl=proxy.strict_ssl)
+            session = aiohttp.ClientSession(connector=connector)
     else:
         session = aiohttp.ClientSession(trust_env=True)
     return session
