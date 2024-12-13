@@ -26,15 +26,6 @@ class LanguageServer(server.LanguageServer):
     ) -> None:
         ls.lsp.progress_handlers.get(params.token).cancel()
 
-    def apply_edit_async(
-        self, edit: lsp.WorkspaceEdit, label: Optional[str] = None
-    ) -> lsp.WorkspaceApplyEditResponse:
-        """Sends apply edit request to the client. Should be called with `await`"""
-        return self.lsp.send_request_async(
-            lsp.WORKSPACE_APPLY_EDIT,
-            lsp.ApplyWorkspaceEditParams(edit=edit, label=label),
-        )
-
     def _send_telemetry(self, params: TelemetryParams) -> None:
         self.send_notification(lsp.TELEMETRY_EVENT, params)
 

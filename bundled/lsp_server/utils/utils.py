@@ -11,7 +11,7 @@ from .proxy import Proxy
 
 
 def create_workspace_edit(
-    document: lsp.Document, text_edits: list[lsp.TextEdit]
+    document: lsp.Document, document_version: int, text_edits: list[lsp.TextEdit]
 ) -> lsp.WorkspaceEdit:
     """Creates a WorkspaceEdit with the specified text edits for the given document."""
     return lsp.WorkspaceEdit(
@@ -19,7 +19,7 @@ def create_workspace_edit(
             lsp.TextDocumentEdit(
                 text_document=lsp.VersionedTextDocumentIdentifier(
                     uri=document.uri,
-                    version=0 if document.version is None else document.version,
+                    version=document_version,
                 ),
                 edits=text_edits,
             )

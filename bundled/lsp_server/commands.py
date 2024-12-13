@@ -25,6 +25,7 @@ async def apply_generate_docstring(
     openai_api_key = args[1]
     progress_token = args[2]
     document = ls.workspace.get_document(uri)
+    document_version = document.version or 0
     source = document.source
     # TODO: edit cursor
     cursor = lsp.Position(**args[0]["position"])
@@ -115,7 +116,7 @@ async def apply_generate_docstring(
 
     # apply docstring
     text_edits = [lsp.TextEdit(range=docstring_range, new_text=docstring)]
-    workspace_edit = create_workspace_edit(document, text_edits)
+    workspace_edit = create_workspace_edit(document, document_version, text_edits)
     result = await ls.apply_edit_async(workspace_edit)
     if not result.applied:
         reason = (
