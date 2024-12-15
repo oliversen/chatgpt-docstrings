@@ -17,8 +17,7 @@ async def get_docstring(
     openai.api_key = api_key
 
     system_message = (
-        "When you generate a docstring, "
-        "return me only a string that I can add to my code."
+        "When you generate a docstring, just give me the string without the code."
     )
     messages = [
         {"role": "system", "content": system_message},
