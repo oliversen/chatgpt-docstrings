@@ -12,4 +12,5 @@
 pygls
 jedi
 openai
-aiohttp_socks
+pydantic<2  # via openai (pydantic>=2 is not pure python)
+httpx[socks]  # via openai (optional dependency is required to support proxies)

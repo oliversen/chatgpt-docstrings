@@ -155,7 +155,7 @@ You can change the API key using the `Set OpenAI API key` command in the Command
     - true
     - false
 
-- `chatgpt-docstrings.proxy`: The URL of the proxy server for OpenAI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: `http`, `https`, `socks4` or `socks5`. The username and password are optional. If not set, will be inherited from the `http.proxy` setting.
+- `chatgpt-docstrings.proxy`: The URL of the proxy server for OpenAI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `http.proxy` setting.
 
   - *Default value*: ""
   - *Examples*:

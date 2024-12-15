@@ -38,15 +38,16 @@ async def apply_generate_docstring(
     proxy = settings["proxy"].copy()
     proxy["strict_ssl"] = proxy.pop("strictSSL")
     proxy = Proxy(**proxy) if proxy["url"] else None
+    allowed_proxy_protocols = ("http", "https", "socks5", "socks5h")
 
     # proxy validation
-    if proxy and not is_valid_proxy(proxy.url):
+    if proxy and not is_valid_proxy(proxy.url, allowed_proxy_protocols):
         show_warning(
             (
                 f"The proxy URL ({proxy.url}) is not valid. "
                 "The format of the URL is: "
                 "`<protocol>://[<username>:<password>@]<host>:<port>`. "
-                "Where `protocol` can be: `http`, `https`, `socks4` or `socks5`. "
+                f"Where `protocol` can be: {', '.join(allowed_proxy_protocols)}. "
                 "The username and password are optional. "
                 "Examples: `http://proxy.com:80`, `http://127.0.0.1:80`, "
                 "`socks5://user:password@127.0.0.1:1080`"

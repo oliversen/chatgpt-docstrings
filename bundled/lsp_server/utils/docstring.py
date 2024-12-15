@@ -2,19 +2,20 @@ from __future__ import annotations
 
 import re
 
-import openai
+from openai import AsyncOpenAI, OpenAIError
 
-from . import create_aiosession
+from . import create_httpx_client
 from .proxy import Proxy
 
 
 async def get_docstring(
     api_key: str, model: str, prompt: str, proxy: Proxy | None = None
-) -> str:
+) -> str | None:
     """Generates a docstring using the OpenAI API."""
-    session = create_aiosession(proxy)
-    openai.aiosession.set(session)
-    openai.api_key = api_key
+    client = AsyncOpenAI(
+        api_key=api_key,
+        http_client=create_httpx_client(proxy),
+    )
 
     system_message = (
         "When you generate a docstring, just give me the string without the code."
@@ -24,14 +25,19 @@ async def get_docstring(
         {"role": "user", "content": prompt},
     ]
 
-    response = await openai.ChatCompletion.acreate(
+    response = await client.chat.completions.create(
         model=model,
-        messages=messages,
+        messages=messages,  # type: ignore
         temperature=0,
     )
 
-    docstring = response.choices[0].message.content
-    return docstring
+    if response.choices is not None:
+        docstring = response.choices[0].message.content
+        return docstring
+    elif hasattr(response, "error"):
+        raise OpenAIError(response.error["message"])
+    else:
+        raise OpenAIError("Invalid response from API.")
 
 
 def format_docstring(

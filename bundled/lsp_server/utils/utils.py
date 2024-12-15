@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-from functools import partial
-
-import aiohttp
+import httpx
 import lsprotocol.types as lsp
-from aiohttp_socks import ProxyConnector
+from openai import DefaultAsyncHttpxClient
 from pygls import workspace
 
 from .proxy import Proxy
@@ -46,17 +44,21 @@ def match_line_endings(document: workspace.Document, text: str) -> str:
     return text.replace(actual, expected)
 
 
-def create_aiosession(proxy: Proxy | None) -> aiohttp.ClientSession:
-    """Creates aiohttp.ClientSession based on the proxy settings."""
-    if proxy:
-        proxy_url = proxy.url.replace("https://", "http://")
-        if proxy_url.startswith("http://"):
-            headers = {"Proxy-Authorization": proxy.authorization}
-            session = aiohttp.ClientSession(proxy=proxy_url, headers=headers)
-            session.request = partial(session.request, ssl=proxy.strict_ssl)
-        else:
-            connector = ProxyConnector.from_url(proxy_url, ssl=proxy.strict_ssl)
-            session = aiohttp.ClientSession(connector=connector)
+def create_httpx_client(proxy: Proxy | None) -> DefaultAsyncHttpxClient:
+    """Creates openai.DefaultAsyncHttpxClient based on the proxy settings."""
+    if proxy is None:
+        client = DefaultAsyncHttpxClient()
     else:
-        session = aiohttp.ClientSession(trust_env=True)
-    return session
+        if proxy.url.startswith("https://"):
+            ssl_context = httpx.create_ssl_context(proxy.strict_ssl)
+        else:
+            ssl_context = None
+        headers = {"Proxy-Authorization": proxy.authorization}
+        client = DefaultAsyncHttpxClient(
+            proxy=httpx.Proxy(
+                proxy.url,
+                headers=headers,
+                ssl_context=ssl_context,
+            ),
+        )
+    return client
