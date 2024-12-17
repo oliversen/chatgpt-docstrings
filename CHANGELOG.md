@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.2 (2024-12-18)
+
+- Updated Python dependencies (pygls, openai)
+
 ## 0.9.1 (2024-12-13)
 
 - Fixed HTTP proxy athorisation (`Proxy-Authorisation` header was not used)
