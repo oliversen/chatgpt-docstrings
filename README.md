@@ -101,7 +101,7 @@ When you first generate a docstring, a pop-up window will appear requesting you 
 
 ### Change API key
 
-You can change the API key using the `Set OpenAI API key` command in the Command Palette (F1).
+You can change the API key through the Settings editor (***File > Preferences > Settings > Extensions > ChatGPT: Docstring Generator***). Or using the `Set OpenAI API key` command in the Command Palette (F1).
 
 ---
 
