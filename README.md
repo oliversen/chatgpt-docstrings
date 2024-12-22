@@ -111,6 +111,10 @@ You can change the API key through the Settings editor (***File > Preferences > 
 
   - *Default value*: []
 
+- `chatgpt-docstrings.baseUrl`: The base URL for the OpenAI-compatible API.
+
+  - *Default value*: "`https://api.openai.com/v1`"
+
 - `chatgpt-docstrings.aiModel`: Which AI language model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.
 
   - *Default value*: "gpt-4o-mini"

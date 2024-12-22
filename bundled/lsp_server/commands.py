@@ -30,6 +30,7 @@ async def apply_generate_docstring(
     # TODO: edit cursor
     cursor = lsp.Position(**args[0]["position"])
     settings = WORKSPACE_SETTINGS.by_document(document)
+    base_url = settings["baseUrl"]
     model = settings["aiModel"]
     prompt_pattern = settings["promptPattern"]
     docstring_style = settings["docstringStyle"]
@@ -74,7 +75,15 @@ async def apply_generate_docstring(
 
     # get gocstring
     with ls.progress(progress_token) as progress:
-        task = asyncio.create_task(get_docstring(api_key, model, prompt, proxy))
+        task = asyncio.create_task(
+            get_docstring(
+                api_key=api_key,
+                base_url=base_url,
+                model=model,
+                prompt=prompt,
+                proxy=proxy,
+            )
+        )
         while 1:
             if task.done():
                 break

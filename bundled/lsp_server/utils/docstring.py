@@ -9,11 +9,17 @@ from .proxy import Proxy
 
 
 async def get_docstring(
-    api_key: str, model: str, prompt: str, proxy: Proxy | None = None
+    *,
+    api_key: str,
+    model: str,
+    prompt: str,
+    base_url: str | None = None,
+    proxy: Proxy | None = None,
 ) -> str | None:
     """Generates a docstring using the OpenAI API."""
     client = AsyncOpenAI(
         api_key=api_key,
+        base_url=base_url,
         http_client=create_httpx_client(proxy),
     )
 

@@ -9,6 +9,7 @@ export interface ISettings {
     cwd: string;
     workspace: string;
     interpreter: string[];
+    baseUrl: string;
     aiModel: string;
     docstringStyle: string;
     onNewLine: boolean;
@@ -111,6 +112,7 @@ export async function getWorkspaceSettings(
         cwd: workspace.uri.fsPath,
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
+        baseUrl: config.get<string>(`baseUrl`) ?? 'https://api.openai.com/v1',
         aiModel: aiModel,
         docstringStyle: config.get<string>(`docstringStyle`) ?? 'google',
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
@@ -143,6 +145,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         cwd: process.cwd(),
         workspace: process.cwd(),
         interpreter: interpreter,
+        baseUrl: getGlobalValue<string>(config, 'baseUrl', 'https://api.openai.com/v1'),
         aiModel: aiModel,
         docstringStyle: getGlobalValue<string>(config, 'docstringStyle', 'google'),
         onNewLine: getGlobalValue<boolean>(config, `onNewLine`, false),
@@ -161,6 +164,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
 export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespace: string): boolean {
     const settings = [
         `${namespace}.interpreter`,
+        `${namespace}.baseUrl`,
         `${namespace}.aiModel`,
         `${namespace}.aiModelCustom`,
         `${namespace}.docstringStyle`,
