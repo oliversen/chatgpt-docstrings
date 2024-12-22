@@ -9,7 +9,7 @@ export interface ISettings {
     cwd: string;
     workspace: string;
     interpreter: string[];
-    openaiModel: string;
+    aiModel: string;
     docstringStyle: string;
     onNewLine: boolean;
     promptPattern: string;
@@ -102,7 +102,7 @@ export async function getWorkspaceSettings(
         cwd: workspace.uri.fsPath,
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
-        openaiModel: config.get<string>(`openaiModel`) ?? 'gpt-4o-mini',
+        aiModel: config.get<string>(`aiModel`) ?? 'gpt-4o-mini',
         docstringStyle: config.get<string>(`docstringStyle`) ?? 'google',
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
         promptPattern:
@@ -130,7 +130,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         cwd: process.cwd(),
         workspace: process.cwd(),
         interpreter: interpreter,
-        openaiModel: getGlobalValue<string>(config, 'openaiModel', 'gpt-4o-mini'),
+        aiModel: getGlobalValue<string>(config, 'aiModel', 'gpt-4o-mini'),
         docstringStyle: getGlobalValue<string>(config, 'docstringStyle', 'google'),
         onNewLine: getGlobalValue<boolean>(config, `onNewLine`, false),
         promptPattern: getGlobalValue<string>(
@@ -148,7 +148,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
 export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespace: string): boolean {
     const settings = [
         `${namespace}.interpreter`,
-        `${namespace}.openaiModel`,
+        `${namespace}.aiModel`,
         `${namespace}.docstringStyle`,
         `${namespace}.onNewLine`,
         `${namespace}.promptPattern`,

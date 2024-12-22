@@ -111,7 +111,7 @@ You can change the API key through the Settings editor (***File > Preferences > 
 
   - *Default value*: []
 
-- `chatgpt-docstrings.openaiModel`: Which OpenAI model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.
+- `chatgpt-docstrings.aiModel`: Which AI language model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.
 
   - *Default value*: "gpt-4o-mini"
   - *Available options*:

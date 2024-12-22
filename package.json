@@ -88,16 +88,23 @@
                     "scope": "application",
                     "order": 2
                 },
-                "chatgpt-docstrings.openaiModel": {
+                "chatgpt-docstrings.aiModel": {
                     "type": "string",
                     "default": "gpt-4o-mini",
-                    "description": "Which OpenAI model to use. GPT-4, GPT-4 Turbo, and GPT-4o are available in the OpenAI API to paying customers.",
+                    "description": "Which AI language model to use.",
                     "enum": [
                         "gpt-4o-mini",
                         "gpt-4o",
                         "gpt-4-turbo",
                         "gpt-4",
                         "gpt-3.5-turbo"
+                    ],
+                    "enumDescriptions": [
+                        "",
+                        "GPT-4o is available to paying OpenAI API customers",
+                        "GPT-4 Turbo is available to paying OpenAI API customers",
+                        "GPT-4 is available to paying OpenAI API customers",
+                        ""
                     ],
                     "scope": "resource",
                     "order": 3
