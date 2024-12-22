@@ -121,6 +121,10 @@ You can change the API key through the Settings editor (***File > Preferences > 
     - "gpt-4"
     - "gpt-3.5-turbo"
 
+- `chatgpt-docstrings.aiModelCustom`: If set, overrides the model configured in `chatgpt-docstrings.aiModel`.
+
+  - *Default value*: ""
+
 - `chatgpt-docstrings.docstringStyle`: Which docstring style to use.
 
   - *Default value*: "google"

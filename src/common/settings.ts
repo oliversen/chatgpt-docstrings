@@ -98,11 +98,20 @@ export async function getWorkspaceSettings(
         }
     }
 
+    const aiModel =
+        config.inspect<string>('aiModelCustom')?.workspaceFolderValue ??
+        config.inspect<string>('aiModel')?.workspaceFolderValue ??
+        config.inspect<string>('aiModelCustom')?.workspaceValue ??
+        config.inspect<string>('aiModel')?.workspaceValue ??
+        config.inspect<string>('aiModelCustom')?.globalValue ??
+        config.get<string>('aiModel') ??
+        'gpt-4o-mini';
+
     const workspaceSetting = {
         cwd: workspace.uri.fsPath,
         workspace: workspace.uri.toString(),
         interpreter: resolveVariables(interpreter, workspace),
-        aiModel: config.get<string>(`aiModel`) ?? 'gpt-4o-mini',
+        aiModel: aiModel,
         docstringStyle: config.get<string>(`docstringStyle`) ?? 'google',
         onNewLine: config.get<boolean>(`onNewLine`) ?? false,
         promptPattern:
@@ -126,11 +135,15 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
         }
     }
 
+    const aiModel =
+        config.inspect<string>('aiModelCustom')?.globalValue ??
+        getGlobalValue<string>(config, 'aiModel', 'gpt-4o-mini');
+
     const setting = {
         cwd: process.cwd(),
         workspace: process.cwd(),
         interpreter: interpreter,
-        aiModel: getGlobalValue<string>(config, 'aiModel', 'gpt-4o-mini'),
+        aiModel: aiModel,
         docstringStyle: getGlobalValue<string>(config, 'docstringStyle', 'google'),
         onNewLine: getGlobalValue<boolean>(config, `onNewLine`, false),
         promptPattern: getGlobalValue<string>(
@@ -149,6 +162,7 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
     const settings = [
         `${namespace}.interpreter`,
         `${namespace}.aiModel`,
+        `${namespace}.aiModelCustom`,
         `${namespace}.docstringStyle`,
         `${namespace}.onNewLine`,
         `${namespace}.promptPattern`,
