@@ -22,7 +22,7 @@ async def apply_generate_docstring(
     args: list[lsp.TextDocumentPositionParams, str, str],
 ) -> None:
     uri = args[0]["textDocument"]["uri"]
-    openai_api_key = args[1]
+    api_key = args[1]
     progress_token = args[2]
     document = ls.workspace.get_document(uri)
     document_version = document.version or 0
@@ -74,7 +74,7 @@ async def apply_generate_docstring(
 
     # get gocstring
     with ls.progress(progress_token) as progress:
-        task = asyncio.create_task(get_docstring(openai_api_key, model, prompt, proxy))
+        task = asyncio.create_task(get_docstring(api_key, model, prompt, proxy))
         while 1:
             if task.done():
                 break

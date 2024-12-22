@@ -9,7 +9,7 @@ import {
     WorkDoneProgressCancelNotification,
 } from 'vscode-languageclient/node';
 import * as UUID from 'vscode-languageclient/lib/common/utils/uuid';
-import { OpenaiApiKey } from './openai-api-key';
+import { ApiKey } from './api-key';
 import { telemetryReporter } from './telemetry';
 import { getStatus } from './status';
 import { getProjectRoot } from './utilities';
@@ -63,8 +63,8 @@ export async function generateDocstring(
         return;
     }
 
-    const openaiApiKey = await new OpenaiApiKey(lsClient.outputChannel, secrets).get();
-    if (!openaiApiKey) {
+    const apiKey = await new ApiKey(lsClient.outputChannel, secrets).get();
+    if (!apiKey) {
         return;
     }
 
@@ -100,7 +100,7 @@ export async function generateDocstring(
 
             const params: ExecuteCommandParams = {
                 command: 'chatgpt-docstrings.applyGenerate',
-                arguments: [textDocument, openaiApiKey, progressTokenID],
+                arguments: [textDocument, apiKey, progressTokenID],
             };
 
             const p = new Promise<void>((resolve) => {

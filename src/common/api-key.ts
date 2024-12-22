@@ -4,8 +4,8 @@ import { telemetryReporter } from './telemetry';
 
 let _cashedKey: string | undefined = undefined;
 
-export class OpenaiApiKey {
-    private readonly secretId: string = 'openaiApiKey';
+export class ApiKey {
+    private readonly secretId: string = 'apiKey';
     private outputChannel: vscode.OutputChannel;
     private secretStorage: vscode.SecretStorage;
 
@@ -21,12 +21,12 @@ export class OpenaiApiKey {
                     _cashedKey = key;
                 },
                 (error) => {
-                    traceWarn('Failed to get OpenAI API Key from SecretStorage: ', error);
+                    traceWarn('Failed to get API Key from SecretStorage: ', error);
                     const errorJson = { name: error.name, message: error.message, stack: error.stack };
-                    telemetryReporter.sendError('getOpenaiApiKeyError', errorJson);
+                    telemetryReporter.sendError('getApiKeyError', errorJson);
                     vscode.window
                         .showWarningMessage(
-                            `Failed to get OpenAI API Key from SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
+                            `Failed to get API Key from SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
                             { title: 'Open Output', id: 1 },
                         )
                         .then((value) => {
@@ -45,12 +45,12 @@ export class OpenaiApiKey {
         if (key) {
             _cashedKey = key;
             await this.secretStorage.store(this.secretId, key).then(undefined, (error) => {
-                traceWarn('Failed to save OpenAI API Key to SecretStorage: ', error);
+                traceWarn('Failed to save API Key to SecretStorage: ', error);
                 const errorJson = { name: error.name, message: error.message, stack: error.stack };
-                telemetryReporter.sendError('saveOpenaiApiKeyError', errorJson);
+                telemetryReporter.sendError('saveApiKeyError', errorJson);
                 vscode.window
                     .showWarningMessage(
-                        `Failed to save OpenAI API Key to SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
+                        `Failed to save API Key to SecretStorage! See '${this.outputChannel.name}' output channel for details.`,
                         { title: 'Open Output', id: 1 },
                     )
                     .then((value) => {
@@ -65,7 +65,7 @@ export class OpenaiApiKey {
 
     private async _ask() {
         const prompt =
-            'Please enter your OpenAI API key. You can get the key [here](https://platform.openai.com/account/api-keys).';
+            'Please enter your API key. You can get the key [here](https://platform.openai.com/account/api-keys).';
         const key = await vscode.window.showInputBox({
             prompt: prompt,
             validateInput: (text) => {

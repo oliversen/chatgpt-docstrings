@@ -82,9 +82,9 @@
                 },
                 "chatgpt-docstrings.apiKey": {
                     "type": "string",
-                    "markdownDescription": "[Click here to set API key](command:chatgpt-docstrings.setOpenaiApiKey)",
+                    "markdownDescription": "[Click here to set API key](command:chatgpt-docstrings.setApiKey)",
                     "pattern": "^$",
-                    "patternErrorMessage": "It is not allowed to set the API key in the settings. Use the `chatgpt-docstrings.setOpenaiApiKey` command.",
+                    "patternErrorMessage": "It is not allowed to set the API key in the settings. Use the `chatgpt-docstrings.setApiKey` command.",
                     "scope": "application",
                     "order": 2
                 },
@@ -184,9 +184,9 @@
                 "command": "chatgpt-docstrings.generateDocstring"
             },
             {
-                "title": "Set OpenAI API key",
+                "title": "Set API key",
                 "category": "ChatGPT: Docstring Generator",
-                "command": "chatgpt-docstrings.setOpenaiApiKey"
+                "command": "chatgpt-docstrings.setApiKey"
             },
             {
                 "title": "Restart Server",
