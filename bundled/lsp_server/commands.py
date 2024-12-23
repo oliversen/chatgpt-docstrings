@@ -89,18 +89,18 @@ async def apply_generate_docstring(
                 break
             if timeout == 0:
                 task.cancel()
-                show_warning("ChatGPT request timed out.")
+                show_warning("AI API request timed out.")
                 return
             if progress.cancelled:
                 task.cancel()
                 return
-            progress.report(f"Waiting for ChatGPT response ({timeout} secs)...")
+            progress.report(f"Waiting for AI response ({timeout} secs)...")
             await asyncio.sleep(1)
             timeout -= 1
         if task.exception():
             raise task.exception()
         docstring = task.result()
-    log_to_output(f"Received ChatGPT docstring:\n{docstring}")
+    log_to_output(f"Response received:\n{docstring}")
 
     # define docsting position
     if parsed_func.docstring_range:

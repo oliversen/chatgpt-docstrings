@@ -147,7 +147,7 @@
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
                     "default": "Generate docstring in {docstring_style} style for python function below:\n{function}",
-                    "description": "ChatGPT prompt to generate docstring.",
+                    "description": "AI prompt to generate docstring.",
                     "editPresentation": "multilineText",
                     "pattern": ".*{function}.*",
                     "patternErrorMessage": "Must include: \"{function}\"",
@@ -157,7 +157,7 @@
                 "chatgpt-docstrings.requestTimeout": {
                     "type": "integer",
                     "default": 15,
-                    "description": "The timeout in seconds to use when sending ChatGPT requests.",
+                    "description": "The timeout in seconds to use when sending AI API requests.",
                     "scope": "resource",
                     "order": 9
                 },
@@ -171,7 +171,7 @@
                 "chatgpt-docstrings.proxy": {
                     "type": "string",
                     "default": "",
-                    "markdownDescription": "The URL of the proxy server for API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `#http.proxy#` setting. \n\n Examples:  \n - `http://proxy.com:80` \n - `http://127.0.0.1:80` \n - `socks5://user:password@127.0.0.1:1080`",
+                    "markdownDescription": "The URL of the proxy server for AI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `#http.proxy#` setting. \n\n Examples:  \n - `http://proxy.com:80` \n - `http://127.0.0.1:80` \n - `socks5://user:password@127.0.0.1:1080`",
                     "pattern": "^((https?|socks5h?):\/\/)(\\w+:\\w*@)?(([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}|\\d{1,3}(\\.\\d{1,3}){3})(:\\d{1,5})$|^$",
                     "patternErrorMessage": "Invalid proxy URL format.",
                     "scope": "application",

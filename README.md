@@ -12,7 +12,7 @@
 
 > Notice!
 >
-> - To use the extension **you need [OpenAI API key](#openai-api-key)**. The balance of your OpenAI profile must be positive.
+> - To use the extension, **you need an [API key](#api-key)** from [OpenAI](https://platform.openai.com/account/api-keys) or [another OpenAI-compatible provider](#switching-ai-providers).
 > - **This is a pre-release** version of the extension. In case of issues, please keep [feedback](#feedback) on github.
 
 ## Table of Contents
@@ -24,10 +24,8 @@
   - [Context Menu](#context-menu)
   - [Command Palette](#command-palette)
   - [Keyboard Shortcut](#keyboard-shortcut)
-- [OpenAI API key](#openai-api-key)
-  - [Get API key](#get-api-key)
-  - [Set API key](#set-api-key)
-  - [Change API key](#change-api-key)
+- [API key](#api-key)
+- [Switching AI Providers](#switching-ai-providers)
 - [Settings](#settings)
 - [Telemetry](#telemetry)
 - [Change Log](#change-log)
@@ -83,25 +81,27 @@ Use the following keyboard shortcut:
 
 ---
 
-## OpenAI API key
+## API key
 
-To use the extension, you will need an OpenAI API key.
+To use the extension, you need an API key from [OpenAI](https://platform.openai.com/account/api-keys) or [another OpenAI-compatible provider](#switching-ai-providers).
 
-### Get API key
+### How to Set or Change API Key
 
-To obtain one, follow these steps:
+When you first generate a docstring, a pop-up window will appear requesting you to enter your API key. You can change the API key through the Settings editor (***File > Preferences > Settings > Extensions > ChatGPT: Docstring Generator***). Or using the `Set API key` command in the Command Palette (F1).
 
-1. Go to OpenAI's [website](https://platform.openai.com/account/api-keys). Log in or sign up there.
-2. Click on the Create new secret key button.
-3. Copy the key.
+---
 
-### Set API key
+## Switching AI Providers
 
-When you first generate a docstring, a pop-up window will appear requesting you to enter your API key.
+By default, this extension uses OpenAI API to generate docstrings. However, you can easily switch to other AI services that support OpenAI-compatible APIs.
 
-### Change API key
+### How to Change AI Provider
 
-You can change the API key through the Settings editor (***File > Preferences > Settings > Extensions > ChatGPT: Docstring Generator***). Or using the `Set API key` command in the Command Palette (F1).
+1. **Set the Base URL:** In the extension settings, locate the `baseUrl` parameter. You can change this to point to a different OpenAI-compatible API, such as [OpenRouter](https://openrouter.ai), which offers access to a variety of AI models. For example, to use [OpenRouter](https://openrouter.ai), set the `baseUrl` to: `https://openrouter.ai/api/v1`
+2. **Specify the AI Model:** To specify which model you want to use, locate the `aiModelCustom` parameter in the settings. Here, you can define the exact AI model you wish to interact with, depending on the service you're using. For example, if you're using [OpenRouter](https://openrouter.ai), you might choose from models such as `anthropic/claude-3.5-haiku`, `google/gemini-pro-1.5`, or others depending on availability.
+3. **Set the API Key:** [Set your API key](#how-to-set-or-change-api-key) for the selected AI service. You can obtain this key from the service website.
+
+Now, the extension will route requests through the selected AI service. Ensure the provider you choose is compatible with OpenAI’s API.
 
 ---
 
@@ -146,13 +146,13 @@ You can change the API key through the Settings editor (***File > Preferences > 
 
   > Option ignored for one-line docstring
 
-- `chatgpt-docstrings.promptPattern`: ChatGPT prompt to generate docstring.
+- `chatgpt-docstrings.promptPattern`: AI prompt to generate docstring.
 
   - *Default value*: "Generate docstring in {docstring_style} style for python function below:\n{function}"
 
   > The expression `{docstring_style}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringStyle`, `{function}` — with the source code of the function for which the docstring will be generated.
 
-- `chatgpt-docstrings.requestTimeout`: The timeout in seconds to use when sending ChatGPT requests.
+- `chatgpt-docstrings.requestTimeout`: The timeout in seconds to use when sending AI API requests.
 
   - *Default value*: 15
 
@@ -163,7 +163,7 @@ You can change the API key through the Settings editor (***File > Preferences > 
     - true
     - false
 
-- `chatgpt-docstrings.proxy`: The URL of the proxy server for OpenAI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `http.proxy` setting.
+- `chatgpt-docstrings.proxy`: The URL of the proxy server for AI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `http.proxy` setting.
 
   - *Default value*: ""
   - *Examples*:
