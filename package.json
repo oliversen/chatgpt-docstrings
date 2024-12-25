@@ -138,10 +138,10 @@
                     "scope": "resource",
                     "order": 6
                 },
-                "chatgpt-docstrings.responseTimeout": {
+                "chatgpt-docstrings.requestTimeout": {
                     "type": "integer",
                     "default": 15,
-                    "description": "ChatGPT response timeout in seconds.",
+                    "description": "The timeout in seconds to use when sending ChatGPT requests.",
                     "scope": "resource",
                     "order": 7
                 },

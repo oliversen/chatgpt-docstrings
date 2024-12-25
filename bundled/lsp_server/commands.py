@@ -34,7 +34,7 @@ async def apply_generate_docstring(
     prompt_pattern = settings["promptPattern"]
     docstring_style = settings["docstringStyle"]
     docs_new_line = settings["onNewLine"]
-    response_timeout = settings["responseTimeout"]
+    timeout = settings["requestTimeout"]
     proxy = settings["proxy"].copy()
     proxy["strict_ssl"] = proxy.pop("strictSSL")
     proxy = Proxy(**proxy) if proxy["url"] else None
@@ -78,18 +78,16 @@ async def apply_generate_docstring(
         while 1:
             if task.done():
                 break
-            if response_timeout == 0:
+            if timeout == 0:
                 task.cancel()
-                show_warning("ChatGPT response timed out.")
+                show_warning("ChatGPT request timed out.")
                 return
             if progress.cancelled:
                 task.cancel()
                 return
-            progress.report(
-                f"Waiting for ChatGPT response ({response_timeout} secs)..."
-            )
+            progress.report(f"Waiting for ChatGPT response ({timeout} secs)...")
             await asyncio.sleep(1)
-            response_timeout -= 1
+            timeout -= 1
         if task.exception():
             raise task.exception()
         docstring = task.result()

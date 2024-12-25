@@ -144,7 +144,7 @@ You can change the API key through the Settings editor (***File > Preferences > 
 
   > The expression `{docstring_style}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringStyle`, `{function}` — with the source code of the function for which the docstring will be generated.
 
-- `chatgpt-docstrings.responseTimeout`: ChatGPT response timeout in seconds.
+- `chatgpt-docstrings.requestTimeout`: The timeout in seconds to use when sending ChatGPT requests.
 
   - *Default value*: 15
 

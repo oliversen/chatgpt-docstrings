@@ -13,7 +13,7 @@ export interface ISettings {
     docstringStyle: string;
     onNewLine: boolean;
     promptPattern: string;
-    responseTimeout: number;
+    requestTimeout: number;
     showProgressNotification: boolean;
     proxy: IProxy;
 }
@@ -108,7 +108,7 @@ export async function getWorkspaceSettings(
         promptPattern:
             config.get<string>(`promptPattern`) ??
             'Generate docstring in {docstring_style} style for python function below:\n{function}',
-        responseTimeout: config.get<number>(`responseTimeout`) ?? 15,
+        requestTimeout: config.get<number>(`requestTimeout`) ?? 15,
         showProgressNotification: config.get<boolean>(`showProgressNotification`) ?? true,
         proxy: getProxy(namespace),
     };
@@ -138,7 +138,7 @@ export async function getGlobalSettings(namespace: string, includeInterpreter?: 
             'promptPattern',
             'Generate docstring in {docstring_style} style for python function below:\n{function}',
         ),
-        responseTimeout: getGlobalValue<number>(config, 'responseTimeout', 15),
+        requestTimeout: getGlobalValue<number>(config, 'requestTimeout', 15),
         showProgressNotification: getGlobalValue<boolean>(config, `showProgressNotification`, true),
         proxy: getProxy(namespace),
     };
@@ -152,7 +152,7 @@ export function checkIfConfigurationChanged(e: ConfigurationChangeEvent, namespa
         `${namespace}.docstringStyle`,
         `${namespace}.onNewLine`,
         `${namespace}.promptPattern`,
-        `${namespace}.responseTimeout`,
+        `${namespace}.requestTimeout`,
         `${namespace}.proxy`,
         `${namespace}.proxyAuthorization`,
         `${namespace}.proxyStrictSSL`,
