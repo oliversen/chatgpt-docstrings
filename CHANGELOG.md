@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.10.0 (2024-12-25)
+
+- Added support for different AI providers
+
 ## 0.9.2 (2024-12-18)
 
 - Updated Python dependencies (pygls, openai)
