@@ -50,18 +50,19 @@ def format_docstring(
     docstring: str, indent_level: int, docs_new_line: bool, quotes_new_line: bool
 ) -> str:
     """Formats a given docstring by cleaning, adjusting indentation, and adding quotes."""
-    # Extract docstring if it starts with specific function or code block syntax
-    if docstring.strip().startswith(("def ", "async ", "```")):
-        match = re.search(r'""".*?"""', docstring, flags=re.DOTALL)
-        docstring = match.group() if match else docstring
+    # Extract docstring from triple quotes
+    match = re.search('"""(.+?)"""', docstring, re.DOTALL)
+    docstring = match.group(1) if match else docstring
 
-    # Clean up the docstring, removing any leading/trailing triple quotes and newlines
-    docstring = docstring.strip().strip('"""').strip("\r\n")
+    # Remove leading/trailing quotes and blank lines
+    # `.strip()` is not used to avoid losing indentation
+    docstring = re.sub(r"^([\s`'\"]*[\r\n]+)+|[\s`'\"]*$", "", docstring)
 
-    # Remove leading indentation if it exists (i.e., remove the first 4 spaces)
-    if docstring.startswith("    "):
-        lines = docstring.splitlines(True)
-        docstring = "".join([re.sub(r"^\s{4}", "", line) for line in lines])
+    # Remove indentation
+    lines = docstring.splitlines(True)
+    indent = len(lines[0]) - len(lines[0].lstrip(" "))
+    lines = [line[indent:] if line.startswith(" " * indent) else line for line in lines]
+    docstring = "".join(lines)
 
     # Split docstring into lines and adjust based on 'docs_new_line'
     docstring_lines = docstring.splitlines()
