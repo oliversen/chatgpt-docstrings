@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.10.1 (2025-01-17)
+
+- Improved formatting of generated docstring
+
 ## 0.10.0 (2024-12-25)
 
 - Added support for different AI providers
