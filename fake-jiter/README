@@ -1,0 +1,2 @@
+The 'openai' Python package depends on the 'jiter' package, which is not pure Python.
+We use the fake 'jiter' to keep it cross-platform.

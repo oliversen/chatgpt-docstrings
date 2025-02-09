@@ -21,10 +21,7 @@ node_modules/**
 noxfile.py
 out/**
 pyproject.toml
-requirements-dev.txt
-requirements.in
-requirements.txt
-runtime.txt
 src/**
 tsconfig.json
+uv.lock
 webpack.config.js
