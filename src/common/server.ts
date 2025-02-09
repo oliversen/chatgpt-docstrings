@@ -10,7 +10,7 @@ import {
     RevealOutputChannelOn,
     ServerOptions,
 } from 'vscode-languageclient/node';
-import { DEBUG_SERVER_SCRIPT_PATH, SERVER_SCRIPT_PATH } from './constants';
+import { SERVER_DEBUG_SCRIPT_PATH, SERVER_START_SCRIPT_PATH, SERVER_LIBS_PATH } from './constants';
 import { traceError, traceWarn, traceInfo, traceVerbose } from './log/logging';
 import { getDebuggerPath, checkVersion, resolveInterpreter, getInterpreterDetails } from './python';
 import {
@@ -71,17 +71,19 @@ async function createServer(
     // Set debugger path needed for debugging python code.
     const newEnv = { ...process.env };
     const debuggerPath = await getDebuggerPath();
-    const isDebugScript = await fsapi.pathExists(DEBUG_SERVER_SCRIPT_PATH);
+    const isDebugScript = await fsapi.pathExists(SERVER_DEBUG_SCRIPT_PATH);
     if (newEnv.USE_DEBUGPY && debuggerPath) {
         newEnv.DEBUGPY_PATH = debuggerPath;
     } else {
         newEnv.USE_DEBUGPY = 'False';
     }
 
+    newEnv.PYTHONPATH = SERVER_LIBS_PATH;
+
     const args =
         newEnv.USE_DEBUGPY === 'False' || !isDebugScript
-            ? settings.interpreter.slice(1).concat([SERVER_SCRIPT_PATH])
-            : settings.interpreter.slice(1).concat([DEBUG_SERVER_SCRIPT_PATH]);
+            ? settings.interpreter.slice(1).concat([SERVER_START_SCRIPT_PATH])
+            : settings.interpreter.slice(1).concat([SERVER_DEBUG_SCRIPT_PATH]);
     traceInfo(`Server run command: ${[command, ...args].join(' ')}`);
 
     const serverOptions: ServerOptions = {

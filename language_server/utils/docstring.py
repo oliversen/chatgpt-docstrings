@@ -4,18 +4,19 @@ import re
 
 from openai import AsyncOpenAI, OpenAIError
 
-from . import create_httpx_client
+from . import create_httpx_client, stub_for_tests
 from .proxy import Proxy
 
 
-async def get_docstring(
+@stub_for_tests(return_value='"""docstring"""')
+async def generate_docstring(
     *,
     api_key: str,
     model: str,
     prompt: str,
     base_url: str | None = None,
     proxy: Proxy | None = None,
-) -> str | None:
+) -> str:
     """Generates a docstring using the OpenAI API."""
     client = AsyncOpenAI(
         api_key=api_key,
@@ -37,19 +38,16 @@ async def get_docstring(
         temperature=0,
     )
 
-    if response.choices is not None:
-        docstring = response.choices[0].message.content
+    if response.choices and (docstring := response.choices[0].message.content):
         return docstring
-    elif hasattr(response, "error"):
-        raise OpenAIError(response.error["message"])
+    elif error := getattr(response, "error", None):
+        raise OpenAIError(error["message"])
     else:
         raise OpenAIError("Invalid response from API.")
 
 
-def format_docstring(
-    docstring: str, indent_level: int, docs_new_line: bool, quotes_new_line: bool
-) -> str:
-    """Formats a given docstring by cleaning, adjusting indentation, and adding quotes."""
+def parse_docstring(docstring: str) -> str:
+    """Extract and clean a docstring by removing quotes, blank lines, and indentation."""
     # Extract docstring from triple quotes
     match = re.search('"""(.+?)"""', docstring, re.DOTALL)
     docstring = match.group(1) if match else docstring
@@ -61,24 +59,31 @@ def format_docstring(
     # Remove indentation
     lines = docstring.splitlines(True)
     indent = len(lines[0]) - len(lines[0].lstrip(" "))
-    lines = [line[indent:] if line.startswith(" " * indent) else line for line in lines]
-    docstring = "".join(lines)
+    if indent:
+        lines = [
+            line[indent:] if line.startswith(" " * indent) else line for line in lines
+        ]
+        docstring = "".join(lines)
 
-    # Split docstring into lines and adjust based on 'docs_new_line'
+    return docstring
+
+
+def format_docstring(docstring: str, indent_level: int, on_new_line: bool) -> str:
+    """Formats a docstring with indentation, optional newlines, and triple quotes."""
+    # Add newlines to the multiline docstring
     docstring_lines = docstring.splitlines()
     if len(docstring_lines) > 1:
         docstring = "\n".join(docstring_lines)
-        docstring = f"\n{docstring}\n" if docs_new_line else f"{docstring}\n"
+        docstring = f"\n{docstring}\n" if on_new_line else f"{docstring}\n"
 
     # Add triple quotes around the docstring
     docstring = f'"""{docstring}"""'
 
-    # Apply indentation to each line in the docstring
+    # Add indentation
     indents = " " * indent_level * 4
     docstring = "".join([f"{indents}{line}" for line in docstring.splitlines(True)])
 
-    # Optionally add a newline before the quotes
-    if quotes_new_line:
-        docstring = f"\n{docstring}"
+    # Add newline after the docstring
+    docstring = f"{docstring}\n"
 
     return docstring

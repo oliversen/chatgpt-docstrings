@@ -4,38 +4,44 @@ import re
 
 import lsprotocol.types as lsp
 
-from server import LSP_SERVER
-from utils.code_parser import FuncParser, NotFuncException
+import server
+from utils import get_entity_at_cursor, mark_as_feature
+from utils.code_analyzers.base import BaseFunction
 
 
-@LSP_SERVER.feature(
+@mark_as_feature(
     lsp.TEXT_DOCUMENT_COMPLETION, lsp.CompletionOptions(trigger_characters=['"'])
 )
-def completions(params: lsp.CompletionParams) -> None | lsp.CompletionList:
-    """Returns completion items."""
+def completions(
+    ls: server.DocstringLanguageServer, params: lsp.CompletionParams
+) -> None | lsp.CompletionList:
+    """Returns completion items for docstring generation."""
     cursor = params.position
     uri = params.text_document.uri
-    document = LSP_SERVER.workspace.get_document(uri)
-    source = document.source
+    document = ls.workspace.get_document(uri)
 
-    validate = document.lines[cursor.line][0 : cursor.character]
-    if re.match(r'^(\s{4})+"""$', validate):
-        try:
-            parsed_func = FuncParser(source, cursor)
-        except NotFuncException:
-            return
-        if cursor.line != parsed_func.suite.line:
-            return
+    # Check if the cursor is positioned after an opening triple quote for a docstring
+    line_before_cursor = document.lines[cursor.line][0 : cursor.character]
+    if re.match(r'^(\s{4})+"""$', line_before_cursor):
+        code_entity = get_entity_at_cursor(document.source, cursor)
+        if (
+            not code_entity
+            or not isinstance(code_entity, BaseFunction)
+            or cursor.line != code_entity.signature_end.line
+        ):
+            return None
+
         completion_text = (
-            "" if parsed_func.docstring_range else 'Await docstring generation..."""'
+            "" if code_entity.docstring_range else 'Await docstring generation..."""'
         )
         return _create_completion_list(cursor, completion_text)
-    return
+    return None
 
 
 def _create_completion_list(
     cursor: lsp.Position, completion_text: str
 ) -> lsp.CompletionList:
+    """Creates a CompletionList containing the provided completion text."""
     return lsp.CompletionList(
         is_incomplete=False,
         items=[

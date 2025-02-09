@@ -4,6 +4,6 @@ dist/
 node_modules/
 .venv/
 .nox/
-bundled/libs/
+language_server/libs/
 **/__pycache__/
 **/.pytest_cache/

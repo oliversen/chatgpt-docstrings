@@ -14,8 +14,8 @@
 .venv/**
 .vscode-test/**
 .vscode/**
-bundled/libs/*.dist-info/**
-bundled/libs/bin/**
+language_server/libs/*.dist-info/**
+language_server/libs/bin/**
 images/readme/**
 node_modules/**
 noxfile.py
