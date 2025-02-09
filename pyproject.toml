@@ -65,7 +65,8 @@ exclude = [
     "__pycache__",
     "src",
     "node_modules",
-    "language_server/libs"
+    "language_server/libs",
+    "tests/asserts"
 ]
 max-line-length = 90
 inline-quotes = "\""
@@ -96,11 +97,26 @@ extend-ignore = [
     # Missing docstring in __init__
     "D107"
 ]
+per-file-ignores = [
+    # Missing docstring in public class (D101)
+    # Missing docstring in public method (D102)
+    # Missing docstring in public function (D103)
+    # Module level import not at top of file (E402)
+    # Additional newline in a group of imports (I202)
+    "tests/*.py: D101, D102, D103, E402, I202",
+]
 
 [tool.black]
 exclude = '''
 .venv|
 .nox|
 node_modules|
-language_server/libs
+language_server/libs|
+tests/asserts
 '''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["language_server", "language_server/libs"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
