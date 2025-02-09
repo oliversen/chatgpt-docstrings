@@ -130,6 +130,7 @@ dev = [
     { name = "flake8-pyproject" },
     { name = "flake8-quotes" },
     { name = "flake8-simplify" },
+    { name = "flake8-todo" },
     { name = "isort" },
     { name = "nox" },
     { name = "pre-commit" },
@@ -156,6 +157,7 @@ linting = [
     { name = "flake8-pyproject" },
     { name = "flake8-quotes" },
     { name = "flake8-simplify" },
+    { name = "flake8-todo" },
     { name = "isort" },
     { name = "pyright" },
 ]
@@ -178,6 +180,7 @@ dev = [
     { name = "flake8-pyproject", specifier = ">=1.2" },
     { name = "flake8-quotes", specifier = ">=3.4" },
     { name = "flake8-simplify", specifier = ">=0.21" },
+    { name = "flake8-todo", specifier = ">=0.7" },
     { name = "isort", specifier = ">=5.13" },
     { name = "nox", specifier = "==2024.10.9" },
     { name = "pre-commit", specifier = "~=4.0" },
@@ -204,6 +207,7 @@ linting = [
     { name = "flake8-pyproject", specifier = ">=1.2" },
     { name = "flake8-quotes", specifier = ">=3.4" },
     { name = "flake8-simplify", specifier = ">=0.21" },
+    { name = "flake8-todo", specifier = ">=0.7" },
     { name = "isort", specifier = ">=5.13" },
     { name = "pyright", specifier = ">=1.1" },
 ]
@@ -393,6 +397,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/32/c0/4cd41ef29b5b19da0
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/c5/832d27af89939d06b43cf36138ffaf27e5b38e0d2b82183ef46110ebeb96/flake8_simplify-0.21.0-py3-none-any.whl", hash = "sha256:439391e762a9370b371208add0b5c5c40c3d25a98e1f5421d263215d08194183", size = 26884 },
 ]
+
+[[package]]
+name = "flake8-todo"
+version = "0.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pycodestyle" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/97/44/4ddfdb3cf642d51858d81472b71e77fd4fb409699f4e9072faf5ae3b4cf9/flake8-todo-0.7.tar.gz", hash = "sha256:6e4c5491ff838c06fe5a771b0e95ee15fc005ca57196011011280fc834a85915", size = 2298 }
 
 [[package]]
 name = "h11"

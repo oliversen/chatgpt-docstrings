@@ -24,7 +24,8 @@ linting = [
     "flake8-isort>=6.1",
     "flake8-pyproject>=1.2",
     "flake8-quotes>=3.4",
-    "flake8-simplify>=0.21"
+    "flake8-simplify>=0.21",
+    "flake8-todo>=0.7"
 ]
 testing = [
     "pytest~=8.3",
