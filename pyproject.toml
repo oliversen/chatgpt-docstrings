@@ -13,6 +13,7 @@ language-server = [
     "jiter==0.4"  # via openai (see tool.uv.sources section)
 ]
 linting = [
+    "pyright>=1.1",
     "isort>=5.13",
     "black>=24.10",
     "flake8>=7.1",
@@ -41,6 +42,16 @@ package = false
 
 [tool.uv.sources]
 jiter = { path = "fake-jiter/jiter-0.4.0-py3-none-any.whl" }  # original 'jiter' is not pure Python
+
+[tool.pyright]
+exclude = [
+    ".venv",
+    ".nox",
+    "src",
+    "language_server/libs"
+]
+extraPaths = ["language_server/libs"]
+pythonPlatform = "All"
 
 [tool.isort]
 src_paths = ["language_server"]
