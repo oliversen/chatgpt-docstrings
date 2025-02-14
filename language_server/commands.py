@@ -10,7 +10,7 @@ from pygls.workspace import TextDocument as LSPTextDocument
 import server
 from settings import ALLOWED_PROXY_PROTOCOLS
 from utils import get_entity_at_cursor, mark_as_command, match_line_endings
-from utils.code_analyzers.base import BaseFunction, CodeEntity
+from utils.code_analyzers.base import CodeEntity, NamedCodeEntity
 from utils.docstring import format_docstring, generate_docstring, parse_docstring
 from utils.proxy import Proxy
 
@@ -70,13 +70,15 @@ async def apply_generate_docstring(
 
     # Parse and clean code entity
     code_entity = get_entity_at_cursor(document.source, cursor)
-    if not code_entity or not isinstance(code_entity, BaseFunction):
+    if not code_entity or not isinstance(code_entity, NamedCodeEntity):
         _notify_invalid_context(ls)
         return False
     cleaned_code_entity = code_entity.clean_code()
 
     # Prepare the docstring generation prompt
-    prompt = _prepare_docstring_prompt(settings, cleaned_code_entity)
+    prompt = _prepare_docstring_prompt(
+        settings, code_entity.entity_name, cleaned_code_entity
+    )
     ls.log_to_output(f"Prompt used:\n{prompt}")
 
     # Create a future to track the progress cancellation
@@ -182,14 +184,14 @@ def _notify_invalid_context(ls: server.DocstringLanguageServer) -> None:
     ls.show_warning(
         "Failed to determine the Python code entity for generating the docstring. "
         "The code may contain a syntax error. "
-        "Make sure the cursor is positioned inside a function."
+        "Make sure the cursor is positioned inside a function or class."
     )
 
 
-def _prepare_docstring_prompt(settings: dict, code: str) -> str:
+def _prepare_docstring_prompt(settings: dict, entity: str, code: str) -> str:
     """Prepares the prompt for docstring generation."""
     return settings["promptPattern"].format(
-        docstring_style=settings["docstringStyle"], code=code
+        docstring_style=settings["docstringStyle"], entity=entity, code=code
     )
 
 

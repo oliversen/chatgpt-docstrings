@@ -148,9 +148,14 @@ Now, the extension will route requests through the selected AI service. Ensure t
 
 - `chatgpt-docstrings.promptPattern`: AI prompt to generate docstring.
 
-  - *Default value*: "Generate docstring in {docstring_style} style for python function below:\n{function}"
+  - *Default value*: "Generate a {docstring_style}-style docstring for the following Python {entity} code:\n{code}"
 
-  > The expression `{docstring_style}` used in the prompt will be replaced with the value of the parameter `chatgpt-docstrings.docstringStyle`, `{function}` — with the source code of the function for which the docstring will be generated.
+  > Placeholders enclosed in curly brackets `{}` will be replaced as follows:
+  > - `{docstring_style}` — the value of the parameter `chatgpt-docstrings.docstringStyle`
+  > - `{entity}` — the type of code entity, such as "function" or "class", based on the context
+  > - `{code}` — the source code of the function or class for which the docstring will be generated
+  >
+  > **Example**: Generate a google-style docstring for the following Python function code:\n def sum(x, y): ...
 
 - `chatgpt-docstrings.requestTimeout`: The timeout in seconds to use when sending AI API requests.
 

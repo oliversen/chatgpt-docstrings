@@ -6,7 +6,7 @@ import lsprotocol.types as lsp
 
 import server
 from utils import get_entity_at_cursor, mark_as_feature
-from utils.code_analyzers.base import BaseFunction
+from utils.code_analyzers.base import NamedCodeEntity
 
 
 @mark_as_feature(
@@ -26,7 +26,7 @@ def completions(
         code_entity = get_entity_at_cursor(document.source, cursor)
         if (
             not code_entity
-            or not isinstance(code_entity, BaseFunction)
+            or not isinstance(code_entity, NamedCodeEntity)
             or cursor.line != code_entity.signature_end.line
         ):
             return None

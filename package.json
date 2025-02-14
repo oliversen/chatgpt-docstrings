@@ -146,11 +146,11 @@
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
-                    "default": "Generate docstring in {docstring_style} style for python function below:\n{function}",
-                    "description": "AI prompt to generate docstring.",
+                    "default": "Generate a {docstring_style}-style docstring for the following Python {entity} code:\n{code}",
+                    "markdownDescription": "AI prompt to generate docstring.\n\nPlaceholders enclosed in curly brackets `{}` will be replaced as follows:\n- `{docstring_style}` — the value of the parameter `#chatgpt-docstrings.docstringStyle#`\n- `{entity}` — the type of code entity, such as 'function' or 'class', based on the context\n- `{code}` — the source code of the function or class for which the docstring will be generated",
                     "editPresentation": "multilineText",
-                    "pattern": ".*{function}.*",
-                    "patternErrorMessage": "Must include: \"{function}\"",
+                    "pattern": "{code}",
+                    "patternErrorMessage": "Must include: \"{code}\"",
                     "scope": "resource",
                     "order": 8
                 },
