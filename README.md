@@ -13,7 +13,7 @@
 > Notice!
 >
 > - To use the extension, **you need an [API key](#api-key)** from [OpenAI](https://platform.openai.com/account/api-keys) or [another OpenAI-compatible provider](#switching-ai-providers).
-> - **This is a pre-release** version of the extension. In case of issues, please keep [feedback](#feedback) on github.
+> - **This is a pre-release** version of the extension. In case of issues, please keep [feedback](https://github.com/oliversen/chatgpt-docstrings/issues) on github.
 
 ## Table of Contents
 
