@@ -107,7 +107,7 @@ Now, the extension will route requests through the selected AI service. Ensure t
 
 ## Settings
 
-- `chatgpt-docstrings.interpreter`: When set to a path to python executable, extension will use that to launch the server and any subprocess.
+- `chatgpt-docstrings.interpreter`: Path to the Python executable used to start the language server. If not set, the Python interpreter selected in the VSCode status bar is used.
 
   - *Default value*: []
 
@@ -129,7 +129,7 @@ Now, the extension will route requests through the selected AI service. Ensure t
 
   - *Default value*: ""
 
-- `chatgpt-docstrings.docstringStyle`: Which docstring style to use.
+- `chatgpt-docstrings.docstringStyle`: Which the docstring style to use.
 
   - *Default value*: "google"
   - *Available options*:
@@ -137,16 +137,16 @@ Now, the extension will route requests through the selected AI service. Ensure t
     - "numpy"
     - "sphinx"
 
-- `chatgpt-docstrings.onNewLine`: Start docstring on new line.
+- `chatgpt-docstrings.onNewLine`: Option to start the docstring on a new line after the triple quotes.
 
   - *Default value*: false
   - *Available options*:
     - true
     - false
 
-  > Option ignored for one-line docstring
+  > This option is ignored when generating one-line docstrings.
 
-- `chatgpt-docstrings.promptPattern`: AI prompt to generate docstring.
+- `chatgpt-docstrings.promptPattern`: The AI prompt used to generate docstrings.
 
   - *Default value*: "Generate a {docstring_style}-style docstring for the following Python {entity} code:\n{code}"
 
@@ -161,7 +161,7 @@ Now, the extension will route requests through the selected AI service. Ensure t
 
   - *Default value*: 15
 
-- `chatgpt-docstrings.showProgressNotification`: Show progress notification of docstring generation.
+- `chatgpt-docstrings.showProgressNotification`: Option to display a notification about the progress of docstring generation.
 
   - *Default value*: true
   - *Available options*:

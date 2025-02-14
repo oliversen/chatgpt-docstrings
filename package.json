@@ -73,7 +73,7 @@
                 "chatgpt-docstrings.interpreter": {
                     "type": "array",
                     "default": [],
-                    "description": "When set to a path to python executable, extension will use that to launch the server and any subprocess.",
+                    "description": "Path to the Python executable used to start the language server. If not set, the Python interpreter selected in the VSCode status bar is used.",
                     "items": {
                         "type": "string"
                     },
@@ -84,7 +84,7 @@
                     "type": "string",
                     "markdownDescription": "[Click here to set API key](command:chatgpt-docstrings.setApiKey)",
                     "pattern": "^$",
-                    "patternErrorMessage": "It is not allowed to set the API key in the settings. Use the `chatgpt-docstrings.setApiKey` command.",
+                    "patternErrorMessage": "Use the link above.",
                     "scope": "application",
                     "order": 2
                 },
@@ -128,7 +128,7 @@
                 "chatgpt-docstrings.docstringStyle": {
                     "type": "string",
                     "default": "google",
-                    "description": "Which docstring style to use.",
+                    "description": "Which the docstring style to use.",
                     "enum": [
                         "google",
                         "numpy",
@@ -140,14 +140,14 @@
                 "chatgpt-docstrings.onNewLine": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Start docstring on new line.",
+                    "description": "Option to start the docstring on a new line after the triple quotes.",
                     "scope": "resource",
                     "order": 7
                 },
                 "chatgpt-docstrings.promptPattern": {
                     "type": "string",
                     "default": "Generate a {docstring_style}-style docstring for the following Python {entity} code:\n{code}",
-                    "markdownDescription": "AI prompt to generate docstring.\n\nPlaceholders enclosed in curly brackets `{}` will be replaced as follows:\n- `{docstring_style}` — the value of the parameter `#chatgpt-docstrings.docstringStyle#`\n- `{entity}` — the type of code entity, such as 'function' or 'class', based on the context\n- `{code}` — the source code of the function or class for which the docstring will be generated",
+                    "markdownDescription": "The AI prompt used to generate docstrings.\n\nPlaceholders enclosed in curly brackets `{}` will be replaced as follows:\n- `{docstring_style}` — the value of the parameter `#chatgpt-docstrings.docstringStyle#`\n- `{entity}` — the type of code entity, such as 'function' or 'class', based on the context\n- `{code}` — the source code of the function or class for which the docstring will be generated",
                     "editPresentation": "multilineText",
                     "pattern": "{code}",
                     "patternErrorMessage": "Must include: \"{code}\"",
@@ -164,7 +164,7 @@
                 "chatgpt-docstrings.showProgressNotification": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Show progress notification of docstring generation.",
+                    "description": "Option to display a notification about the progress of docstring generation.",
                     "scope": "resource",
                     "order": 10
                 },
