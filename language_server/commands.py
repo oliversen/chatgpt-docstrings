@@ -144,7 +144,7 @@ async def apply_generate_docstring(
 
 
 def _unpack_args(
-    args: tuple[TextDocumentPosition, str, lsp.ProgressToken]
+    args: tuple[TextDocumentPosition, str, lsp.ProgressToken],
 ) -> tuple[str, lsp.Position, str, lsp.ProgressToken]:
     """Unpacks the LSP command arguments."""
     args = CommandArguments(*args)
