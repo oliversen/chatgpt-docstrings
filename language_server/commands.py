@@ -69,7 +69,9 @@ async def apply_generate_docstring(
         return False
 
     # Parse and clean code entity
-    code_entity = get_entity_at_cursor(document.source, cursor)
+    code_entity = get_entity_at_cursor(
+        document.source, cursor, settings["codeAnalyzer"]
+    )
     if not code_entity or not isinstance(code_entity, NamedCodeEntity):
         _notify_invalid_context(ls)
         return False

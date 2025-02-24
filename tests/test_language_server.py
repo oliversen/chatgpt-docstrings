@@ -61,6 +61,7 @@ class GlobalSettings:
     )
     requestTimeout: int = 15
     showProgressNotification: bool = True
+    codeAnalyzer: str = "jedi"
     proxy: ProxySettings = field(default_factory=ProxySettings)
 
 

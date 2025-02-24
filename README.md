@@ -168,6 +168,13 @@ Now, the extension will route requests through the selected AI service. Ensure t
     - true
     - false
 
+- `chatgpt-docstrings.codeAnalyzer`: Which Python library to use for analyzing source files. Jedi is a third-party package. Jedi may not support the latest versions of Python. `ast` is a module of the Python Standard Library. With `ast`, syntax errors in the code are not allowed.
+
+  - *Default value*: "jedi"
+  - *Available options*:
+    - "jedi"
+    - "ast"
+
 - `chatgpt-docstrings.proxy`: The URL of the proxy server for AI API requests. The format of the URL is: `<protocol>://[<username>:<password>@]<host>:<port>`. Where `protocol` can be: 'http', 'https', 'socks5' or 'socks5h'. The username and password are optional. If not set, will be inherited from the `http.proxy` setting.
 
   - *Default value*: ""
