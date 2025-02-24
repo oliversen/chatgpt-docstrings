@@ -37,7 +37,7 @@ async function checkInterpreter(serverId: string): Promise<boolean> {
             return false;
         }
         if (!checkVersion(await resolveInterpreter(interpreter))) {
-            const msg = `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.8 or greater.`;
+            const msg = `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.9 or greater.`;
             traceWarn(msg);
             updateStatus(msg, LanguageStatusSeverity.Warning);
             return false;
@@ -52,7 +52,7 @@ async function checkInterpreter(serverId: string): Promise<boolean> {
         return true;
     }
 
-    const msg = `Select the python interpreter version 3.8 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`;
+    const msg = `Select the python interpreter version 3.9 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`;
     traceWarn(msg);
     updateStatus(msg, LanguageStatusSeverity.Warning);
     return false;
