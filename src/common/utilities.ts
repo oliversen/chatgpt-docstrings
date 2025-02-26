@@ -10,16 +10,10 @@ import { getWorkspaceFolders, isVirtualWorkspace } from './vscodeapi';
 
 function logLevelToTrace(logLevel: LogLevel): Trace {
     switch (logLevel) {
-        case LogLevel.Error:
-        case LogLevel.Warning:
-        case LogLevel.Info:
-            return Trace.Messages;
-
         case LogLevel.Debug:
+            return Trace.Messages;
         case LogLevel.Trace:
             return Trace.Verbose;
-
-        case LogLevel.Off:
         default:
             return Trace.Off;
     }
