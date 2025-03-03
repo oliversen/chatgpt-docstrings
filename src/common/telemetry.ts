@@ -1,6 +1,6 @@
+import TelemetryReporter from '@vscode/extension-telemetry';
 import * as vscode from 'vscode';
 import { LanguageClient } from 'vscode-languageclient/node';
-import TelemetryReporter from '@vscode/extension-telemetry';
 
 const appInsightsKey = 'fb5a34af-bc76-40b8-8e9f-b962d1ac2615';
 

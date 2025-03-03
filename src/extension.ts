@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
+import { ApiKey } from './common/api-key';
+import { generateDocstring } from './common/generate-docstring';
 import { registerLogger, traceLog, traceVerbose } from './common/log/logging';
 import { initializePython, onDidChangePythonInterpreter } from './common/python';
 import { ServerManager } from './common/server';
 import { checkIfConfigurationChanged, getInterpreterFromSetting } from './common/settings';
 import { loadServerDefaults } from './common/setup';
+import { registerLanguageStatusItem } from './common/status';
+import { telemetryReporter } from './common/telemetry';
 import { getLSClientTraceLevel } from './common/utilities';
 import { createOutputChannel, onDidChangeConfiguration, registerCommand } from './common/vscodeapi';
-import { generateDocstring } from './common/generate-docstring';
-import { ApiKey } from './common/api-key';
-import { telemetryReporter } from './common/telemetry';
-import { registerLanguageStatusItem } from './common/status';
 
 let serverManager: ServerManager;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { Disposable, LanguageStatusItem, LanguageStatusSeverity, l10n } from 'vscode';
+import { Disposable, LanguageStatusItem, LanguageStatusSeverity } from 'vscode';
 import { Command } from 'vscode-languageclient';
 import { getDocumentSelector } from './utilities';
 import { createLanguageStatusItem } from './vscodeapi';

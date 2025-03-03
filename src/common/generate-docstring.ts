@@ -1,19 +1,19 @@
 import * as vscode from 'vscode';
+import * as UUID from 'vscode-languageclient/lib/common/utils/uuid';
 import {
-    LanguageClient,
-    TextDocumentPositionParams,
     ExecuteCommandParams,
     ExecuteCommandRequest,
+    LanguageClient,
     ProgressType,
-    WorkDoneProgressReport,
+    TextDocumentPositionParams,
     WorkDoneProgressCancelNotification,
+    WorkDoneProgressReport,
 } from 'vscode-languageclient/node';
-import * as UUID from 'vscode-languageclient/lib/common/utils/uuid';
 import { ApiKey } from './api-key';
-import { telemetryReporter } from './telemetry';
-import { getStatus } from './status';
-import { getProjectRoot } from './utilities';
 import { getWorkspaceSettings } from './settings';
+import { getStatus } from './status';
+import { telemetryReporter } from './telemetry';
+import { getProjectRoot } from './utilities';
 
 function showProblemNotification(): void {
     const status: vscode.LanguageStatusItem | undefined = getStatus();
