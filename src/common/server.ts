@@ -8,49 +8,12 @@ import {
     ServerOptions,
 } from 'vscode-languageclient/node';
 import { SERVER_DEBUG_SCRIPT_PATH, SERVER_START_SCRIPT_PATH, SERVER_LIBS_PATH } from './constants';
-import { traceError, traceWarn, traceInfo, traceVerbose } from './log/logging';
-import { getDebuggerPath, checkVersion, resolveInterpreter, getInterpreterDetails } from './python';
-import {
-    getExtensionSettings,
-    getGlobalSettings,
-    getWorkspaceSettings,
-    ISettings,
-    getInterpreterFromSetting,
-} from './settings';
+import { traceError, traceInfo, traceVerbose } from './log/logging';
+import { getDebuggerPath, checkInterpreter } from './python';
+import { getExtensionSettings, getGlobalSettings, getWorkspaceSettings, ISettings } from './settings';
 import { getLSClientTraceLevel, getProjectRoot, getDocumentSelector, AsyncLock } from './utilities';
 import { telemetryReporter } from './telemetry';
 import { updateStatus } from './status';
-
-async function checkInterpreter(serverId: string): Promise<boolean> {
-    const interpreter = getInterpreterFromSetting(serverId);
-    if (interpreter && interpreter.length > 0) {
-        if (!(await fsapi.pathExists(interpreter[0]))) {
-            const msg = `The interpreter set in "${serverId}.interpreter" setting was not found.`;
-            traceWarn(msg);
-            updateStatus(msg, LanguageStatusSeverity.Warning);
-            return false;
-        }
-        if (!checkVersion(await resolveInterpreter(interpreter))) {
-            const msg = `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.9 or greater.`;
-            traceWarn(msg);
-            updateStatus(msg, LanguageStatusSeverity.Warning);
-            return false;
-        }
-        traceVerbose(`Using interpreter from ${serverId}.interpreter: ${interpreter[0]}`);
-        return true;
-    }
-
-    const interpreterDetails = await getInterpreterDetails();
-    if (interpreterDetails.path) {
-        traceVerbose(`Using interpreter from Python extension: ${interpreterDetails.path.join(' ')}`);
-        return true;
-    }
-
-    const msg = `Select the python interpreter version 3.9 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`;
-    traceWarn(msg);
-    updateStatus(msg, LanguageStatusSeverity.Warning);
-    return false;
-}
 
 export class ServerManager {
     private disposables: Disposable[] = [];

@@ -2,8 +2,20 @@
 // Licensed under the MIT License.
 
 /* eslint-disable @typescript-eslint/naming-convention */
-import { commands, Disposable, Event, EventEmitter, extensions, Uri, WorkspaceFolder } from 'vscode';
-import { traceError, traceLog } from './log/logging';
+import * as fsapi from 'fs-extra';
+import {
+    commands,
+    Disposable,
+    Event,
+    EventEmitter,
+    extensions,
+    LanguageStatusSeverity,
+    Uri,
+    WorkspaceFolder,
+} from 'vscode';
+import { traceError, traceLog, traceVerbose, traceWarn } from './log/logging';
+import { getInterpreterFromSetting } from './settings';
+import { updateStatus } from './status';
 
 type Environment = EnvironmentPath & {
     /**
@@ -284,5 +296,44 @@ export function checkVersion(resolved: ResolvedEnvironment | undefined): boolean
     if (version?.major === 3 && version?.minor >= 9) {
         return true;
     }
+    return false;
+}
+
+export async function checkInterpreter(serverId: string): Promise<boolean> {
+    const interpreter = getInterpreterFromSetting(serverId);
+
+    // Check if interpreter is set in the settings
+    if (interpreter && interpreter.length > 0) {
+        const interpreterPath = interpreter[0];
+        if (!(await fsapi.pathExists(interpreterPath))) {
+            const msg = `The interpreter set in "${serverId}.interpreter" setting was not found.`;
+            traceWarn(msg);
+            updateStatus(msg, LanguageStatusSeverity.Warning);
+            return false;
+        }
+
+        const resolvedInterpreter = await resolveInterpreter(interpreter);
+        if (!checkVersion(resolvedInterpreter)) {
+            const msg = `The interpreter set in "${serverId}.interpreter" setting is not supported. Please use Python 3.9 or greater.`;
+            traceWarn(msg);
+            updateStatus(msg, LanguageStatusSeverity.Warning);
+            return false;
+        }
+
+        traceVerbose(`Using interpreter from ${serverId}.interpreter: ${interpreter[0]}`);
+        return true;
+    }
+
+    // Check if the interpreter is available from the Python extension
+    const interpreterDetails = await getInterpreterDetails();
+    if (interpreterDetails.path) {
+        traceVerbose(`Using interpreter from Python extension: ${interpreterDetails.path.join(' ')}`);
+        return true;
+    }
+
+    // Warning about the need to select the Python interpreter.
+    const msg = `Select the python interpreter version 3.9 or greater in the status bar, or set it in the "${serverId}.interpreter" setting.`;
+    traceWarn(msg);
+    updateStatus(msg, LanguageStatusSeverity.Warning);
     return false;
 }
