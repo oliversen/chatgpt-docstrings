@@ -72,3 +72,42 @@ export function getDocumentSelector(): DocumentSelector {
               { scheme: 'vscode-notebook-cell', language: 'python' },
           ];
 }
+
+export class AsyncLock {
+    private isLocked: boolean = false;
+    private waitingQueue: (() => void)[] = [];
+    private isWaiting: boolean = false;
+
+    async lock(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const tryLock = () => {
+                if (!this.isLocked) {
+                    this.isLocked = true;
+                    resolve();
+                } else if (!this.isWaiting) {
+                    this.isWaiting = true;
+                    this.waitingQueue.push(tryLock);
+                }
+            };
+            tryLock();
+        });
+    }
+
+    unlock(): void {
+        this.isLocked = false;
+        this.isWaiting = false;
+        if (this.waitingQueue.length > 0) {
+            const next = this.waitingQueue.shift();
+            if (next) next();
+        }
+    }
+
+    async *[Symbol.asyncIterator]() {
+        await this.lock();
+        try {
+            yield;
+        } finally {
+            this.unlock();
+        }
+    }
+}

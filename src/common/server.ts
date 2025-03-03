@@ -17,7 +17,7 @@ import {
     ISettings,
     getInterpreterFromSetting,
 } from './settings';
-import { getLSClientTraceLevel, getProjectRoot, getDocumentSelector } from './utilities';
+import { getLSClientTraceLevel, getProjectRoot, getDocumentSelector, AsyncLock } from './utilities';
 import { telemetryReporter } from './telemetry';
 import { updateStatus } from './status';
 
@@ -54,6 +54,7 @@ async function checkInterpreter(serverId: string): Promise<boolean> {
 
 export class ServerManager {
     private disposables: Disposable[] = [];
+    private restartLock = new AsyncLock();
     lsClient: LanguageClient | undefined;
 
     constructor(
@@ -63,13 +64,15 @@ export class ServerManager {
     ) {}
 
     public async restartServer(): Promise<void> {
-        await this.stopServer();
-        if (!(await checkInterpreter(this.serverId))) return;
-        const newLSClient = await this.createServer();
-        if (!(await this.startServer(newLSClient))) return;
-        this.configureTelemetry(newLSClient);
-        await this.configureTraceLevel(newLSClient, this.outputChannel);
-        this.lsClient = newLSClient;
+        for await (const _ of this.restartLock) {
+            await this.stopServer();
+            if (!(await checkInterpreter(this.serverId))) return;
+            const newLSClient = await this.createServer();
+            if (!(await this.startServer(newLSClient))) return;
+            this.configureTelemetry(newLSClient);
+            await this.configureTraceLevel(newLSClient, this.outputChannel);
+            this.lsClient = newLSClient;
+        }
     }
 
     private async stopServer(): Promise<void> {
