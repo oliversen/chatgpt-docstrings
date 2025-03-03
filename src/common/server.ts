@@ -8,7 +8,7 @@ import {
     ServerOptions,
 } from 'vscode-languageclient/node';
 import { SERVER_DEBUG_SCRIPT_PATH, SERVER_LIBS_PATH, SERVER_START_SCRIPT_PATH } from './constants';
-import { traceError, traceInfo, traceVerbose } from './log/logging';
+import { traceError, traceInfo, traceVerbose } from './logging';
 import { checkInterpreter, getDebuggerPath } from './python';
 import { ISettings, getExtensionSettings, getGlobalSettings, getWorkspaceSettings } from './settings';
 import { updateStatus } from './status';

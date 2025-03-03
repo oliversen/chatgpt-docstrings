@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { traceWarn } from './log/logging';
+import { traceWarn } from './logging';
 import { telemetryReporter } from './telemetry';
 
 let _cashedKey: string | undefined = undefined;

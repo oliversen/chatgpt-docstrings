@@ -13,7 +13,7 @@ import {
     Uri,
     WorkspaceFolder,
 } from 'vscode';
-import { traceError, traceLog, traceVerbose, traceWarn } from './log/logging';
+import { traceError, traceLog, traceVerbose, traceWarn } from './logging';
 import { getInterpreterFromSetting } from './settings';
 import { updateStatus } from './status';
 
