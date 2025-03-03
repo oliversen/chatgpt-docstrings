@@ -8,12 +8,12 @@ import {
     ServerOptions,
 } from 'vscode-languageclient/node';
 import { SERVER_DEBUG_SCRIPT_PATH, SERVER_LIBS_PATH, SERVER_START_SCRIPT_PATH } from './constants';
-import { traceError, traceInfo, traceVerbose } from './logging';
+import { getLSClientTraceLevel, traceError, traceInfo, traceVerbose } from './logging';
 import { checkInterpreter, getDebuggerPath } from './python';
 import { ISettings, getExtensionSettings, getGlobalSettings, getWorkspaceSettings } from './settings';
 import { updateStatus } from './status';
 import { telemetryReporter } from './telemetry';
-import { AsyncLock, getDocumentSelector, getLSClientTraceLevel, getProjectRoot } from './utilities';
+import { AsyncLock, getDocumentSelector, getProjectRoot } from './utilities';
 
 export class ServerManager {
     private disposables: Disposable[] = [];

@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 
 import * as util from 'util';
-import { Disposable, LogOutputChannel } from 'vscode';
+import { Disposable, LogLevel, LogOutputChannel } from 'vscode';
+import { Trace } from 'vscode-jsonrpc/node';
 
 type Arguments = unknown[];
 class OutputChannelLogger {
@@ -57,4 +58,26 @@ export function traceInfo(...args: Arguments): void {
 
 export function traceVerbose(...args: Arguments): void {
     channel?.traceVerbose(...args);
+}
+
+function logLevelToTrace(logLevel: LogLevel): Trace {
+    switch (logLevel) {
+        case LogLevel.Debug:
+            return Trace.Messages;
+        case LogLevel.Trace:
+            return Trace.Verbose;
+        default:
+            return Trace.Off;
+    }
+}
+
+export function getLSClientTraceLevel(channelLogLevel: LogLevel, globalLogLevel: LogLevel): Trace {
+    if (channelLogLevel === LogLevel.Off) {
+        return logLevelToTrace(globalLogLevel);
+    }
+    if (globalLogLevel === LogLevel.Off) {
+        return logLevelToTrace(channelLogLevel);
+    }
+    const level = logLevelToTrace(channelLogLevel <= globalLogLevel ? channelLogLevel : globalLogLevel);
+    return level;
 }
