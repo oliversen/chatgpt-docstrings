@@ -1,11 +1,7 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 import * as vscode from 'vscode';
-import { LanguageClient } from 'vscode-languageclient/node';
 import { registerLogger, traceLog, traceVerbose } from './common/log/logging';
 import { initializePython, onDidChangePythonInterpreter } from './common/python';
-import { restartServer } from './common/server';
+import { ServerManager } from './common/server';
 import { checkIfConfigurationChanged, getInterpreterFromSetting } from './common/settings';
 import { loadServerDefaults } from './common/setup';
 import { getLSClientTraceLevel } from './common/utilities';
@@ -15,10 +11,9 @@ import { ApiKey } from './common/api-key';
 import { telemetryReporter } from './common/telemetry';
 import { registerLanguageStatusItem } from './common/status';
 
-let lsClient: LanguageClient | undefined;
+let serverManager: ServerManager;
+
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-    // This is required to get server name and module. This should be
-    // the first thing that we do in this extension.
     const serverInfo = loadServerDefaults();
     const serverName = serverInfo.name;
     const serverId = serverInfo.module;
@@ -32,7 +27,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     const changeLogLevel = async (c: vscode.LogLevel, g: vscode.LogLevel) => {
         const level = getLSClientTraceLevel(c, g);
-        await lsClient?.setTrace(level);
+        await serverManager.lsClient?.setTrace(level);
     };
 
     context.subscriptions.push(
@@ -49,17 +44,18 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     traceLog(`Module: ${serverInfo.module}`);
     traceVerbose(`Full Server Info: ${JSON.stringify(serverInfo)}`);
 
+    serverManager = new ServerManager(serverId, serverName, outputChannel);
+
     context.subscriptions.push(
         onDidChangePythonInterpreter(async () => {
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+            serverManager.restartServer();
         }),
         onDidChangeConfiguration(async (e: vscode.ConfigurationChangeEvent) => {
-            if (checkIfConfigurationChanged(e, serverId)) {
-                lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
-            }
+            if (!checkIfConfigurationChanged(e, serverId)) return;
+            serverManager.restartServer();
         }),
         registerCommand(`${serverId}.restart`, async () => {
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+            serverManager.restartServer();
         }),
         registerCommand(`${serverId}.showLogs`, async () => {
             outputChannel.show();
@@ -68,7 +64,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             new ApiKey(outputChannel, context.secrets).set();
         }),
         registerCommand(`${serverId}.generateDocstring`, () => {
-            generateDocstring(serverId, lsClient, context.secrets);
+            generateDocstring(serverId, serverManager.lsClient, context.secrets);
         }),
         registerLanguageStatusItem(serverId, serverName, `${serverId}.showLogs`),
     );
@@ -80,13 +76,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             await initializePython(context.subscriptions);
             traceLog(`Python extension loaded`);
         } else {
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+            serverManager.restartServer();
         }
     });
 }
 
 export async function deactivate(): Promise<void> {
-    if (lsClient) {
-        await lsClient.stop();
-    }
+    if (!serverManager.lsClient) return;
+    await serverManager.lsClient.stop();
 }
