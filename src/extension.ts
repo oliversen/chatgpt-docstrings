@@ -5,10 +5,9 @@ import { registerLogger, traceLog, traceVerbose } from './common/logging';
 import { initializePython, onDidChangePythonInterpreter } from './common/python';
 import { ServerManager } from './common/server';
 import { checkIfConfigurationChanged, getInterpreterFromSetting } from './common/settings';
-import { loadServerDefaults } from './common/setup';
 import { registerLanguageStatusItem } from './common/status';
 import { telemetryReporter } from './common/telemetry';
-import { getLSClientTraceLevel } from './common/utilities';
+import { getLSClientTraceLevel, loadServerDefaults } from './common/utilities';
 import { createOutputChannel, onDidChangeConfiguration, registerCommand } from './common/vscodeapi';
 
 let serverManager: ServerManager;

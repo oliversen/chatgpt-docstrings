@@ -6,7 +6,20 @@ import * as path from 'path';
 import { LogLevel, Uri, WorkspaceFolder } from 'vscode';
 import { Trace } from 'vscode-jsonrpc/node';
 import { DocumentSelector } from 'vscode-languageclient';
+import { EXTENSION_ROOT_DIR } from './constants';
 import { getWorkspaceFolders, isVirtualWorkspace } from './vscodeapi';
+
+export interface IServerInfo {
+    name: string;
+    module: string;
+}
+
+export function loadServerDefaults(): IServerInfo {
+    const packageJson = path.join(EXTENSION_ROOT_DIR, 'package.json');
+    const content = fs.readFileSync(packageJson).toString();
+    const config = JSON.parse(content);
+    return config.serverInfo as IServerInfo;
+}
 
 function logLevelToTrace(logLevel: LogLevel): Trace {
     switch (logLevel) {
