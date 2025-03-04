@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-/* eslint-disable @typescript-eslint/naming-convention */
 import { PythonExtension, ResolvedEnvironment } from '@vscode/python-extension';
 import * as fsapi from 'fs-extra';
 import { Disposable, Event, EventEmitter, LanguageStatusSeverity, Uri, commands } from 'vscode';

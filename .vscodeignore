@@ -3,7 +3,6 @@
 **/*.pyi
 **/*.ts
 **/__pycache__/**
-.eslintrc.json
 .github/**
 .gitignore
 .gitlint
@@ -15,6 +14,7 @@
 .venv/**
 .vscode-test/**
 .vscode/**
+eslint.config.mjs
 fake-jiter/**
 images/readme/**
 language_server/libs/*.dist-info/**
