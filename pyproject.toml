@@ -35,7 +35,8 @@ dev = [
     {include-group = "linting"},
     {include-group = "testing"},
     "nox==2024.10.9",
-    "pre-commit~=4.0"
+    "pre-commit~=4.0",
+    "git-cliff~=2.8",
 ]
 
 [tool.uv]
@@ -120,3 +121,25 @@ testpaths = ["tests"]
 pythonpath = ["language_server", "language_server/libs"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.git-cliff.git]
+commit_parsers = [
+  { message = "^feat", group = "<!-- 0 -->🚀 Features" },
+  { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
+  { message = "^doc", group = "<!-- 2 -->📚 Documentation" },
+  { message = "^perf", group = "<!-- 3 -->⚡ Performance" },
+  { message = "^refactor", group = "<!-- 4 -->🚜 Refactor" },
+  { message = "^style", group = "<!-- 5 -->🎨 Styling" },
+  { message = "^test", group = "<!-- 6 -->🧪 Testing" },
+  { body = ".*security", group = "<!-- 7 -->🛡️ Security" },
+  { message = "^revert", group = "<!-- 8 -->◀️ Revert" },
+  { message = "^chore\\(release\\)", skip = true },
+  { message = ".*", group = "<!-- 9 -->⚙️ Other" }
+]
+
+[tool.git-cliff.changelog]
+header = """
+# Changelog\n
+All notable changes to this project will be documented in this file.\n
+"""
+output = "CHANGELOG.md"
