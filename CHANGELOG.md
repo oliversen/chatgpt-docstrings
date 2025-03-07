@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2025-03-10
+
+### 🚀 Features
+
+- Add support for generating docstrings for classes
+- Add `codeAnalyzer` option
+
+### 🐛 Bug Fixes
+
+- Set current supported Python version in notifications
+- Correct language server trace level based on extension log level
+- Prevent concurrent language server restarts
+
+### 📚 Documentation
+
+- *(readme)* Add link to github for feedback
+- *(changelog)* Generate changelog using `git-cliff`
+- *(readme)* Add icon to version badge
+- *(readme)* Replace license badge with number of installs badge
+
+### 🚜 Refactor
+
+- Reorganize structure of language server code
+- Merge server management into `ServerManager` class
+- Move `checkInterpreter` function to `python.ts`
+- Extract `logging.ts` from `log` folder
+- Merge `setup.ts` into `utilities.ts`
+- Move `getLSClientTraceLevel` function to `logging.ts`
+
+### 🎨 Styling
+
+- Sort typescript imports
+
+### 🧪 Testing
+
+- Add python tests
+
+### ⚙️ Other
+
+- Integrate `uv` dependency manager
+- *(deps)* Add `pyright` linter
+- *(deps)* Add `flake8-todo` linter
+- Improve description of extension options
+- *(deps)* Bump `black` formatter from 24.10.0 to 25.1.0
+- *(deps)* Bump `flake8` linter from 7.1.1 to 7.1.2
+- Add GitHub Actions workflow
+- Bump minimum supported VSCode version to 1.78
+- *(deps)* Add `@vscode/python-extension` package
+- Update `.vscodeignore` file to be up-to-date
+- *(deps)* Bump nodejs packages
+- Integrate `git-cliff` changelog generator
+
 ## [0.10.1] - 2025-01-17
 
 ### ⚙️ Other

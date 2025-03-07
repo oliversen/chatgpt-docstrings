@@ -1,6 +1,6 @@
 [project]
 name = "chatgpt-docstrings"
-version = "0.10.1"
+version = "0.11.0"
 requires-python = ">=3.9"
 
 [dependency-groups]
